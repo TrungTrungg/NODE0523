@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AdminLTE</title>
+        <% include ./components/stylesheet %>
+    </head>
+    <body class="hold-transition sidebar-mini layout-fixed">
+        <div
+            class="wrapper">
+
+            <!-- Preloader -->
+            <% include ./components/preloader %>
+
+            <!-- Navbar -->
+            <% include ./components/header %>
+            <!-- /.navbar -->
+
+            <!-- Main Sidebar Container -->
+            <% include ./components/sidebar %>
+
+            <!-- Content Wrapper. Contains page content -->
+                <div class="content-wrapper"> <%- body %>
+            </div>
+            <!-- /.content-wrapper -->
+
+        </div>
+        <!-- Footer -->
+        <% include ./components/footer %><!-- /.footer -->
+        <!-- ./wrapper -->
+    <% include ./components/scripts %>
+</body></html></head></html>

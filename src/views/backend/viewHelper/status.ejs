@@ -1,0 +1,31 @@
+<%
+    showFilter = (filter, currentStatus) => {
+       
+        xHtmlFilter = filter.map((status,index) => {
+            let color = ''
+            let active = ''
+            switch (status.name) {
+                case 'active':
+                    color = 'success'
+                    break;
+                case 'inactive':
+                    color = 'danger'
+                    break;
+                default:
+                    color = 'dark'
+                    break;
+            }
+            if(status.name === currentStatus) active = 'active'
+            if(currentStatus === undefined && status.name === 'all') active = 'active'
+            
+            return(`
+                <a 
+                    type="button" 
+                    class="btn btn-outline-${color} ${active}"
+                    href="/admin/item/status/${status.name}"
+                >${status.name} (${status.qty})</a>
+            `)
+        }).join('') 
+        return xHtmlFilter
+    }
+%>

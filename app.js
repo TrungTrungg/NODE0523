@@ -4,14 +4,28 @@ const createError = require('http-errors');
 const express = require('express');
 
 const path = require('path');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 
+const mongoose = require('mongoose');
+
 const router = require('@routes');
-const { log } = require('console');
 
 const app = express();
+
+// connect mongodb
+const mongoDBUrl = 'mongodb+srv://xuantrung:xuantrung@cluster0.wppcclt.mongodb.net/';
+
+mongoose
+    .connect(mongoDBUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('Kết nối thành công đến MongoDB!');
+    })
+    .catch((error) => {
+        console.error('Lỗi kết nối đến MongoDB:', error);
+    });
 
 // use express layout
 app.use(expressLayouts);
@@ -21,7 +35,7 @@ app.set('layout', 'backend/index');
 app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -44,6 +58,5 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
 
 module.exports = app;

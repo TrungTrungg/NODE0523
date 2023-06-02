@@ -1,5 +1,8 @@
 <%
-    showFilter = (filter, currentStatus) => {
+    showFilter = (filter, currentStatus, keyword) => {
+        let query = ''
+        if(keyword) 
+            query = `?search=${keyword}`
        
         xHtmlFilter = filter.map((status,index) => {
             let color = ''
@@ -16,13 +19,13 @@
                     break;
             }
             if(status.name === currentStatus) active = 'active'
-            if(currentStatus === undefined && status.name === 'all') active = 'active'
+            if(currentStatus === '' && status.name === 'all') active = 'active'
             
             return(`
                 <a 
                     type="button" 
                     class="btn btn-outline-${color} ${active}"
-                    href="/admin/item/status/${status.name}"
+                    href="/admin/item/status/${status.name}${query}"
                 >${status.name} (${status.qty})</a>
             `)
         }).join('') 

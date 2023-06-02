@@ -1,5 +1,8 @@
 <%
-     showListItems = (items) => {
+     showListItems = (items, keyword) => {
+        let query = ''
+        if(keyword) 
+            query = `?search=${keyword}`
         const listItems =  items.map((item, index) => {
             let buttColor = item.status === 'active' ? 'success' : 'danger'
             return  (`
@@ -10,14 +13,14 @@
                             <td>
                                 <a 
                                     type="button" 
-                                    class="btn bg-${buttColor}"
-                                    href="/admin/item/${item._id}/${item.status}"
+                                    class="btn btn-${buttColor}"
+                                    href="/admin/item/${item._id}/${item.status}${query}"
                                     >${item.status}</a>
                             </td>
                             <td><input type="number" value="${item.ordering}" class="ordering"/></td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                    <a type="button" class="btn btn-warning" href="/admin/item/edit/${item._id}">Edit</a>
+                                    <a type="button" class="btn btn-primary" href="/admin/item/edit/${item._id}">Edit</a>
                                     <a type="button" class="btn btn-danger"  href="/admin/item/delete/${item._id}">Delete</a>
                                 </div>
                             </td>

@@ -3,25 +3,33 @@ const router = express.Router();
 
 const itemsService = require('../../services/items_service');
 
-// Lấy ra danh sách Item
+// Đỗ dữ liệu trang Item
 router.get('(/status/:status)?', async (req, res, next) => {
     const { status } = req.params;
-    let currentStatus = status;
-    if (currentStatus !== undefined) {
-        currentStatus = status === 'all' ? undefined : status;
-    }
+    const { search } = req.query;
 
+    // Xử lý status
+    let currentStatus = status === 'all' || !status ? '' : status;
+
+    // Xử lý query
+    let keyword = '';
+    if (search) keyword = !search.trim() ? '' : search.trim();
+
+    // Tạo dữ liệu cho filter
     const filter = [
         { name: 'all', qty: await itemsService.countByStatus() },
         { name: 'active', qty: await itemsService.countByStatus('active') },
         { name: 'inactive', qty: await itemsService.countByStatus('inactive') },
     ];
-    const items = await itemsService.getAll(currentStatus);
+
+    // Lấy danh sách item
+    const items = await itemsService.getAll(currentStatus, keyword);
 
     const options = {
         items,
         filter,
         currentStatus,
+        keyword,
     };
 
     res.render('backend/pages/items', options);
@@ -56,11 +64,19 @@ router.post('/edit', async (req, res, next) => {
 // Sửa status của 1 Item
 router.get('(/:id/:status)?', async (req, res, next) => {
     const { id, status } = req.params;
+    const { search } = req.query;
+
+    // handle search query
+    let query = '';
+    if (search) query = `?search=${search}`;
+
+    // handle change status
     let newStatus = '';
     if (status === 'active') newStatus = 'inactive';
     else newStatus = 'active';
+
     await itemsService.changeStatusById(id, newStatus);
-    res.redirect('/admin/item');
+    res.redirect(`/admin/item${query}`);
 });
 
 // Chuyển hướng trang chỉnh sửa 1 Item

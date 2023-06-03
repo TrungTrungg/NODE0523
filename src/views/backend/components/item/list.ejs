@@ -1,8 +1,8 @@
 <%
-     showListItems = (items, keyword) => {
-        let query = ''
+     showListItems = (items, currentStatus, keyword, {currentPage}) => {
+        let query = `?page=${currentPage}`
         if(keyword) 
-            query = `?search=${keyword}`
+            query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
             let buttColor = item.status === 'active' ? 'success' : 'danger'
             return  (`

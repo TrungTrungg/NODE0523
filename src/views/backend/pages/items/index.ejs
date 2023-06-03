@@ -1,4 +1,6 @@
 <% include ../../components/item/list %>
+<% include ../../components/pagination %>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -38,9 +40,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%- showListItems(items, keyword)  %>
+                    <%- showListItems(items,currentStatus,  keyword, pagination)  %>
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer clearfix">
+            <nav aria-label="Page navigation example" class="float-right">
+                <%- showPagination(currentStatus, keyword, pagination) %>
+            </nav>
+
         </div>
     </div>
 </div>

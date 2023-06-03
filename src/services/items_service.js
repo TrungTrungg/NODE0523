@@ -16,16 +16,21 @@ const updateOneById = async (id, name, status, ordering) => {
     return await itemsModel.updateOne({ _id: id }, { name, status, ordering });
 };
 
-const getAll = async (status, keyword) => {
+const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
     let condition = {};
     if (status) condition.status = status;
     if (keyword) condition.name = new RegExp(keyword, 'i');
-    return await itemsModel.find(condition).sort({ createdAt: -1 });
+    return await itemsModel
+        .find(condition)
+        .sort({ updatedAt: -1, createdAt: -1 })
+        .skip(itemPerPage * (currentPage - 1))
+        .limit(itemPerPage);
 };
 
-const countByStatus = async (status) => {
+const countByStatus = async (status, keyword) => {
     let condition = {};
     if (status) condition.status = status;
+    if (keyword) condition.name = new RegExp(keyword, 'i');
     return await itemsModel.count(condition);
 };
 

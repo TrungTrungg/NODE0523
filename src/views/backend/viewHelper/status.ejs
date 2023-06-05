@@ -3,8 +3,8 @@
        
         xHtmlFilter = filter.map((status,index) => {
             let color = ''
-            let active = ''
-            switch (status.name) {
+            let isActive = ''
+            switch (status.name.toLowerCase()) {
                 case 'active':
                     color = 'success'
                     break;
@@ -15,13 +15,13 @@
                     color = 'dark'
                     break;
             }
-            if(status.name === currentStatus) active = 'active'
-            if(currentStatus === undefined && status.name === 'all') active = 'active'
+            if(status.name === currentStatus) isActive = 'active'
+            if(currentStatus === undefined && status.name === 'all') isActive = 'active'
             
             return(`
                 <a 
                     type="button" 
-                    class="btn btn-outline-${color} ${active}"
+                    class="btn btn-outline-${color} ${isActive}"
                     href="/admin/item/status/${status.name}"
                 >${status.name} (${status.qty})</a>
             `)

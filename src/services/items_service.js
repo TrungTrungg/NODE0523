@@ -9,7 +9,7 @@ const deleteOneById = async (id) => {
 };
 
 const getOneById = async (id) => {
-    return await itemsModel.find({ _id: id });
+    return await itemsModel.findById(id);
 };
 
 const updateOneById = async (id, name, status, ordering) => {
@@ -18,13 +18,13 @@ const updateOneById = async (id, name, status, ordering) => {
 
 const getAll = async (status) => {
     let condition = {};
-    if (status) condition.status = status;
+    if (status) condition.status = status.toLowerCase();
     return await itemsModel.find(condition).sort({ createdAt: -1 });
 };
 
 const countByStatus = async (status) => {
     let condition = {};
-    if (status) condition.status = status;
+    if (status) condition.status = status.toLowerCase();
     return await itemsModel.count(condition);
 };
 

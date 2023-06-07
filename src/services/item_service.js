@@ -30,7 +30,8 @@ const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
 
 const countByStatus = async (status, keyword) => {
     let condition = {};
-    if (status) condition.status = status;
+    if (status) condition.status = status.toLowerCase();
+    if (keyword) condition.name = new RegExp(keyword, 'i');
     return await itemsModel.count(condition);
 };
 

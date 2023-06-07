@@ -19,7 +19,7 @@
                     break;
             }
             if(status.name === currentStatus) isActive = 'active'
-            if(currentStatus === undefined && status.name === 'all') isActive = 'active'
+            if(currentStatus === undefined && status.name.toLowerCase() === 'all') isActive = 'active'
             
             return(`
                 <a 

@@ -2,32 +2,35 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE</title>
-        <% include ./components/stylesheet %>
-    </head>
-    <body class="hold-transition sidebar-mini layout-fixed">
-        <div
-            class="wrapper">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>AdminLTE</title>
+                <% include ./components/StyleSheet %>
+            </head>
+            <body class="hold-transition sidebar-mini layout-fixed">
+                <div
+                    class="wrapper">
 
-            <!-- Preloader -->
-            <% include ./components/preloader %>
+                    <!-- Preloader -->
+                    <% include ./components/Preloader %>
 
-            <!-- Navbar -->
-            <% include ./components/header %>
-            <!-- /.navbar -->
+                    <!-- Navbar -->
+                    <% include ./components/Header %>
+                    <!-- /.navbar -->
 
-            <!-- Main Sidebar Container -->
-            <% include ./components/sidebar %>
+                    <!-- Main Sidebar Container -->
+                    <% include ./components/Sidebar %>
 
-            <!-- Content Wrapper. Contains page content -->
-                <div class="content-wrapper"> <%- body %>
-            </div>
-            <!-- /.content-wrapper -->
+                    <!-- Content Wrapper. Contains page content -->
+                        <div class="content-wrapper"> <%- body %>
+                    </div>
+                    <!-- /.content-wrapper -->
 
-        </div>
-        <!-- Footer -->
-        <% include ./components/footer %><!-- /.footer -->
-        <!-- ./wrapper -->
-    <% include ./components/scripts %>
-</body></html></head></html>
+                </div>
+                <!-- Footer -->
+                <% include ./components/Footer %>
+                <!-- /.footer -->
+                <!-- ./wrapper -->
+            <% include ./components/Scripts %>
+        </body>
+    </html>
+</head></html>

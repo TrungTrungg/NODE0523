@@ -1,0 +1,76 @@
+<%
+    const sidebarDatas = [
+        {
+            isParent: false,
+            url: '/admin' ,
+            icon: 'fas fa-tachometer-alt',
+            iconDropdown: '',
+            name: 'Dashboard'
+        },
+        {
+            isParent: true,
+            url: '#',
+            icon: 'fas fa-th',
+            name: 'Item',
+            iconDropdown: 'fas fa-angle-left',
+            child: [
+                {
+                    url: '/admin/item',
+                    icon: 'far fa-circle',
+                    name: 'List'
+                },
+                {
+                    url: '/admin/item/add',
+                    icon: 'far fa-circle',
+                    name: 'Add'
+                },
+            ]
+        }
+    ]
+
+    showListSidebar = () => {
+        return sidebarDatas.map((sidebar, index)=> {
+            let dropdownData = ''
+            let menuOpen = 'menu-clock'
+            let parentActive = ''
+            let childActive = ''
+            if(sidebar.url === currentUrl) parentActive = 'active'
+            if(sidebar.isParent) {
+                dropdownList = sidebar.child.map((dataChild) => {
+                    
+                    if(dataChild.url === currentUrl) {
+                        childActive = 'active'
+                        parentActive = 'active'
+                        menuOpen = 'menu-open'
+                    }
+                    else {
+                        childActive = ''
+                    }
+                    return (`
+                        <li class="nav-item">
+                            <a href="${dataChild.url}" class="nav-link ${childActive}">
+                                <i class="${dataChild.icon} nav-icon"></i>
+                                <p>${dataChild.name}</p>
+                            </a>
+                        </li>
+                    `)
+                }).join('')
+                dropdownData = `<ul class="nav nav-treeview">${dropdownList}</ul>`
+                
+            }
+            return(`
+                <li class="nav-item ${menuOpen}">
+                    <a href="${sidebar.url}" class="nav-link ${parentActive}">
+                        <i class="nav-icon ${sidebar.icon}"></i>
+                        <p>
+                            ${sidebar.name}
+                            <i class="right  ${sidebar.iconDropdown}"></i>
+                        </p>
+                    </a>
+                    ${dropdownData}
+                </li>
+            `)
+        }).join('')
+    }
+
+%>

@@ -4,6 +4,7 @@ const router = express.Router();
 const itemService = require('../../services/items_service');
 const pageHelper = require('../../helpers/pagination_helper');
 const statusUtils = require('../../utils/status');
+const itemService = require('../../services/item_service');
 const statusUtils = require('../../utils/status');
 
 // Đỗ dữ liệu trang Item
@@ -27,9 +28,9 @@ router.get('(/status/:status)?', async (req, res, next) => {
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: statusUtils.all, qty: await itemsService.countByStatus() },
-        { name: statusUtils.acitve, qty: await itemsService.countByStatus(statusUtils.active) },
-        { name: statusUtils.inactive, qty: await itemsService.countByStatus(statusUtils.inactive) },
+        { name: statusUtils.all, qty: await itemService.countByStatus() },
+        { name: statusUtils.active, qty: await itemService.countByStatus(statusUtils.active) },
+        { name: statusUtils.inactive, qty: await itemService.countByStatus(statusUtils.inactive) },
     ];
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
@@ -43,6 +44,8 @@ router.get('(/status/:status)?', async (req, res, next) => {
     // console.log(pagination);
     // Lấy danh sách item
     const items = await itemService.getAll(currentStatus, keyword, pagination);
+    const items = await itemService.getAll(currentStatus, keyword);
+
     const options = {
         items,
         filter,
@@ -51,12 +54,12 @@ router.get('(/status/:status)?', async (req, res, next) => {
         keyword,
     };
 
-    res.render('backend/pages/items', options);
+    res.render('backend/pages/item', options);
 });
 
 // Chuyển hướng trang tạo mới Item
 router.get('/add', async (req, res, next) => {
-    res.render('backend/pages/items/add');
+    res.render('backend/pages/item/item_add');
 });
 
 // Thêm 1 Item
@@ -76,16 +79,16 @@ router.get('/delete/:id', async (req, res, next) => {
 // Sửa 1 Item
 router.post('/edit', async (req, res, next) => {
     const { id, name, status, ordering } = req.body;
-    const itemUpdated = await itemsService.updateOneById(id, name, status, ordering);
+    const itemUpdated = await itemService.updateOneById(id, name, status, ordering);
     res.redirect('/admin/item');
 });
 
 // Chuyển hướng trang chỉnh sửa 1 Item
 router.get('/edit/:id', async (req, res, next) => {
     const { id } = req.params;
-    const { name, status, ordering } = await itemsService.getOneById(id);
+    const { name, status, ordering } = await itemService.getOneById(id);
     options = { id, name, status, ordering };
-    res.render('backend/pages/items/edit', options);
+    res.render('backend/pages/item/item_edit', options);
 });
 
 // Sửa status của 1 Item

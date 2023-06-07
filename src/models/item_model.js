@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const itemsSchema = new mongoose.Schema(
+const itemSchema = new mongoose.Schema(
     {
         name: { type: String },
         status: { type: String },
@@ -9,4 +9,4 @@ const itemsSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-module.exports = new mongoose.model('items', itemsSchema);
+module.exports = new mongoose.model('items', itemSchema);

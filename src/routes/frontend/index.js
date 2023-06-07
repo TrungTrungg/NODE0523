@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const homeRouter = require('./home');
+const homeRouter = require('./home_router');
 
 router.use('/', (req, res, next) => {
-    res.locals.layout = 'frontend/index';
+    res.locals.layout = 'frontend';
     next();
 });
 

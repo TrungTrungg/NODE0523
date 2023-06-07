@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const dashboardRouter = require('./dashboard');
-const itemRouter = require('./item');
+const dashboardRouter = require('./dashboard_router');
+const itemRouter = require('./item_router');
 
 router.use('/', (req, res, next) => {
-    res.locals.layout = 'backend/index';
+    res.locals.layout = 'backend';
     next();
 });
 

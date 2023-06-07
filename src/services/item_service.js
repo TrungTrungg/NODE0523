@@ -1,4 +1,4 @@
-const itemsModel = require('../models/items_model');
+const itemsModel = require('../models/item_model');
 
 const create = async (name, status, ordering) => {
     return await itemsModel.create({ name, status, ordering });
@@ -25,6 +25,7 @@ const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
         .sort({ updatedAt: -1, createdAt: -1 })
         .skip(itemPerPage * (currentPage - 1))
         .limit(itemPerPage);
+    return await itemsModel.find(condition).sort({ createdAt: -1 });
 };
 
 const countByStatus = async (status, keyword) => {

@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const itemService = require('../../services/items_service');
-const pageHelper = require('../../helpers/pagination_helper');
-const statusUtils = require('../../utils/status');
 const itemService = require('../../services/item_service');
 const statusUtils = require('../../utils/status');
 
@@ -44,7 +41,6 @@ router.get('(/status/:status)?', async (req, res, next) => {
     // console.log(pagination);
     // Lấy danh sách item
     const items = await itemService.getAll(currentStatus, keyword, pagination);
-    const items = await itemService.getAll(currentStatus, keyword);
 
     const options = {
         items,

@@ -4,6 +4,7 @@ const router = express.Router();
 const itemService = require('../../services/items_service');
 const pageHelper = require('../../helpers/pagination_helper');
 const statusUtils = require('../../utils/status');
+const statusUtils = require('../../utils/status');
 
 // Đỗ dữ liệu trang Item
 router.get('(/status/:status)?', async (req, res, next) => {
@@ -26,9 +27,9 @@ router.get('(/status/:status)?', async (req, res, next) => {
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: statusUtils.all, qty: await itemService.countByStatus() },
-        { name: statusUtils.acitve, qty: await itemService.countByStatus(statusUtils.active) },
-        { name: statusUtils.inactive, qty: await itemService.countByStatus(statusUtils.inactive) },
+        { name: statusUtils.all, qty: await itemsService.countByStatus() },
+        { name: statusUtils.acitve, qty: await itemsService.countByStatus(statusUtils.active) },
+        { name: statusUtils.inactive, qty: await itemsService.countByStatus(statusUtils.inactive) },
     ];
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
@@ -75,7 +76,25 @@ router.get('/delete/:id', async (req, res, next) => {
 // Sửa 1 Item
 router.post('/edit', async (req, res, next) => {
     const { id, name, status, ordering } = req.body;
-    const itemUpdated = await itemService.updateOneById(id, name, status, ordering);
+    const itemUpdated = await itemsService.updateOneById(id, name, status, ordering);
+    res.redirect('/admin/item');
+});
+
+// Chuyển hướng trang chỉnh sửa 1 Item
+router.get('/edit/:id', async (req, res, next) => {
+    const { id } = req.params;
+    const { name, status, ordering } = await itemsService.getOneById(id);
+    options = { id, name, status, ordering };
+    res.render('backend/pages/items/edit', options);
+});
+
+// Sửa status của 1 Item
+router.get('(/:id/:status)?', async (req, res, next) => {
+    const { id, status } = req.params;
+    let newStatus = '';
+    if (status === 'active') newStatus = 'inactive';
+    else newStatus = 'active';
+    await itemsService.changeStatusById(id, newStatus);
     res.redirect('/admin/item');
 });
 

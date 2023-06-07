@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const itemsService = require('../../services/items_service');
+const itemService = require('../../services/items_service');
 const pageHelper = require('../../helpers/pagination_helper');
+const statusUtils = require('../../utils/status');
 
 // Đỗ dữ liệu trang Item
 router.get('(/status/:status)?', async (req, res, next) => {
@@ -10,7 +11,10 @@ router.get('(/status/:status)?', async (req, res, next) => {
     const { search, page } = req.query;
 
     // Xử lý status
-    let currentStatus = status === 'all' || !status ? '' : status;
+    let currentStatus = status;
+    if (currentStatus !== undefined) {
+        currentStatus = status === statusUtils.all ? undefined : status;
+    }
 
     // Xử lý query
     let keyword = '';
@@ -22,9 +26,9 @@ router.get('(/status/:status)?', async (req, res, next) => {
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: 'all', qty: await itemsService.countByStatus() },
-        { name: 'active', qty: await itemsService.countByStatus('active') },
-        { name: 'inactive', qty: await itemsService.countByStatus('inactive') },
+        { name: statusUtils.all, qty: await itemService.countByStatus() },
+        { name: statusUtils.acitve, qty: await itemService.countByStatus(statusUtils.active) },
+        { name: statusUtils.inactive, qty: await itemService.countByStatus(statusUtils.inactive) },
     ];
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
@@ -37,7 +41,7 @@ router.get('(/status/:status)?', async (req, res, next) => {
     );
     // console.log(pagination);
     // Lấy danh sách item
-    const items = await itemsService.getAll(currentStatus, keyword, pagination);
+    const items = await itemService.getAll(currentStatus, keyword, pagination);
     const options = {
         items,
         filter,
@@ -57,22 +61,30 @@ router.get('/add', async (req, res, next) => {
 // Thêm 1 Item
 router.post('/', async (req, res, next) => {
     const { name, status, ordering } = req.body;
-    const newItem = await itemsService.create(name, status, ordering);
+    const newItem = await itemService.create(name, status, ordering);
     res.redirect('/admin/item');
 });
 
 // Xóa 1 Item
 router.get('/delete/:id', async (req, res, next) => {
     const { id } = req.params;
-    await itemsService.deleteOneById(id);
+    await itemService.deleteOneById(id);
     res.redirect('/admin/item');
 });
 
 // Sửa 1 Item
 router.post('/edit', async (req, res, next) => {
     const { id, name, status, ordering } = req.body;
-    const itemUpdated = await itemsService.updateOneById(id, name, status, ordering);
+    const itemUpdated = await itemService.updateOneById(id, name, status, ordering);
     res.redirect('/admin/item');
+});
+
+// Chuyển hướng trang chỉnh sửa 1 Item
+router.get('/edit/:id', async (req, res, next) => {
+    const { id } = req.params;
+    const { name, status, ordering } = await itemService.getOneById(id);
+    options = { id, name, status, ordering };
+    res.render('backend/pages/items/edit', options);
 });
 
 // Sửa status của 1 Item
@@ -89,16 +101,8 @@ router.get('(/:id/:status)?', async (req, res, next) => {
     if (status === 'active') newStatus = 'inactive';
     else newStatus = 'active';
 
-    await itemsService.changeStatusById(id, newStatus);
+    await itemService.changeStatusById(id, newStatus);
     res.redirect(`/admin/item${query}`);
-});
-
-// Chuyển hướng trang chỉnh sửa 1 Item
-router.get('/edit/:id', async (req, res, next) => {
-    const { id } = req.params;
-    const [{ name, status, ordering }] = await itemsService.getOneById(id);
-    options = { id, name, status, ordering };
-    res.render('backend/pages/items/edit', options);
 });
 
 module.exports = router;

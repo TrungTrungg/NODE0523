@@ -1,4 +1,4 @@
-const itemsModel = require('../models/items_model');
+const itemsModel = require('../models/item_model');
 
 const create = async (name, status, ordering) => {
     return await itemsModel.create({ name, status, ordering });
@@ -19,6 +19,7 @@ const updateOneById = async (id, name, status, ordering) => {
 const getAll = async (status, keyword) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
+    if (keyword) condition.name = new RegExp(keyword, 'i');
     return await itemsModel.find(condition).sort({ createdAt: -1 });
 };
 

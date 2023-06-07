@@ -8,13 +8,11 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
-
 const mongoose = require('mongoose');
 
 const router = require('@routes');
 
 const app = express();
-
 // connect mongodb
 const mongoDBUrl = 'mongodb+srv://xuantrung:xuantrung@cluster0.wppcclt.mongodb.net/';
 
@@ -41,6 +39,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// get url
+app.use((req, res, next) => {
+    app.locals.currentUrl = req.path;
+    next();
+});
+// router
 app.use('/', router);
 
 // catch 404 and forward to error handler

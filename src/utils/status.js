@@ -1,6 +1,6 @@
 const filterOptions = {
     all: 'All',
-    acitve: 'Active',
+    active: 'Active',
     inactive: 'Inactive',
 };
 module.exports = filterOptions;

@@ -25,7 +25,6 @@ const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
         .sort({ updatedAt: -1, createdAt: -1 })
         .skip(itemPerPage * (currentPage - 1))
         .limit(itemPerPage);
-    return await itemsModel.find(condition).sort({ createdAt: -1 });
 };
 
 const countByStatus = async (status, keyword) => {

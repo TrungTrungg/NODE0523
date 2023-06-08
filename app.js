@@ -6,8 +6,11 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const flash = require('connect-flash');
+const session = require('express-session');
+// const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
+
 const mongoose = require('mongoose');
 
 const router = require('@routes');
@@ -24,6 +27,17 @@ mongoose
     .catch((error) => {
         console.error('Lỗi kết nối đến MongoDB:', error);
     });
+
+// use express flash
+app.use(
+    session({
+        secret: 'abcz',
+        resave: false,
+        saveUninitialized: true,
+    }),
+);
+
+app.use(flash());
 
 // use express layout
 app.use(expressLayouts);

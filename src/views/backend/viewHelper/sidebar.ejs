@@ -34,18 +34,18 @@
             let menuOpen = 'menu-clock'
             let parentActive = ''
             let childActive = ''
+            
             if(sidebar.url === currentUrl) parentActive = 'active'
             if(sidebar.isParent) {
                 dropdownList = sidebar.child.map((dataChild) => {
-                    
-                    if(dataChild.url === currentUrl) {
-                        childActive = 'active'
+
+                    if(currentUrl.includes(dataChild.url)) {
                         parentActive = 'active'
                         menuOpen = 'menu-open'
                     }
-                    else {
-                        childActive = ''
-                    }
+                    if(dataChild.url === currentUrl) childActive = 'active'
+                    else childActive = ''
+
                     return (`
                         <li class="nav-item">
                             <a href="${dataChild.url}" class="nav-link ${childActive}">

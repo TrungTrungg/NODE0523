@@ -1,6 +1,9 @@
 const itemService = require('@services/item_service');
-const statusUtils = require('@utils/status');
+const statusUtils = require('@utils/status_util');
 const pageHelper = require('@helpers/pagination_helper');
+const notifyUtil = require('@utils/notify_util');
+const { resultsValidator } = require('@validators/item_validator');
+const { matchedData } = require('express-validator');
 
 // render list items, filter status, pagination
 const renderListItems = async (req, res, next) => {
@@ -39,12 +42,17 @@ const renderListItems = async (req, res, next) => {
     // Lấy danh sách item
     const items = await itemService.getAll(currentStatus, keyword, pagination);
 
+    const messages = {
+        success: req.flash('success'),
+        error: req.flash('error'),
+    };
     const options = {
         items,
         filter,
         currentStatus,
         pagination,
         keyword,
+        messages,
     };
 
     res.render('backend/pages/item', options);
@@ -52,20 +60,32 @@ const renderListItems = async (req, res, next) => {
 
 // render add item page
 const renderAddPage = (req, res, next) => {
-    res.render('backend/pages/item/item_add');
+    const messages = {
+        success: req.flash('success'),
+        error: req.flash('error'),
+    };
+    res.render('backend/pages/item/item_add', { messages });
 };
 
 // add item
 const addOne = async (req, res, next) => {
-    const { name, status, ordering } = req.body;
-    await itemService.create(name, status, ordering);
-    res.redirect('/admin/item');
+    const errors = resultsValidator(req);
+    if (errors.length > 0) {
+        req.flash('error', errors);
+        res.redirect('/admin/item/add');
+    } else {
+        const { name, status, ordering } = matchedData(req);
+        await itemService.create(name, status.toLowerCase(), ordering);
+        req.flash('success', notifyUtil.SUCCESS_ADD);
+        res.redirect('/admin/item');
+    }
 };
 
 // delete one item
 const deleteOne = async (req, res, next) => {
     const { id } = req.params;
     await itemService.deleteOneById(id);
+    req.flash('success', notifyUtil.SUCCESS_DELETE);
     res.redirect('/admin/item');
 };
 
@@ -73,15 +93,28 @@ const deleteOne = async (req, res, next) => {
 const renderEditPage = async (req, res, next) => {
     const { id } = req.params;
     const { name, status, ordering } = await itemService.getOneById(id);
-    options = { id, name, status, ordering };
-    res.render('backend/pages/items/edit', options);
+
+    const messages = {
+        success: req.flash('success'),
+        error: req.flash('error'),
+    };
+    const options = { id, name, status, ordering, messages };
+    res.render('backend/pages/item/item_edit', options);
 };
 
 // Edit item
 const editOne = async (req, res, next) => {
-    const { id, name, status, ordering } = req.body;
-    const itemUpdated = await itemService.updateOneById(id, name, status, ordering);
-    res.redirect('/admin/item');
+    const { id } = req.body;
+    const errors = resultsValidator(req);
+    if (errors.length > 0) {
+        req.flash('error', errors);
+        res.redirect(`/admin/item/edit/${id}`);
+    } else {
+        const { name, status, ordering } = matchedData(req);
+        await itemService.updateOneById(id, name, status.toLowerCase(), ordering);
+        req.flash('success', notifyUtil.SUCCESS_EDIT);
+        res.redirect('/admin/item');
+    }
 };
 
 // Change status of item
@@ -98,9 +131,8 @@ const changeStatus = async (req, res, next) => {
     if (newStatus === statusUtils.active.toLowerCase()) newStatus = statusUtils.inactive;
     else newStatus = statusUtils.active;
 
-    console.log(newStatus.toLowerCase());
-
     await itemService.changeStatusById(id, newStatus.toLowerCase());
+    req.flash('success', notifyUtil.SUCCESS_CHANGE_STATUS);
     res.redirect(`/admin/item${query}`);
 };
 

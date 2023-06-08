@@ -30,24 +30,24 @@
                         <div class="form-group">
                             <label for="itemName">Name</label>
                             <input name="name" value="<%= name %>" type="text" class="form-control" id="itemName" placeholder="Enter name"></div>
-                        <input type="hidden" name="id" value="<%= id %>">
-                        <div class="form-group">
-                            <label for="itemOrdering">Ordering</label>
-                            <input name="ordering" value="<%= ordering %>" type="number" class="form-control" id="itemOrdering"></div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select name="status" class="form-control select2 select2-hidden-accessible" style="width: 100%;">
-                                <option <%= status === "active" ? "selected" : " " %>>active</option>
-                                <option <%= status === "inactive" ? "selected" : " " %>>inactive</option>
-                            </select>
+                            <input type="hidden" name="id" value="<%= id %>">
+                                <div class="form-group">
+                                    <label for="itemOrdering">Ordering</label>
+                                    <input name="ordering" value="<%= ordering %>" type="number" class="form-control" id="itemOrdering"></div>
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select name="status" class="form-control select2 select2-hidden-accessible" style="width: 100%;">
+                                            <option <%= status === "active" ? "selected" : " " %>>Active</option>
+                                            <option <%= status === "inactive" ? "selected" : " " %>>Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a type="button" class="btn btn-secondary float-right" href="/admin/item">Cancel</a>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="cancel" class="btn btn-warning float-right">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+                </div>
+            </section>

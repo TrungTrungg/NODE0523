@@ -1,14 +1,15 @@
 <% if (typeof messages !== 'undefined') { %>
+
     <%
-if(messages.error.length > 0) {
-    const errorMessage = messages.error.map((error) => {
-        return(`
-                <li>
-                    <b>${error.path}:</b> ${error.msg}
-                </li>    
-        `)
-    }).join('')
-%>
+        if(messages.error.length > 0) {
+            const errorMessage = messages.error.map((error) => {
+                return(`
+                        <li>
+                            <b>${error.path}:</b> ${error.msg}
+                        </li>    
+                `)
+            }).join('')
+    %>
         <script>
             $(document).ready(() => {
                 let toastrMessage = `<ul><%- errorMessage %></ul>`
@@ -24,11 +25,11 @@ if(messages.error.length > 0) {
             });
         </script>
     <%
-}
-%>
+        }
+    %>
+
     <%
-    if(messages.success.length > 0) {
-         
+        if(messages.success.length > 0) {
     %>
         <script>
             $(document).ready(() => {
@@ -43,9 +44,9 @@ if(messages.error.length > 0) {
                 })
             });
         </script>
-    <%
-    }
-%>
+    <%  
+        }
+    %>
 <%
     }
 %>

@@ -1,26 +1,26 @@
-const itemsModel = require('../models/item_model');
+const { itemModel } = require('@models');
 
 const create = async (name, status, ordering) => {
-    return await itemsModel.create({ name, status, ordering });
+    return await itemModel.create({ name, status, ordering });
 };
 
 const deleteOneById = async (id) => {
-    return await itemsModel.deleteOne({ _id: id });
+    return await itemModel.deleteOne({ _id: id });
 };
 
 const getOneById = async (id) => {
-    return await itemsModel.findById(id);
+    return await itemModel.findById(id);
 };
 
 const updateOneById = async (id, name, status, ordering) => {
-    return await itemsModel.updateOne({ _id: id }, { name, status, ordering });
+    return await itemModel.updateOne({ _id: id }, { name, status, ordering });
 };
 
 const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
     if (keyword) condition.name = new RegExp(keyword, 'i');
-    return await itemsModel
+    return await itemModel
         .find(condition)
         .sort({ updatedAt: -1, createdAt: -1 })
         .skip(itemPerPage * (currentPage - 1))
@@ -31,11 +31,11 @@ const countByStatus = async (status, keyword) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
     if (keyword) condition.name = new RegExp(keyword, 'i');
-    return await itemsModel.count(condition);
+    return await itemModel.count(condition);
 };
 
 const changeStatusById = async (id, status) => {
-    return await itemsModel.updateOne({ _id: id }, { status });
+    return await itemModel.updateOne({ _id: id }, { status });
 };
 
 module.exports = {

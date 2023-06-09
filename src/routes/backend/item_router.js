@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { formCheck } = require('@validators/item_validator');
-const itemController = require('@controllers/item_controller');
+const { formCheck } = require('@validators');
+const { itemController } = require('@controllers');
+
 // Đỗ dữ liệu trang Item
 router.get('(/status/:status)?', itemController.renderListItems);
 

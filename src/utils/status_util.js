@@ -3,4 +3,6 @@ const filterOptions = {
     active: 'Active',
     inactive: 'Inactive',
 };
-module.exports = filterOptions;
+module.exports = {
+    filterOptions,
+};

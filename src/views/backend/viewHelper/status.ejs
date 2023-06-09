@@ -1,5 +1,5 @@
 <%
-    showFilter = (filter, currentStatus, keyword) => {
+    showFilter = (filter,statusFilterOptions, currentStatus, keyword) => {
         let query = ''
         if(keyword) 
             query = `?search=${keyword}`
@@ -7,11 +7,11 @@
         xHtmlFilter = filter.map((status,index) => {
             let color = ''
             let isActive = ''
-            switch (status.name.toLowerCase()) {
-                case 'active':
+            switch (status.name) {
+                case statusFilterOptions.active:
                     color = 'success'
                     break;
-                case 'inactive':
+                case statusFilterOptions.inactive:
                     color = 'danger'
                     break;
                 default:
@@ -19,7 +19,7 @@
                     break;
             }
             if(status.name === currentStatus) isActive = 'active'
-            if(currentStatus === undefined && status.name.toLowerCase() === 'all') isActive = 'active'
+            if(currentStatus === undefined && status.name === statusFilterOptions.all) isActive = 'active'
             
             return(`
                 <a 

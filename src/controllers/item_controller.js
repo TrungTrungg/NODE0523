@@ -1,9 +1,9 @@
-const itemService = require('@services/item_service');
-const statusUtils = require('@utils/status_util');
-const pageHelper = require('@helpers/pagination_helper');
-const notifyUtil = require('@utils/notify_util');
-const { resultsValidator } = require('@validators/item_validator');
 const { matchedData } = require('express-validator');
+
+const { itemService } = require('@services');
+const { filterOptions, notify } = require('@utils');
+const { handlePagination } = require('@helpers');
+const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
 const renderListItems = async (req, res, next) => {
@@ -13,7 +13,7 @@ const renderListItems = async (req, res, next) => {
     // Xử lý status
     let currentStatus = status;
     if (currentStatus !== undefined) {
-        currentStatus = status === statusUtils.all ? undefined : status;
+        currentStatus = status === filterOptions.all ? undefined : status;
     }
 
     // Xử lý query
@@ -26,19 +26,19 @@ const renderListItems = async (req, res, next) => {
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: statusUtils.all, qty: await itemService.countByStatus() },
-        { name: statusUtils.active, qty: await itemService.countByStatus(statusUtils.active) },
-        { name: statusUtils.inactive, qty: await itemService.countByStatus(statusUtils.inactive) },
+        { name: filterOptions.all, qty: await itemService.countByStatus() },
+        { name: filterOptions.active, qty: await itemService.countByStatus(filterOptions.active) },
+        { name: filterOptions.inactive, qty: await itemService.countByStatus(filterOptions.inactive) },
     ];
 
+    const statusFilterOptions = {
+        all: filterOptions.all,
+        active: filterOptions.active,
+        inactive: filterOptions.inactive,
+    };
+
     // Pagination, Params: currentPage, itemsPerPage, pageRange
-    const pagination = await pageHelper.handlePagination(
-        keyword,
-        currentStatus,
-        currentPage,
-        (itemsPerPage = 3),
-        (pageRange = 3),
-    );
+    const pagination = await handlePagination(keyword, currentStatus, currentPage, (itemsPerPage = 3), (pageRange = 3));
     // Lấy danh sách item
     const items = await itemService.getAll(currentStatus, keyword, pagination);
 
@@ -49,6 +49,7 @@ const renderListItems = async (req, res, next) => {
     const options = {
         items,
         filter,
+        statusFilterOptions,
         currentStatus,
         pagination,
         keyword,
@@ -76,7 +77,7 @@ const addOne = async (req, res, next) => {
     } else {
         const { name, status, ordering } = matchedData(req);
         await itemService.create(name, status.toLowerCase(), ordering);
-        req.flash('success', notifyUtil.SUCCESS_ADD);
+        req.flash('success', notify.SUCCESS_ADD);
         res.redirect('/admin/item');
     }
 };
@@ -85,7 +86,7 @@ const addOne = async (req, res, next) => {
 const deleteOne = async (req, res, next) => {
     const { id } = req.params;
     await itemService.deleteOneById(id);
-    req.flash('success', notifyUtil.SUCCESS_DELETE);
+    req.flash('success', notify.SUCCESS_DELETE);
     res.redirect('/admin/item');
 };
 
@@ -112,7 +113,7 @@ const editOne = async (req, res, next) => {
     } else {
         const { name, status, ordering } = matchedData(req);
         await itemService.updateOneById(id, name, status.toLowerCase(), ordering);
-        req.flash('success', notifyUtil.SUCCESS_EDIT);
+        req.flash('success', notify.SUCCESS_EDIT);
         res.redirect('/admin/item');
     }
 };
@@ -128,11 +129,11 @@ const changeStatus = async (req, res, next) => {
 
     // handle change status
     let newStatus = status;
-    if (newStatus === statusUtils.active.toLowerCase()) newStatus = statusUtils.inactive;
-    else newStatus = statusUtils.active;
+    if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
+    else newStatus = filterOptions.active;
 
     await itemService.changeStatusById(id, newStatus.toLowerCase());
-    req.flash('success', notifyUtil.SUCCESS_CHANGE_STATUS);
+    req.flash('success', notify.SUCCESS_CHANGE_STATUS);
     res.redirect(`/admin/item${query}`);
 };
 

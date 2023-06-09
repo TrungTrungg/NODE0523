@@ -1,26 +1,25 @@
 const util = require('node:util');
-
 const { body, validationResult } = require('express-validator');
-const { itemValidator } = require('@utils/item_util');
-const notifyUtil = require('@utils/notify_util');
+
+const { itemValidator, notify } = require('@utils');
 
 const formCheck = [
     body('name')
         .notEmpty()
-        .withMessage(notifyUtil.ERROR_NAME_EMPTY)
+        .withMessage(notify.ERROR_NAME_EMPTY)
         .bail()
         .isLength({ max: itemValidator.name.length.max })
-        .withMessage(notifyUtil.ERROR_NAME_LENGTH),
+        .withMessage(notify.ERROR_NAME_LENGTH),
     body('ordering')
         .notEmpty()
-        .withMessage(notifyUtil.ERROR_ORDERING_EMPTY)
+        .withMessage(notify.ERROR_ORDERING_EMPTY)
         .bail()
         .isNumeric()
-        .withMessage(notifyUtil.ERROR_ORDERING_VALUE)
+        .withMessage(notify.ERROR_ORDERING_VALUE)
         .bail()
         .isInt({ min: itemValidator.ordering.length.min, max: itemValidator.ordering.length.max })
-        .withMessage(notifyUtil.ERROR_ORDERING_LENGTH),
-    body('status').notEmpty().withMessage(notifyUtil.ERROR_STATUS_EMPTY),
+        .withMessage(notify.ERROR_ORDERING_LENGTH),
+    body('status').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY),
 ];
 
 const resultsValidator = (req) => {

@@ -1,4 +1,4 @@
-const itemService = require('@services/item_service');
+const { itemService } = require('@services');
 
 const handlePagination = async (keyword, currentStatus, currentPage, itemPerPage, pageRange) => {
     const totalItems = await itemService.countByStatus(currentStatus, keyword);

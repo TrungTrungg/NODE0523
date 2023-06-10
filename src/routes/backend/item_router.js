@@ -23,6 +23,11 @@ router.get('/edit/:id', itemController.renderEditPage);
 router.post('/edit', formCheck, itemController.editOne);
 
 // Sửa status của 1 Item
-router.get('(/:id/:status)?', itemController.changeStatus);
+// router.get('(/:id/:status)?', itemController.changeStatus);
+
+router.get('/changeStatusAjax/:id/:status', itemController.changeStatusAjax);
+
+// Sửa ordering của 1 Item
+router.get('/changeOrderingAjax/:id/:ordering', itemController.changeOrderingAjax);
 
 module.exports = router;

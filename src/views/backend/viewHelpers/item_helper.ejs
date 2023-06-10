@@ -1,30 +1,24 @@
+<% include ./name_helper %>
+<% include ./status_helper %>
+<% include ./ordering_helper %>
+
 <%
      showListItems = (items, currentStatus, keyword, {currentPage}) => {
         let query = `?page=${currentPage}`
         if(keyword) 
             query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
-            let url = `${item._id}/${item.status}${query}`
-            let buttColor = item.status === 'active' ? 'success' : 'danger'
-            if(keyword) {
-                const regex = new RegExp(keyword, "gi");
-                item.name = item.name.replace(regex, (search) => {
-                   return `<span class="text-red">${search}</span>`
-                })
-            }
+            const nameXHtml = handleName(item.name, keyword)
+            const statusXHtml = handleStatus(item.status, item.id, query)
+            const orderingXHtml = handleOrdering(item.ordering, item.id)
+           
             return  (`
                         <tr>
                             <td><input type="checkbox" class="checkbox"/></td>
                             <td>${index+=1}</td>
-                            <td>${item.name}</td>
-                            <td>    
-                                <a 
-                                    type="button" 
-                                    class="btn btn-${buttColor} status-button"
-                                    href="javascript:handleClick('${item.id}', '${item.status}', '${query}')"
-                                    >${item.status}</a>
-                            </td>
-                            <td><input type="number" value="${item.ordering}" class="ordering"/></td>
+                            <td>${nameXHtml}</td>
+                            <td id="status-${item.id}">${statusXHtml}</td>
+                            <td id="ordering-${item.id}">${orderingXHtml}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                     <a type="button" class="btn btn-primary" href="/admin/item/edit/${item._id}">Edit</a>

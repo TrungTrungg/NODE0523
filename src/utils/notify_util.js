@@ -9,4 +9,5 @@ module.exports = {
     SUCCESS_EDIT: `Successfully edit item`,
     SUCCESS_DELETE: `Successfully delete item`,
     SUCCESS_CHANGE_STATUS: `successful status change`,
+    SUCCESS_CHANGE_ORDERING: `successful ordering change`,
 };

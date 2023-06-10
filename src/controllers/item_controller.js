@@ -26,9 +26,9 @@ const renderListItems = async (req, res, next) => {
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: filterOptions.all, qty: await itemService.countByStatus() },
-        { name: filterOptions.active, qty: await itemService.countByStatus(filterOptions.active) },
-        { name: filterOptions.inactive, qty: await itemService.countByStatus(filterOptions.inactive) },
+        { name: filterOptions.all, qty: await itemService.countByStatus('', keyword) },
+        { name: filterOptions.active, qty: await itemService.countByStatus(filterOptions.active, keyword) },
+        { name: filterOptions.inactive, qty: await itemService.countByStatus(filterOptions.inactive, keyword) },
     ];
 
     const statusFilterOptions = {
@@ -137,6 +137,52 @@ const changeStatus = async (req, res, next) => {
     res.redirect(`/admin/item${query}`);
 };
 
+const changeStatusAjax = async (req, res, next) => {
+    const { id, status } = req.params;
+    const { search } = req.query;
+    let keyword = '';
+    if (search) keyword = !search.trim() ? '' : search.trim();
+    // handle change status
+    let newStatus = status;
+    if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
+    else newStatus = filterOptions.active;
+
+    await itemService.changeStatusById(id, newStatus.toLowerCase());
+    const allStatus = {
+        name: filterOptions.all,
+        count: await itemService.countByStatus('', keyword),
+    };
+
+    const activeStatus = {
+        name: filterOptions.active,
+        count: await itemService.countByStatus(filterOptions.active, keyword),
+    };
+
+    const inactiveStatus = {
+        name: filterOptions.inactive,
+        count: await itemService.countByStatus(filterOptions.inactive, keyword),
+    };
+    res.send({
+        success: true,
+        message: notify.SUCCESS_CHANGE_STATUS,
+        status: newStatus.toLowerCase(),
+        filter: { allStatus, activeStatus, inactiveStatus },
+    });
+};
+
+const changeOrderingAjax = async (req, res, next) => {
+    const { id, ordering } = req.params;
+    if (isNaN(ordering)) {
+        res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
+    } else {
+        // handle change status
+        let newOrdering = parseInt(ordering);
+
+        await itemService.changeOrderingById(id, newOrdering);
+        res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering: newOrdering });
+    }
+};
+
 module.exports = {
     renderListItems,
     renderAddPage,
@@ -145,4 +191,6 @@ module.exports = {
     renderEditPage,
     editOne,
     changeStatus,
+    changeStatusAjax,
+    changeOrderingAjax,
 };

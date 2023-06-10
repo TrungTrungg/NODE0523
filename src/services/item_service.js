@@ -38,6 +38,10 @@ const changeStatusById = async (id, status) => {
     return await itemModel.updateOne({ _id: id }, { status });
 };
 
+const changeOrderingById = async (id, ordering) => {
+    return await itemModel.updateOne({ _id: id }, { ordering });
+};
+
 module.exports = {
     create,
     deleteOneById,
@@ -46,4 +50,5 @@ module.exports = {
     updateOneById,
     countByStatus,
     changeStatusById,
+    changeOrderingById,
 };

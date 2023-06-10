@@ -13,7 +13,6 @@
         <script>
             $(document).ready(() => {
                 let toastrMessage = `<ul><%- errorMessage %></ul>`
-                console.log(toastrMessage);
                 toastr.error(toastrMessage, 'ERROR', {
                     newestOnTop: true,
                     closeButton: false,

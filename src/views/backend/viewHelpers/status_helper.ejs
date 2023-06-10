@@ -22,13 +22,26 @@
             if(currentStatus === undefined && status.name === statusFilterOptions.all) isActive = 'active'
             
             return(`
-                <a 
+                <a  id="status-${status.name.toLowerCase()}"
                     type="button" 
                     class="btn btn-outline-${color} ${isActive}"
-                    href="/admin/item/status/${status.name}"
+                    href="/admin/item/status/${status.name}${query}"
                 >${status.name} (${status.qty})</a>
             `)
         }).join('') 
         return xHtmlFilter
+    }
+
+    handleStatus = (status, id, query) => {
+        let buttColor = status === 'active' ? 'success' : 'danger'
+        return(`
+            <a 
+                type="button" 
+                class="btn btn-${buttColor}"
+                href="javascript:handleStatusClick('${id}', '${status}', '${query}')"
+            >
+                ${status}
+            </a>
+        `)
     }
 %>

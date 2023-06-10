@@ -1,0 +1,13 @@
+<%
+    handleOrdering = (ordering, id) => {
+        return(`
+            <input 
+                onChange="javascript:handleOrderingChange('${id}')"
+                type="number" 
+                value="${ordering}" 
+                class="ordering"    
+            />
+        `)
+    }
+
+%>

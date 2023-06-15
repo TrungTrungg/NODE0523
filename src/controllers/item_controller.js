@@ -41,7 +41,7 @@ const renderListItems = async (req, res, next) => {
     const pagination = await handlePagination(keyword, currentStatus, currentPage, (itemsPerPage = 3), (pageRange = 3));
     // Lấy danh sách item
     const items = await itemService.getAll(currentStatus, keyword, pagination);
-
+    console.log(items);
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -75,8 +75,15 @@ const addOne = async (req, res, next) => {
         req.flash('error', errors);
         res.redirect('/admin/item/add');
     } else {
+        let image = '';
+        if (req.file) image = req.file.filename;
+
         const { name, status, ordering } = matchedData(req);
-        await itemService.create(name, status.toLowerCase(), ordering);
+        const slug = name
+            .replace(/[^\w\s-]/gi, '')
+            .replace(/\s+/gi, '-')
+            .trim();
+        await itemService.create(name, status.toLowerCase(), ordering, slug, image);
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect('/admin/item');
     }
@@ -93,13 +100,13 @@ const deleteOne = async (req, res, next) => {
 // render Edit item page
 const renderEditPage = async (req, res, next) => {
     const { id } = req.params;
-    const { name, status, ordering } = await itemService.getOneById(id);
+    const { name, status, ordering, image } = await itemService.getOneById(id);
 
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const options = { id, name, status, ordering, messages };
+    const options = { id, name, status, ordering, image, messages };
     res.render('backend/pages/item/item_edit', options);
 };
 
@@ -111,8 +118,14 @@ const editOne = async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/item/edit/${id}`);
     } else {
+        let image = '';
+        if (req.file) image = req.file.filename;
         const { name, status, ordering } = matchedData(req);
-        await itemService.updateOneById(id, name, status.toLowerCase(), ordering);
+        const slug = name
+            .replace(/[^\w\s-]/gi, '')
+            .replace(/\s+/gi, '-')
+            .trim();
+        await itemService.updateOneById(id, name, status.toLowerCase(), ordering, slug, image);
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect('/admin/item');
     }

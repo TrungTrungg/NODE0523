@@ -40,14 +40,21 @@
                                             <option <%= status === "active" ? "selected" : " " %>>Active</option>
                                             <option <%= status === "inactive" ? "selected" : " " %>>Inactive</option>
                                         </select>
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="add-image">Image</label>
+                                            <input type="file" onchange="javascript:handleShowImage()" id="add-image" name="image"></div>
+                                            <div class="form-group">
+                                                <img src="/backend/uploads/<%= image %>" alt="" id="show-image"></div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-secondary">Submit</button>
+                                            <a type="button" class="btn btn-secondary float-right" href="/admin/item">Cancel</a>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <a type="button" class="btn btn-secondary float-right" href="/admin/item">Cancel</a>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+                    </section>

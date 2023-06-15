@@ -1,7 +1,7 @@
 const { itemModel } = require('@models');
 
-const create = async (name, status, ordering) => {
-    return await itemModel.create({ name, status, ordering });
+const create = async (name, status, ordering, slug, image) => {
+    return await itemModel.create({ name, status, ordering, slug, image });
 };
 
 const deleteOneById = async (id) => {
@@ -12,8 +12,10 @@ const getOneById = async (id) => {
     return await itemModel.findById(id);
 };
 
-const updateOneById = async (id, name, status, ordering) => {
-    return await itemModel.updateOne({ _id: id }, { name, status, ordering });
+const updateOneById = async (id, name, status, ordering, slug, image) => {
+    const condition = { id, name, status, ordering, slug };
+    if (image) condition.image = image;
+    return await itemModel.updateOne({ _id: id }, condition);
 };
 
 const getAll = async (status, keyword, { currentPage, itemPerPage }) => {

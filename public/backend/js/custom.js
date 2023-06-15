@@ -90,3 +90,35 @@ const handleOrderingChange = (id) => {
         },
     });
 };
+
+const handleDelete = (id) => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.pathname = `admin/item/delete/${id}`;
+        }
+    });
+};
+
+const handleShowImage = () => {
+    const inputDOM = $('#add-image');
+    const imageDOM = $('#show-image');
+    const file = inputDOM.prop('files')[0];
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const imageSrc = event.target.result;
+            imageDOM.prop('src', imageSrc);
+        };
+
+        reader.readAsDataURL(file);
+    }
+};

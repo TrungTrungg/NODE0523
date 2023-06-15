@@ -1,3 +1,4 @@
+<% include ./image_helper %>
 <% include ./name_helper %>
 <% include ./status_helper %>
 <% include ./ordering_helper %>
@@ -8,21 +9,23 @@
         if(keyword) 
             query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
-            const nameXHtml = handleName(item.name, keyword)
-            const statusXHtml = handleStatus(item.status, item.id, query)
+            const imageXHtml    = handleImage(item.image)
+            const nameXHtml     = handleName(item.name, keyword)
+            const statusXHtml   = handleStatus(item.status, item.id, query)
             const orderingXHtml = handleOrdering(item.ordering, item.id)
            
             return  (`
                         <tr>
                             <td><input type="checkbox" class="checkbox"/></td>
                             <td>${index+=1}</td>
+                            <td class="d-flex justify-content-center">${imageXHtml}</td>
                             <td>${nameXHtml}</td>
                             <td id="status-${item.id}">${statusXHtml}</td>
                             <td id="ordering-${item.id}">${orderingXHtml}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                     <a type="button" class="btn btn-primary" href="/admin/item/edit/${item._id}">Edit</a>
-                                    <a type="button" class="btn btn-danger"  href="/admin/item/delete/${item._id}">Delete</a>
+                                    <a type="button" class="btn btn-danger" onclick="javascript:handleDelete('${item._id}')">Delete</a>
                                 </div>
                             </td>
                         </tr>

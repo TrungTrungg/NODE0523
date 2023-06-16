@@ -1,7 +1,11 @@
 const { itemModel } = require('@models');
 
-const create = async (name, status, ordering, slug, image) => {
-    return await itemModel.create({ name, status, ordering, slug, image });
+const create = async (name, status, ordering, slug, image, category_id) => {
+    const condition = { name, status, ordering };
+    if (slug) condition.slug = slug;
+    if (image) condition.image = image;
+    if (category_id) condition.category_id = category_id;
+    return await itemModel.create(condition);
 };
 
 const deleteOneById = async (id) => {
@@ -44,6 +48,10 @@ const changeOrderingById = async (id, ordering) => {
     return await itemModel.updateOne({ _id: id }, { ordering });
 };
 
+const getItemByCateId = async (id) => {
+    return await itemModel.find({ category_id: id });
+};
+
 module.exports = {
     create,
     deleteOneById,
@@ -53,4 +61,5 @@ module.exports = {
     countByStatus,
     changeStatusById,
     changeOrderingById,
+    getItemByCateId,
 };

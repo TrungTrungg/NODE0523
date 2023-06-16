@@ -79,11 +79,13 @@ const addOne = async (req, res, next) => {
         if (req.file) image = req.file.filename;
 
         const { name, status, ordering } = matchedData(req);
+        const { categoryId } = req.body;
+        if (categoryId) categoryId;
         const slug = name
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await itemService.create(name, status.toLowerCase(), ordering, slug, image);
+        await itemService.create(name, status.toLowerCase(), ordering, slug, image, categoryId);
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect('/admin/item');
     }

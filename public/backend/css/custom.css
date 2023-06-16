@@ -1,7 +1,10 @@
 table th, td {
     text-align: center;
 }
+tr td {
+    vertical-align: middle !important;
 
+}
 .ordering {
     text-align: center;
 }

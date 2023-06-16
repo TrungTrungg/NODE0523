@@ -1,7 +1,6 @@
 <%
     handleImage = (image) => {
-        return image ? `<img class="img-thumbnail img-md" src="/backend/uploads/${image}" alt="" id="show-image">` : 
-                        `<img class="img-thumbnail img-md" src="/backend/uploads/no-image.png" alt="" id="show-image">`
+        return`<img class="img-thumbnail img-md" src="/backend/uploads/${image ? image : 'no-image.png'}" alt="" id="show-image">`
     }
 
 %>

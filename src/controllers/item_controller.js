@@ -41,12 +41,12 @@ const renderListItems = async (req, res, next) => {
     const pagination = await handlePagination(keyword, currentStatus, currentPage, (itemsPerPage = 3), (pageRange = 3));
     // Lấy danh sách item
     const items = await itemService.getAll(currentStatus, keyword, pagination);
-    console.log(items);
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
     const options = {
+        page: 'Item',
         items,
         filter,
         statusFilterOptions,
@@ -65,7 +65,7 @@ const renderAddPage = (req, res, next) => {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    res.render('backend/pages/item/item_add', { messages });
+    res.render('backend/pages/item/item_add', { messages, page: 'Add' });
 };
 
 // add item
@@ -106,7 +106,7 @@ const renderEditPage = async (req, res, next) => {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const options = { id, name, status, ordering, image, messages };
+    const options = { page: 'Item', id, name, status, ordering, image, messages };
     res.render('backend/pages/item/item_edit', options);
 };
 

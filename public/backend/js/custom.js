@@ -65,7 +65,6 @@ const handleOrderingChange = (id) => {
         dataType: 'json',
         success: (data) => {
             if (data.success) {
-                console.log(data.ordering);
                 let toastrMessage = data.message;
 
                 orderingDOM.find('input').val(data.ordering);
@@ -113,7 +112,6 @@ const handleShowImage = () => {
     const file = inputDOM.prop('files')[0];
     if (file) {
         const reader = new FileReader();
-
         reader.onload = function (event) {
             const imageSrc = event.target.result;
             imageDOM.prop('src', imageSrc);

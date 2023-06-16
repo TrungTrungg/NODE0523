@@ -1,60 +1,14 @@
 <!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Form</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item">
-                        <a href="#">Item</a>
-                    </li>
-                    <li class="breadcrumb-item active">Form</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
-</section>
+<% include ../../viewHelpers/form_helper %>
+<% include ../../components/PageHeader %>
 <section class="content">
     <div class="container-fluid">
         <div class="col-md-12">
             <div class="card card-dark">
                 <div class="card-header">
                     <h3 class="card-title">Form</h3>
-
                 </div>
-                <form method="POST" action="/admin/item" enctype="multipart/form-data">
-                    <div class=" card-body">
-                        <div class="form-group">
-                            <label for="itemName">Name</label>
-                            <input name="name" type="text" class="form-control" id="itemName" placeholder="Enter name"></div>
-                        <div class="form-group">
-                            <label for="itemOrdering">Ordering</label>
-                            <input name="ordering" type="number" class="form-control" id="itemOrdering"></div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select name="status" class="form-control select2 select2-hidden-accessible" style="width: 100%;">
-                                <option selected="selected" value="">Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-image">Image</label>
-                            <input type="file" onchange="javascript:handleShowImage()" id="add-image" name="image">
-                        </div>
-                        <div class="form-group">
-                            <img src="" alt="" id="show-image">
-                        </div>
-
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-secondary">Submit</button>
-                        <a type="button" class="btn btn-secondary float-right" href="/admin/item">Cancel</a>
-                    </div>
-                </form>
+                <%- showForm('POST', '/admin/item', 'multipart/form-data') %>
             </div>
         </div>
     </div>

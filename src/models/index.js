@@ -1,7 +1,9 @@
 const itemModel = require('@models/item_model');
-const cateModel = require('@models/category_model');
+const categoryModel = require('@models/category_model');
+const articleModel = require('@models/article_model');
 
 module.exports = {
     itemModel,
-    cateModel,
+    categoryModel,
+    articleModel,
 };

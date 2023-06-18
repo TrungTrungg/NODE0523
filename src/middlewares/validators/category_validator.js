@@ -1,15 +1,15 @@
 const { body } = require('express-validator');
 
-const { itemValidator: validator, notify } = require('@utils');
+const { categoryValidator: validator, notify } = require('@utils');
 
-const nameItem = body('name')
+const nameCategory = body('name')
     .notEmpty()
     .withMessage(notify.ERROR_NAME_EMPTY)
     .bail()
     .isLength({ max: validator.name.length.max })
     .withMessage(notify.ERROR_NAME_LENGTH);
 
-const orderingItem = body('ordering')
+const orderingCategory = body('ordering')
     .notEmpty()
     .withMessage(notify.ERROR_ORDERING_EMPTY)
     .bail()
@@ -18,10 +18,10 @@ const orderingItem = body('ordering')
     .bail()
     .isInt({ min: validator.ordering.length.min, max: validator.ordering.length.max })
     .withMessage(notify.ERROR_ORDERING_LENGTH);
-const statusItem = body('status').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+const statusCategory = body('status').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
 
 module.exports = {
-    nameItem,
-    orderingItem,
-    statusItem,
+    nameCategory,
+    orderingCategory,
+    statusCategory,
 };

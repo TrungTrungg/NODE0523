@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
-const { nameItem: nameCheck, orderingItem: orderingCheck, statusItem: statusCheck } = require('@validators');
-const { itemController: controller } = require('@controllers');
+const { nameArticle: nameCheck, orderingArticle: orderingCheck, statusArticle: statusCheck } = require('@validators');
+const { articleController: controller } = require('@controllers');
 const upload = multer({ dest: './public/backend/uploads' });
 
 // Đỗ dữ liệu trang Item

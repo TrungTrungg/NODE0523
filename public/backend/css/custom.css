@@ -1,3 +1,6 @@
+*{
+    box-sizing: border-box;
+}
 table th, td {
     text-align: center;
 }

@@ -1,12 +1,14 @@
 <%
-    handleOrdering = (ordering, id) => {
+    handleOrdering = (collection, ordering, id) => {
         return(`
-            <input 
-                onChange="javascript:handleOrderingChange('${id}')"
-                type="number" 
-                value="${ordering}" 
-                class="ordering"    
-            />
+            <td id="status-${id}">
+                <input 
+                    onChange="javascript:handleOrderingChange('${collection}','${id}')"
+                    type="number" 
+                    value="${ordering}" 
+                    class="ordering"    
+                />
+            </td>
         `)
     }
 

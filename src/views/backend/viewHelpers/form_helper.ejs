@@ -1,5 +1,26 @@
+<% include ./image_helper %>
+<% include ./select_helper %>
+
 <%
-    showForm = (method, action, enctype, id, name, ordering, status, image) => {
+    const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
+    showForm = (collection, method, action, enctype, id, name, ordering, status, image, category_id) => {
+        let imageXHtml = ''
+        let categoryXHtml = ''
+        let statusXHtml = showSelectBox('','status', statusArr, status, '100')
+        switch (collection) {
+            case 'item':
+                imageXHtml = showUploadImage(image)
+                break;
+            case 'category':
+                categoryXHtml = showSelectBox(collection, 'category_id', categories, category_id, '100')
+                imageXHtml = ''
+                break;
+            case 'article':
+                imageXHtml = showUploadImage(image)
+                break;
+            default:
+                break;
+        }
         return(`
             <form method="${method}" action="${action}" enctype="${enctype}">
                 <div class="card-body">
@@ -13,37 +34,17 @@
                         <input name="ordering" value="${ordering ? ordering : ''}" type="number" class="form-control" id="itemOrdering">
                     </div>
                     <div class="form-group">
-                        <label>Status</label>
-                        <select name="status" class="form-control" style="width: 100%;">
-                            ${status ? `<option ${status === "active" ? "selected" : " "}>Active</option>
-                                        <option ${status === "inactive" ? "selected" : " "}>Inactive</option>` : 
-                                        `<option selected="selected" value="">Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>`}
-                           
-                        </select>
+                        ${statusXHtml}
                     </div>
-                    <div class="form-group">
-                        <label>Image</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Upload</span>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" id="add-image" class="custom-file-input" onchange="javascript:handleShowImage()" name="image">
-                                <label class="custom-file-label" for="add-image">Choose file</label>
-                            </div>
-                        </div>
+                    <div class="form-group row">
+                        ${categoryXHtml}
                     </div>
-                    <div class="form-group">
-                        <img src="${image ? '/backend/uploads/'+image : ''}" alt="" id="show-image">
-                    </div>
+                        ${imageXHtml}
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-secondary">Submit</button>
-                    <a type="button" class="btn btn-secondary float-right" href="/admin/item">Cancel</a>
+                    <a type="button" class="btn btn-secondary float-right" href="/admin/${collection}">Cancel</a>
                 </div>
-            </form>
-        `)
-    }
-%>
+            </form>`)
+        }
+    %>

@@ -1,10 +1,10 @@
 <%
-    showFilter = (filter,statusFilterOptions, currentStatus, keyword) => {
+    showFilter = (collection, filter,statusFilterOptions, currentStatus, keyword) => {
         let query = ''
         if(keyword) 
             query = `?search=${keyword}`
        
-        xHtmlFilter = filter.map((status,index) => {
+        const xHtmlFilter = filter.map((status,index) => {
             let color = ''
             let isActive = ''
             switch (status.name) {
@@ -25,23 +25,25 @@
                 <a  id="status-${status.name.toLowerCase()}"
                     type="button" 
                     class="btn btn-outline-${color} ${isActive}"
-                    href="/admin/item/status/${status.name}${query}"
+                    href="/admin/${collection}/status/${status.name}${query}"
                 >${status.name} (${status.qty})</a>
             `)
         }).join('') 
         return xHtmlFilter
     }
 
-    handleStatus = (status, id, query) => {
+    handleStatus = (collection, status, id, query) => {
         let buttColor = status === 'active' ? 'success' : 'danger'
         return(`
-            <a 
-                type="button" 
-                class="btn btn-${buttColor}"
-                href="javascript:handleStatusClick('${id}', '${status}', '${query}')"
-            >
-                ${status}
-            </a>
+            <td id="status-${id}">
+                <a 
+                    type="button" 
+                    class="btn btn-${buttColor}"
+                    href="javascript:handleStatusClick('${collection}','${id}', '${status}', '${query}')"
+                >
+                    ${status}
+                </a>
+            </td>
         `)
     }
 %>

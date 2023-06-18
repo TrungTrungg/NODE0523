@@ -1,7 +1,7 @@
 const { matchedData } = require('express-validator');
 
-const { itemService: service } = require('@services');
-const { filterOptions, notify, itemCollection: collection } = require('@utils');
+const { articleService: service } = require('@services');
+const { filterOptions, notify, articleCollection: collection } = require('@utils');
 const { handlePagination } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
@@ -115,8 +115,8 @@ const renderEditPage = async (req, res, next) => {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const options = { page: 'Item', collection, id, name, status, ordering, image, messages };
-    res.render(`backend/pages/${collection}/${collection}_edit`, options);
+    const options = { page: 'Item', id, name, status, ordering, image, messages };
+    res.render(`backend/pages/${collection}/item_edit`, options);
 };
 
 // Edit item
@@ -157,7 +157,7 @@ const changeStatus = async (req, res, next) => {
 
     await service.changeStatusById(id, newStatus.toLowerCase());
     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
-    res.redirect(`/admin/${collection}${query}`);
+    res.redirect(`/admin/item${query}`);
 };
 
 const changeStatusAjax = async (req, res, next) => {

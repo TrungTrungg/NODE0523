@@ -1,7 +1,9 @@
 const itemService = require('@services/item_service');
-const cateService = require('@services/cate_service');
+const categoryService = require('@services/category_service');
+const articleService = require('@services/article_service');
 
 module.exports = {
     itemService,
-    cateService,
+    categoryService,
+    articleService,
 };

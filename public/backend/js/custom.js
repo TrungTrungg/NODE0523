@@ -1,15 +1,15 @@
 // change status
-const handleStatusClick = (id, status, query) => {
+const handleStatusClick = (collection, id, status, query) => {
     const statusDOM = $(`#status-${id}`);
     const filterAllDOM = $(`#status-all`);
     const filterActiveDOM = $(`#status-active`);
     const filterInactiveDOM = $(`#status-inactive`);
 
-    const newUrl = `item/changeStatusAjax/${id}/${status}${query}`;
+    const newUrl = `${collection}/changeStatusAjax/${id}/${status}${query}`;
 
     $.ajax({
         type: 'GET',
-        url: new URL(newUrl, 'http://localhost:3000/admin/item').href,
+        url: new URL(newUrl, `http://localhost:3000/admin/${collection}`).href,
         dataType: 'json',
         success: (data) => {
             if (data.success) {
@@ -53,15 +53,15 @@ const handleStatusClick = (id, status, query) => {
 };
 
 // change ordering
-const handleOrderingChange = (id) => {
+const handleOrderingChange = (collection, id) => {
     const orderingDOM = $(`#ordering-${id}`);
     const newOrdering = orderingDOM.find('input').val();
 
-    const orderingUrl = `item/changeOrderingAjax/${id}/${newOrdering}`;
+    const orderingUrl = `${collection}/changeOrderingAjax/${id}/${newOrdering}`;
 
     $.ajax({
         type: 'GET',
-        url: new URL(orderingUrl, 'http://localhost:3000/admin/item').pathname,
+        url: new URL(orderingUrl, `http://localhost:3000/admin/${collection}`).pathname,
         dataType: 'json',
         success: (data) => {
             if (data.success) {
@@ -90,7 +90,7 @@ const handleOrderingChange = (id) => {
     });
 };
 
-const handleDelete = (id) => {
+const handleDelete = (collection, id) => {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -101,7 +101,7 @@ const handleDelete = (id) => {
         confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.pathname = `admin/item/delete/${id}`;
+            window.location.pathname = `admin/${collection}/delete/${id}`;
         }
     });
 };
@@ -118,5 +118,11 @@ const handleShowImage = () => {
         };
 
         reader.readAsDataURL(file);
+    }
+};
+
+const handleSelectOption = (collection, id) => {
+    if (collection) {
+        console.log('a');
     }
 };

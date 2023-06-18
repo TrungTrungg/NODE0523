@@ -1,5 +1,5 @@
 <%
-    showPagination = (currentStatus, keyword, {min, max, currentPage, totalPages}) => {
+    showPagination = (collection, currentStatus, keyword, {min, max, currentPage, totalPages}) => {
         if(totalPages <= 1)
             return
         let query = ''
@@ -33,7 +33,7 @@
 
             xHtml += `
             <li class="page-item ${isActive}">
-                <a class="page-link" href="/admin/item${path}?page=${pageLink}${query}" aria-label="">
+                <a class="page-link" href="/admin/${collection}${path}?page=${pageLink}${query}" aria-label="">
                     <span aria-hidden="true">${pageNumber}</span>
                 </a>
             </li>

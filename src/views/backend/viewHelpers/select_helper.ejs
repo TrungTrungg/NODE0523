@@ -1,0 +1,25 @@
+<%
+    showSelectBox = (collection, boxName, array, condition, width) => {
+        const options = array.map((arr) => {
+            return(`
+                <option 
+                    onclick="javascript:handleSelectOption('${collection, arr.value}')"
+                    id="option-${arr.value}"
+                    value="${arr.value}" 
+                    ${arr.value === condition ? "selected" : " "}>
+                    ${arr.name}
+                </option>
+            `)
+        }).join('')
+        return(`
+        <div class="col">
+            <label>${boxName}</label>
+            <select name="${boxName}" class="form-control w-${width}" >
+                <option selected="selected" value="">${boxName}</option>
+                ${options}
+            </select>
+        </div>
+        `)
+    }
+
+%>

@@ -5,4 +5,5 @@ const itemValidator = {
 
 module.exports = {
     itemValidator,
+    itemCollection: 'item',
 };

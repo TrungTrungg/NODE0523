@@ -25,6 +25,44 @@
                     name: 'Add'
                 },
             ]
+        },
+        {
+            isParent: true,
+            url: '#',
+            icon: 'fas fa-th-list',
+            name: 'Category',
+            iconDropdown: 'fas fa-angle-left',
+            child: [
+                {
+                    url: '/admin/category',
+                    icon: 'far fa-circle',
+                    name: 'List'
+                },
+                {
+                    url: '/admin/category/add',
+                    icon: 'far fa-circle',
+                    name: 'Add'
+                },
+            ]
+        },
+        {
+            isParent: true,
+            url: '#',
+            icon: 'fas fa-newspaper',
+            name: 'Article',
+            iconDropdown: 'fas fa-angle-left',
+            child: [
+                {
+                    url: '/admin/article',
+                    icon: 'far fa-circle',
+                    name: 'List'
+                },
+                {
+                    url: '/admin/article/add',
+                    icon: 'far fa-circle',
+                    name: 'Add'
+                },
+            ]
         }
     ]
 

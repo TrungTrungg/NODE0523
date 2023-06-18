@@ -7,7 +7,6 @@ const itemSchema = new mongoose.Schema(
         ordering: { type: Number },
         slug: { type: String },
         image: { type: String },
-        category_id: { type: String },
     },
     { timestamps: true },
 );

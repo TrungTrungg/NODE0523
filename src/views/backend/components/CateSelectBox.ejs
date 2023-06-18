@@ -1,0 +1,27 @@
+<%
+    showCateBox = (collection, array, cateName, currentStatus, keyword) => {
+        let query = ''
+        let path = ''
+        if(currentStatus) {
+            path = `/status/${currentStatus}`
+        }
+        if(keyword) 
+            query = `&search=${keyword}`
+        const options = array.map((arr) => {
+            return(`
+                <a class="dropdown-item"  href="/admin/${collection}${path}?page=1${query}&category=${arr.value}" >${arr.name}</a>
+            `)
+        }).join('')
+        return(`
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"  aria-expanded="false">
+                ${cateName ? cateName : 'Filter by category'}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                ${options}
+            </div>
+            </div>
+        `)
+    }
+
+%>

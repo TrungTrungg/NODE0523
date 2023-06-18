@@ -1,23 +1,35 @@
-const { itemModel: model } = require('@models');
+const { articleModel: model } = require('@models');
 
-const create = async (name, status, ordering, slug, image) => {
+// Create
+const create = async (name, status, ordering, slug, category_id) => {
     const condition = { name, status, ordering, slug };
-    if (image) condition.image = image;
+    if (category_id) condition.category_id = category_id;
     return await model.create(condition);
 };
 
+// Delete
 const deleteOneById = async (id) => {
     return await model.deleteOne({ _id: id });
 };
 
-const getOneById = async (id) => {
-    return await model.findById(id);
+// Update
+const updateOneById = async (name, status, ordering, slug, category_id) => {
+    const condition = { name, status, ordering, slug };
+    if (category_id) condition.category_id = category_id;
+    return await model.updateOne({ _id: id }, condition);
 };
 
-const updateOneById = async (id, name, status, ordering, slug, image) => {
-    const condition = { id, name, status, ordering, slug };
-    if (image) condition.image = image;
-    return await model.updateOne({ _id: id }, condition);
+const changeStatusById = async (id, status) => {
+    return await model.updateOne({ _id: id }, { status });
+};
+
+const changeOrderingById = async (id, ordering) => {
+    return await model.updateOne({ _id: id }, { ordering });
+};
+
+// Get
+const getOneById = async (id) => {
+    return await model.findById(id);
 };
 
 const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
@@ -31,6 +43,10 @@ const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
         .limit(itemPerPage);
 };
 
+const getAllNameId = async () => {
+    return await model.find({ category_id: { $exists: false } }).select('_id name');
+};
+// Count
 const countByStatus = async (status, keyword) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
@@ -38,19 +54,12 @@ const countByStatus = async (status, keyword) => {
     return await model.count(condition);
 };
 
-const changeStatusById = async (id, status) => {
-    return await model.updateOne({ _id: id }, { status });
-};
-
-const changeOrderingById = async (id, ordering) => {
-    return await model.updateOne({ _id: id }, { ordering });
-};
-
 module.exports = {
     create,
     deleteOneById,
     getOneById,
     getAll,
+    getAllNameId,
     updateOneById,
     countByStatus,
     changeStatusById,

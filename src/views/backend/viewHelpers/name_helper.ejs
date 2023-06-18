@@ -5,8 +5,8 @@
             const nameHighlight = name.replace(regex, result => {
                 return `<span class="text-red">${result}</span>`
             })
-            return nameHighlight
-        }else return name
+            return `<td>${nameHighlight}</td>`
+        }else return `<td>${name}</td>`
     }
 
 %>

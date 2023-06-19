@@ -68,14 +68,6 @@ const handleOrderingChange = (collection, id) => {
                 let toastrMessage = data.message;
 
                 orderingDOM.find('input').val(data.ordering);
-                // orderingDOM.html(
-                //     `<input
-                //         onChange="javascript:handleOrderingChange('${id}')"
-                //         type="number"
-                //         value="${data.ordering}"
-                //         class="ordering"
-                //     />`,
-                // );
 
                 toastr.success(toastrMessage, 'SUCCESS', {
                     newestOnTop: true,
@@ -121,8 +113,53 @@ const handleShowImage = () => {
     }
 };
 
-const handleSelectOption = (collection, id) => {
-    if (collection) {
-        console.log('a');
-    }
+const handleFilterOption = (collection, category_id, category_name, path, query) => {
+    const optionDOM = $('#list-categories');
+    const buttDOM = $('#menu-dropdown');
+    const url = `${collection}/getListCategoriesAjax/${category_id}`;
+    $.ajax({
+        type: 'GET',
+        url: new URL(url, `http://localhost:3000/admin/${collection}`).pathname,
+        dataType: 'json',
+        success: (data) => {
+            if (data.success) {
+                buttDOM.html(category_name);
+                let options = data.categories
+                    .map((category) => {
+                        return `
+                    <a 
+                        class="dropdown-item"  
+                        href="/admin/${collection}${path}?page=1${query}&category=${category.value}" 
+                    >${category.name}</a>
+                `;
+                    })
+                    .join('');
+                optionDOM.html(options);
+            }
+        },
+    });
+};
+
+const handleSelectOption = (collection, category_id) => {
+    const optionDOM = $('#list-categories');
+    const url = `${collection}/getListCategoriesAjax/${category_id}`;
+    $.ajax({
+        type: 'GET',
+        url: new URL(url, `http://localhost:3000/admin/${collection}`).pathname,
+        dataType: 'json',
+        success: (data) => {
+            if (data.success) {
+                let options = data.categories
+                    .map((category) => {
+                        return `
+                    <option
+                        value="${category.value}"
+                    >${category.name}</a>
+                `;
+                    })
+                    .join('');
+                optionDOM.html(options);
+            }
+        },
+    });
 };

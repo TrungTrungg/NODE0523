@@ -1,22 +1,33 @@
 <% include ./image_helper %>
-<% include ./select_helper %>
+<% include ./selectBox_helper %>
+<% include ./datetime_helper %>
 
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
-    showForm = (collection, method, action, enctype, id, name, ordering, status, image, category_id) => {
+
+    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, image, category_id, description, author) => {
         let imageXHtml = ''
         let categoryXHtml = ''
-        let statusXHtml = showSelectBox('','status', statusArr, status, '100')
+        let descriptionXHtml = ''
+        let postdateXHtml = ''
+        let authorXHtml = ''
+        let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
         switch (collection) {
             case 'item':
                 imageXHtml = showUploadImage(image)
                 break;
             case 'category':
-                categoryXHtml = showSelectBox(collection, 'category_id', categories, category_id, '100')
-                imageXHtml = ''
+                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_id, false, '')
                 break;
             case 'article':
                 imageXHtml = showUploadImage(image)
+                categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_id, true, '') + 
+                                showSelectBox(collection, 'Category-Sub', 'category_id', '', category_id, false, 'list-categories')
+                descriptionXHtml = `<label for="des">Description</label>
+                                    <textarea value="${description ? description : ''}" name="description" class="form-control" id="des" rows="3"></textarea>`
+                postdateXHtml = showPostDate()
+                authorXHtml = `<label for="author">Author</label>
+                                <input value="${author ? author : ''}" type="text" name="author" class="form-control" id="author" rows="3"></input>`
                 break;
             default:
                 break;
@@ -39,12 +50,22 @@
                     <div class="form-group row">
                         ${categoryXHtml}
                     </div>
+                    <div class="form-group">
+                        ${descriptionXHtml}
+                    </div>
+                    <div class="form-group">
+                        ${postdateXHtml}
+                    </div>
+                    <div class="form-group">
+                        ${authorXHtml}
+                    </div>
                         ${imageXHtml}
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-secondary">Submit</button>
                     <a type="button" class="btn btn-secondary float-right" href="/admin/${collection}">Cancel</a>
                 </div>
-            </form>`)
+            </form>
+        `)
         }
     %>

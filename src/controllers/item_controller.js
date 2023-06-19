@@ -1,4 +1,5 @@
 const { matchedData } = require('express-validator');
+const fs = require('fs');
 
 const { itemService: service } = require('@services');
 const { filterOptions, notify, itemCollection: collection } = require('@utils');
@@ -101,6 +102,12 @@ const addOne = async (req, res, next) => {
 // delete one item
 const deleteOne = async (req, res, next) => {
     const { id } = req.params;
+
+    const { image } = await service.getOneById(id);
+    const imagePath = `public\\backend\\uploads\\${image}`;
+    if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+    }
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
@@ -127,15 +134,23 @@ const editOne = async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        let image = '';
-        if (req.file) image = req.file.filename;
+        // Xử lý ảnh
+        let imageName = '';
+        if (req.file) imageName = req.file.filename;
+
+        const { image } = await service.getOneById(id);
+        const imagePath = `public\\backend\\uploads\\${image}`;
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+        }
+
         const { name, status, ordering } = matchedData(req);
         const slug = name
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, image);
+        const newItem = await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, imageName);
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }

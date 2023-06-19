@@ -1,14 +1,14 @@
 const { matchedData } = require('express-validator');
 
-const { articleService: service } = require('@services');
+const { articleService: service, categoryService } = require('@services');
 const { filterOptions, notify, articleCollection: collection } = require('@utils');
 const { handlePagination } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
-const renderList = async (req, res, next) => {
+const renderList = async (req, res) => {
     const { status } = req.params;
-    const { search, page } = req.query;
+    const { search, page, category } = req.query;
 
     // Xử lý status
     let currentStatus = status;
@@ -20,15 +20,21 @@ const renderList = async (req, res, next) => {
     let keyword = '';
     if (search) keyword = !search.trim() ? '' : search.trim();
 
+    let category_id = '';
+    if (category) category_id = category;
+
     // Xử lý page
     let currentPage = 1;
     if (page) currentPage = parseInt(page);
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: filterOptions.all, qty: await service.countByStatus('', keyword) },
-        { name: filterOptions.active, qty: await service.countByStatus(filterOptions.active, keyword) },
-        { name: filterOptions.inactive, qty: await service.countByStatus(filterOptions.inactive, keyword) },
+        { name: filterOptions.all, qty: await service.countByStatus('', keyword, category_id) },
+        { name: filterOptions.active, qty: await service.countByStatus(filterOptions.active, keyword, category_id) },
+        {
+            name: filterOptions.inactive,
+            qty: await service.countByStatus(filterOptions.inactive, keyword, category_id),
+        },
     ];
 
     const statusFilterOptions = {
@@ -38,10 +44,24 @@ const renderList = async (req, res, next) => {
     };
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
-    const totalItems = await service.countByStatus(currentStatus, keyword);
+    const totalItems = await service.countByStatus(currentStatus, keyword, category_id);
     const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 3), (pageRange = 3));
+
     // Lấy danh sách item
-    const items = await service.getAll(currentStatus, keyword, pagination);
+    const items = await service.getAll(currentStatus, keyword, category_id, pagination);
+
+    // categories
+    const results = await categoryService.getAllNameId();
+
+    const categories = results.map((result) => {
+        const { _id, name } = result;
+        return { value: _id, name };
+    });
+
+    let cateName = '';
+    if (category_id) cateName = await categoryService.getCateName(category_id);
+
+    // message
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -55,13 +75,21 @@ const renderList = async (req, res, next) => {
         currentStatus,
         pagination,
         keyword,
+        categories,
+        cateName,
         messages,
     };
     res.render(`backend/pages/${collection}`, options);
 };
 
 // render add item page
-const renderAddPage = (req, res, next) => {
+const renderAddPage = async (req, res) => {
+    const results = await categoryService.getAllNameId();
+
+    const categories = results.map((result) => {
+        const { _id, name } = result;
+        return { value: _id, name };
+    });
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -69,13 +97,14 @@ const renderAddPage = (req, res, next) => {
     const options = {
         page: 'Add',
         collection,
+        categories,
         messages,
     };
     res.render(`backend/pages/${collection}/${collection}_add`, options);
 };
 
 // add item
-const addOne = async (req, res, next) => {
+const addOne = async (req, res) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
@@ -84,65 +113,106 @@ const addOne = async (req, res, next) => {
         let image = '';
         if (req.file) image = req.file.filename;
 
-        const { name, status, ordering } = matchedData(req);
-        const { categoryId } = req.body;
-        if (categoryId) categoryId;
+        const { name, author, status, ordering, category_id, description } = matchedData(req);
         const slug = name
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.create(name, status.toLowerCase(), ordering, slug, image, categoryId);
+        await service.create(name, author, status.toLowerCase(), ordering, slug, image, category_id, description);
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
 };
 
 // delete one item
-const deleteOne = async (req, res, next) => {
+const deleteOne = async (req, res) => {
     const { id } = req.params;
+    // Xóa ảnh trong folder
+    const { image } = await service.getOneById(id);
+    const imagePath = `public\\backend\\uploads\\${image}`;
+    if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+    }
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
 };
 
 // render Edit item page
-const renderEditPage = async (req, res, next) => {
+const renderEditPage = async (req, res) => {
     const { id } = req.params;
-    const { name, status, ordering, image } = await service.getOneById(id);
-
+    const { name, author, status, ordering, image, category_id, description } = await service.getOneById(id);
+    const results = await categoryService.getAllNameId();
+    const categories = results.map((result) => {
+        const { _id, name } = result;
+        return { value: _id, name };
+    });
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const options = { page: 'Item', id, name, status, ordering, image, messages };
-    res.render(`backend/pages/${collection}/item_edit`, options);
+    const options = {
+        page: 'Item',
+        collection,
+        id,
+        name,
+        author,
+        status,
+        ordering,
+        image,
+        messages,
+        category_id,
+        description,
+        categories,
+    };
+    res.render(`backend/pages/${collection}/${collection}_edit`, options);
 };
 
 // Edit item
-const editOne = async (req, res, next) => {
+const editOne = async (req, res) => {
     const { id } = req.body;
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        let image = '';
-        if (req.file) image = req.file.filename;
-        const { name, status, ordering } = matchedData(req);
+        // Xử lý ảnh
+        let imageName = '';
+        if (req.file) imageName = req.file.filename;
+        const { image } = await service.getOneById(id);
+        const imagePath = `public\\backend\\uploads\\${image}`;
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+        }
+        // Lấy data sau khi validate
+        const { name, author, status, ordering, category_id, description } = matchedData(req);
+        // slug
         const slug = name
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, image);
+        // update
+        await service.updateOneById(
+            id,
+            name,
+            author,
+            status.toLowerCase(),
+            ordering,
+            slug,
+            imageName,
+            category_id,
+            description,
+        );
+        // message và chuyển hướng
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }
 };
 
 // Change status of item
-const changeStatus = async (req, res, next) => {
+const changeStatus = async (req, res) => {
     const { id, status } = req.params;
     const { page, search } = req.query;
 
@@ -160,7 +230,7 @@ const changeStatus = async (req, res, next) => {
     res.redirect(`/admin/item${query}`);
 };
 
-const changeStatusAjax = async (req, res, next) => {
+const changeStatusAjax = async (req, res) => {
     const { id, status } = req.params;
     const { search } = req.query;
     let keyword = '';
@@ -193,7 +263,7 @@ const changeStatusAjax = async (req, res, next) => {
     });
 };
 
-const changeOrderingAjax = async (req, res, next) => {
+const changeOrderingAjax = async (req, res) => {
     const { id, ordering } = req.params;
     if (isNaN(ordering)) {
         res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
@@ -206,6 +276,17 @@ const changeOrderingAjax = async (req, res, next) => {
     }
 };
 
+const getListCategoriesAjax = async (req, res) => {
+    const { category_id } = req.params;
+    const results = await categoryService.getNameIdSub(category_id);
+
+    const categories = results.map((result) => {
+        const { _id, name } = result;
+        return { value: _id, name };
+    });
+    res.send({ success: true, categories });
+};
+
 module.exports = {
     renderList,
     renderAddPage,
@@ -216,4 +297,5 @@ module.exports = {
     changeStatus,
     changeStatusAjax,
     changeOrderingAjax,
+    getListCategoriesAjax,
 };

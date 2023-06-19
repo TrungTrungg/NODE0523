@@ -1,6 +1,13 @@
 const { nameItem, orderingItem, statusItem } = require('@validators/item_validator');
-const { nameCategory, orderingCategory, statusCategory } = require('@validators/category_validator');
-const { nameArticle, orderingArticle, statusArticle } = require('@validators/article_validator');
+const { nameCategory, orderingCategory, statusCategory, category } = require('@validators/category_validator');
+const {
+    nameArticle,
+    orderingArticle,
+    statusArticle,
+    categoryArticle,
+    descriptionArticle,
+    authornArticle,
+} = require('@validators/article_validator');
 const { resultsValidator } = require('@validators/resultsValidator');
 
 module.exports = {
@@ -10,8 +17,12 @@ module.exports = {
     nameCategory,
     orderingCategory,
     statusCategory,
+    category,
     nameArticle,
     orderingArticle,
     statusArticle,
     resultsValidator,
+    categoryArticle,
+    descriptionArticle,
+    authornArticle,
 };

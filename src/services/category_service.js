@@ -2,8 +2,7 @@ const { categoryModel: model } = require('@models');
 
 // Create
 const create = async (name, status, ordering, slug, category_id) => {
-    const condition = { name, status, ordering, slug };
-    if (category_id) condition.category_id = category_id;
+    const condition = { name, status, ordering, slug, category_id };
     return await model.create(condition);
 };
 
@@ -14,8 +13,7 @@ const deleteOneById = async (id) => {
 
 // Update
 const updateOneById = async (name, status, ordering, slug, category_id) => {
-    const condition = { name, status, ordering, slug };
-    if (category_id) condition.category_id = category_id;
+    const condition = { name, status, ordering, slug, category_id };
     return await model.updateOne({ _id: id }, condition);
 };
 
@@ -48,6 +46,10 @@ const getAllNameId = async () => {
     return await model.find({ category_id: { $exists: false } }).select('_id name');
 };
 
+const getNameIdSub = async (id) => {
+    return await model.find({ category_id: id }).select('_id name');
+};
+
 const getCateName = async (id) => {
     const { name } = await model.findById(id);
     return name;
@@ -67,6 +69,7 @@ module.exports = {
     getOneById,
     getAll,
     getAllNameId,
+    getNameIdSub,
     getCateName,
     updateOneById,
     countByStatus,

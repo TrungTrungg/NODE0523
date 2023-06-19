@@ -8,7 +8,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Form</h3>
                 </div>
-                <%- showForm(collection, 'POST', `/admin/${collection,}/edit`, 'multipart/form-data', id, name, ordering, status, image) %>
+                <%- showForm(collection, categories, 'POST', `/admin/${collection}/edit`, 'multipart/form-data', id, name, ordering, status, image,category_id, description,author) %>
             </div>
         </div>
     </div>

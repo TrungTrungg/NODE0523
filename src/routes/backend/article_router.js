@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
-const { nameArticle: nameCheck, orderingArticle: orderingCheck, statusArticle: statusCheck } = require('@validators');
+const {
+    nameArticle: nameCheck,
+    orderingArticle: orderingCheck,
+    statusArticle: statusCheck,
+    categoryArticle: cateCheck,
+    descriptionArticle: descCheck,
+    authornArticle: authorCheck,
+} = require('@validators');
 const { articleController: controller } = require('@controllers');
 const upload = multer({ dest: './public/backend/uploads' });
 
@@ -13,7 +20,12 @@ router.get('(/status/:status)?', controller.renderList);
 router.get('/add', controller.renderAddPage);
 
 // Thêm 1 Item
-router.post('/', upload.single('image'), [nameCheck, orderingCheck, statusCheck], controller.addOne);
+router.post(
+    '/',
+    upload.single('image'),
+    [nameCheck, authorCheck, orderingCheck, statusCheck, cateCheck, descCheck],
+    controller.addOne,
+);
 
 // Xóa 1 Item
 router.get('/delete/:id', controller.deleteOne);
@@ -22,7 +34,12 @@ router.get('/delete/:id', controller.deleteOne);
 router.get('/edit/:id', controller.renderEditPage);
 
 // Sửa 1 Item
-router.post('/edit', upload.single('image'), [nameCheck, orderingCheck, statusCheck], controller.editOne);
+router.post(
+    '/edit',
+    upload.single('image'),
+    [nameCheck, authorCheck, orderingCheck, statusCheck, cateCheck, descCheck],
+    controller.editOne,
+);
 
 // Sửa status của 1 Item
 // router.get('(/:id/:status)?', controller.changeStatus);
@@ -31,5 +48,7 @@ router.get('/changeStatusAjax/:id/:status', controller.changeStatusAjax);
 
 // Sửa ordering của 1 Item
 router.get('/changeOrderingAjax/:id/:ordering', controller.changeOrderingAjax);
+
+router.get('/getListCategoriesAjax/:category_id', controller.getListCategoriesAjax);
 
 module.exports = router;

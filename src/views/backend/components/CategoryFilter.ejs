@@ -1,0 +1,43 @@
+<%
+    showCateFilter = (collection, categories, cateName, currentStatus, keyword, isParent, eleId) => {
+        let query = ''
+        let path = ''
+        if(currentStatus) {
+            path = `/status/${currentStatus}`
+        }
+        if(keyword) 
+            query = `&search=${keyword}`
+        let options = ''
+        let url = ''
+        if(categories) {
+                options = categories.map((category) => {
+                    if(isParent) url = `javascript:handleFilterOption('${collection}','${category.value}','${category.name}','${path}', '${query}')`
+                    else url = `/admin/${collection}${path}?page=1${query}&category=${category.value}`
+                return(`
+                    <a 
+                        class="dropdown-item"  
+                        href="${url}" 
+                    >${category.name}</a>
+                `)
+            }
+            ).join('')
+        }
+        return(`
+        <div class="dropdown" style="margin: 5px;"  >
+            <button 
+                class="btn btn-secondary dropdown-toggle " 
+                type="button" 
+                id="menu-dropdown" 
+                data-toggle="dropdown"  
+                aria-expanded="false" 
+                }>
+                ${cateName ? cateName : 'Filter by category'}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="menu-dropdown" id="${eleId}">
+                ${options}
+            </div>
+            </div>
+        `)
+    }
+
+%>

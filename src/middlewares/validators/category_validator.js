@@ -20,8 +20,11 @@ const orderingCategory = body('ordering')
     .withMessage(notify.ERROR_ORDERING_LENGTH);
 const statusCategory = body('status').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
 
+const category = body('category_id').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+
 module.exports = {
     nameCategory,
     orderingCategory,
     statusCategory,
+    category,
 };

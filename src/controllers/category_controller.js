@@ -20,8 +20,10 @@ const renderList = async (req, res, next) => {
     // Xử lý query
     let keyword = '';
     if (search) keyword = !search.trim() ? '' : search.trim();
+
     let category_id = '';
     if (category) category_id = category;
+
     // Xử lý page
     let currentPage = 1;
     if (page) currentPage = parseInt(page);
@@ -48,6 +50,7 @@ const renderList = async (req, res, next) => {
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
+
     // categories
     const results = await service.getAllNameId();
 
@@ -55,9 +58,11 @@ const renderList = async (req, res, next) => {
         const { _id, name } = result;
         return { value: _id, name };
     });
+
     let cateName = '';
     if (category_id) cateName = await service.getCateName(category_id);
 
+    // message
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -131,13 +136,18 @@ const deleteOne = async (req, res, next) => {
 // render Edit item page
 const renderEditPage = async (req, res, next) => {
     const { id } = req.params;
-    const { name, status, ordering, image } = await service.getOneById(id);
+    const { name, status, ordering, category_id } = await service.getOneById(id);
 
+    const results = await service.getAllNameId();
+    const categories = results.map((result) => {
+        const { _id, name } = result;
+        return { value: _id, name };
+    });
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const options = { page: 'Item', collection, id, name, status, ordering, image, messages };
+    const options = { page: 'Item', collection, id, name, status, ordering, category_id, categories, messages };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
 };
 
@@ -149,15 +159,13 @@ const editOne = async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        let image = '';
-        if (req.file) image = req.file.filename;
-        const { name, status, ordering } = matchedData(req);
+        const { name, status, ordering, category_id } = matchedData(req);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, image);
+        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, category_id);
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }

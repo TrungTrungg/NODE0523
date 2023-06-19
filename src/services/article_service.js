@@ -1,9 +1,9 @@
 const { articleModel: model } = require('@models');
 
 // Create
-const create = async (name, status, ordering, slug, category_id) => {
-    const condition = { name, status, ordering, slug };
-    if (category_id) condition.category_id = category_id;
+const create = async (name, author, status, ordering, slug, image, category_id, description) => {
+    const condition = { name, author, status, ordering, slug, category_id, description };
+    if (image) condition.image = image;
     return await model.create(condition);
 };
 
@@ -13,9 +13,9 @@ const deleteOneById = async (id) => {
 };
 
 // Update
-const updateOneById = async (name, status, ordering, slug, category_id) => {
-    const condition = { name, status, ordering, slug };
-    if (category_id) condition.category_id = category_id;
+const updateOneById = async (name, author, status, ordering, slug, image, category_id, description) => {
+    const condition = { name, author, status, ordering, slug, category_id, description };
+    if (image) condition.image = image;
     return await model.updateOne({ _id: id }, condition);
 };
 
@@ -32,10 +32,11 @@ const getOneById = async (id) => {
     return await model.findById(id);
 };
 
-const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
+const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
     if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (category_id) condition.category_id = category_id;
     return await model
         .find(condition)
         .sort({ updatedAt: -1, createdAt: -1 })
@@ -47,10 +48,12 @@ const getAllNameId = async () => {
     return await model.find({ category_id: { $exists: false } }).select('_id name');
 };
 // Count
-const countByStatus = async (status, keyword) => {
+const countByStatus = async (status, keyword, category_id) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
     if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (category_id) condition.category_id = category_id;
+
     return await model.count(condition);
 };
 

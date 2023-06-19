@@ -5,6 +5,7 @@ const {
     nameCategory: nameCheck,
     orderingCategory: orderingCheck,
     statusCategory: statusCheck,
+    category: categoryCheck,
 } = require('@validators');
 const { categoryController: controller } = require('@controllers');
 
@@ -24,7 +25,7 @@ router.get('/delete/:id', controller.deleteOne);
 router.get('/edit/:id', controller.renderEditPage);
 
 // Sửa 1 Item
-router.post('/edit', [nameCheck, orderingCheck, statusCheck], controller.editOne);
+router.post('/edit', [nameCheck, orderingCheck, statusCheck, categoryCheck], controller.editOne);
 
 // Sửa status của 1 Item
 // router.get('(/:id/:status)?', controller.changeStatus);

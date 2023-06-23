@@ -1,6 +1,8 @@
 const { matchedData } = require('express-validator');
 const unidecode = require('unidecode');
-const fs = require('fs');
+
+let Parser = require('rss-parser');
+let parser = new Parser();
 
 const { itemService: service } = require('@services');
 const { filterOptions, notify, itemCollection: collection } = require('@utils');
@@ -222,6 +224,20 @@ const changeOrderingAjax = async (req, res, next) => {
     }
 };
 
+const getDataRss = async (req, res) => {
+    const feed = await parser.parseURL('https://vnexpress.net/rss/tin-moi-nhat.rss');
+    const image = feed.items.filter((item) => {
+        let start = item.content.indexOf('<img');
+        let end = item.content.indexOf('</a>');
+        console.log('start', item.content.indexOf('<img'));
+        console.log('end', item.content.indexOf('</a>'));
+        console.log('slice', item.content.slice(start, end));
+        item.content = item.content.slice(start, end);
+        return item;
+    });
+    res.send(image);
+};
+
 module.exports = {
     renderList,
     renderAddPage,
@@ -232,4 +248,5 @@ module.exports = {
     changeStatus,
     changeStatusAjax,
     changeOrderingAjax,
+    getDataRss,
 };

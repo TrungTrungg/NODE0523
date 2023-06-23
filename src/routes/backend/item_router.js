@@ -32,4 +32,6 @@ router.get('/changeStatusAjax/:id/:status', controller.changeStatusAjax);
 // Sửa ordering của 1 Item
 router.get('/changeOrderingAjax/:id/:ordering', controller.changeOrderingAjax);
 
+router.get('/RSSnew', controller.getDataRss);
+
 module.exports = router;

@@ -1,33 +1,52 @@
+<% include ./input_helper %>
 <% include ./image_helper %>
 <% include ./selectBox_helper %>
 <% include ./datetime_helper %>
+<% include ./radio_helper %>
+<% include ./textarea_helper %>
 
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
 
-    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, image, category_id, description, author) => {
-        let imageXHtml = ''
+    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, category_parent, image, url, description, author, post_date,is_special) => {
+        let nameXHtml = showInput('text', 'Name', 'name', name)
+        let authorXHtml = showInput('text', 'Author', 'author', author)
+        let urlXHtml = showInput('text', 'Url', 'url', url)
+        let orderingXHtml = showInput('number', 'Ordering', 'ordering', ordering)
+        let descriptionXHtml = showTextarea('Description', 'description', description)
+        let imageXHtml = showUploadImage(image)
+        let postdateXHtml = showPostDate(post_date)
+        let isSpecialXHtml = showRadio(is_special)
         let categoryXHtml = ''
-        let descriptionXHtml = ''
-        let postdateXHtml = ''
-        let authorXHtml = ''
         let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
         switch (collection) {
             case 'item':
-                imageXHtml = showUploadImage(image)
+                descriptionXHtml = ''
+                postdateXHtml = ''
+                authorXHtml = ''
+                isSpecialXHtml = ''
                 break;
             case 'category':
-                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_id, false, '')
+                urlXHtml=''
+                imageXHtml = ''
+                descriptionXHtml = ''
+                postdateXHtml = ''
+                isSpecialXHtml = ''
+                authorXHtml = ''
+                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
+                break;
+            case 'series':
+                imageXHtml = ''
+                descriptionXHtml = ''
+                postdateXHtml = ''
+                isSpecialXHtml = ''
+                authorXHtml = ''
+                categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_parent, true, '') + 
+                                showSelectBox(collection, 'Category-Sub', 'category_id', '', category_parent, false, 'list-categories')
                 break;
             case 'article':
-                imageXHtml = showUploadImage(image)
-                categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_id, true, '') + 
-                                showSelectBox(collection, 'Category-Sub', 'category_id', '', category_id, false, 'list-categories')
-                descriptionXHtml = `<label for="des">Description</label>
-                                    <textarea value="${description ? description : ''}" name="description" class="form-control" id="des" rows="3"></textarea>`
-                postdateXHtml = showPostDate()
-                authorXHtml = `<label for="author">Author</label>
-                                <input value="${author ? author : ''}" type="text" name="author" class="form-control" id="author" rows="3"></input>`
+                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
+
                 break;
             default:
                 break;
@@ -36,29 +55,17 @@
             <form method="${method}" action="${action}" enctype="${enctype}">
                 <div class="card-body">
                     <input type="hidden" name="id" value="${id ? id : ''}">
-                    <div class="form-group">
-                        <label for="itemName">Name</label>
-                        <input name="name" value="${name ? name : ''}" type="text" class="form-control" id="itemName" placeholder="Enter name">
-                    </div>
-                    <div class="form-group">
-                        <label for="itemOrdering">Ordering</label>
-                        <input name="ordering" value="${ordering ? ordering : ''}" type="number" class="form-control" id="itemOrdering">
-                    </div>
-                    <div class="form-group">
-                        ${statusXHtml}
-                    </div>
-                    <div class="form-group row">
-                        ${categoryXHtml}
-                    </div>
-                    <div class="form-group">
-                        ${descriptionXHtml}
-                    </div>
-                    <div class="form-group">
-                        ${postdateXHtml}
-                    </div>
-                    <div class="form-group">
+                        ${nameXHtml}
                         ${authorXHtml}
-                    </div>
+                        ${orderingXHtml}
+                        ${urlXHtml}
+                        ${isSpecialXHtml}
+                        ${statusXHtml}
+                        <div class="form-group row">
+                            ${categoryXHtml}
+                        </div>
+                        ${descriptionXHtml}
+                        ${postdateXHtml}
                         ${imageXHtml}
                 </div>
                 <div class="card-footer">

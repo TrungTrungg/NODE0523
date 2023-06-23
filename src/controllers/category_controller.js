@@ -3,7 +3,7 @@ const unidecode = require('unidecode');
 
 const { categoryService: service } = require('@services');
 const { filterOptions, notify, categoryCollection: collection } = require('@utils');
-const { handlePagination } = require('@helpers');
+const { handlePagination, getListCategories } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
@@ -38,6 +38,7 @@ const renderList = async (req, res, next) => {
         },
     ];
 
+    // So sánh với param để active trang thái filter
     const statusFilterOptions = {
         all: filterOptions.all,
         active: filterOptions.active,
@@ -51,22 +52,23 @@ const renderList = async (req, res, next) => {
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
 
-    // categories
-    const results = await service.getAllNameId();
-
-    const categories = results.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
-    });
-
+    // Lấy danh sách danh mục
+    const categories = await getListCategories();
+    // Hiển thị danh mục đang dược lọc
     let cateName = '';
-    if (category_id) cateName = await service.getCateName(category_id);
+    if (category_id) {
+        let category = await service.getCategory(category_id);
+        const { name } = category;
+        cateName = name;
+    }
 
-    // message
+    // Message
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
+
+    // Options
     const options = {
         page: collection,
         collection,
@@ -85,17 +87,16 @@ const renderList = async (req, res, next) => {
 
 // render add item page
 const renderAddPage = async (req, res, next) => {
-    const results = await service.getAllNameId();
+    // Get list categories
+    const categories = await getListCategories();
 
-    const categories = results.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
-    });
-
+    // Message - use connect-flash
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
+
+    // Options
     const options = {
         page: 'Add',
         collection,
@@ -135,31 +136,33 @@ const deleteOne = async (req, res, next) => {
 
 // render Edit item page
 const renderEditPage = async (req, res, next) => {
+    // Lấy items cần sửa đổi
     const { id } = req.params;
     const { name, status, ordering, category_id } = await service.getOneById(id);
 
-    const results = await service.getAllNameId();
-    const categories = results.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
-    });
+    // categories
+    const categories = await getListCategories();
+
+    // message
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const options = { page: 'Item', collection, id, name, status, ordering, category_id, categories, messages };
+
+    const options = { page: 'Edit', collection, id, name, status, ordering, category_id, categories, messages };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
 };
 
 // Edit item
 const editOne = async (req, res, next) => {
-    const { id } = req.body;
+    const { id, category_id } = req.body;
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        const { name, status, ordering, category_id } = matchedData(req);
+        const { name, status, ordering } = matchedData(req);
+        console.log(category_id);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
@@ -235,7 +238,14 @@ const changeOrderingAjax = async (req, res, next) => {
         res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering: newOrdering });
     }
 };
+const changeUrlAjax = async (req, res, next) => {
+    const { id, url } = req.params;
 
+    // handle change status
+
+    await service.changeUrlById(id, url);
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering: newOrdering });
+};
 module.exports = {
     renderList,
     renderAddPage,
@@ -246,4 +256,5 @@ module.exports = {
     changeStatus,
     changeStatusAjax,
     changeOrderingAjax,
+    changeUrlAjax,
 };

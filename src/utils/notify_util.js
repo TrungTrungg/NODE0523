@@ -5,6 +5,8 @@ module.exports = {
     ERROR_ORDERING_VALUE: `Incorrect Value`,
     ERROR_ORDERING_LENGTH: `Invalid Length`,
     ERROR_STATUS_EMPTY: `Is Required`,
+    ERROR_CATEGORY_EMPTY: `Is Required`,
+
     SUCCESS_ADD: `Successfully add item`,
     SUCCESS_EDIT: `Successfully edit item`,
     SUCCESS_DELETE: `Successfully delete item`,

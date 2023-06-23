@@ -1,6 +1,7 @@
 <% include ./image_helper %>
 <% include ./name_helper %>
 <% include ./status_helper %>
+<% include ./url_helper %>
 <% include ./ordering_helper %>
 
 <%
@@ -12,13 +13,20 @@
             let imageXHtml    = handleImage(item.image)
             let nameXHtml     = handleName(item.name, keyword)
             let statusXHtml   = handleStatus(collection, item.status, item.id, query)
+            let urlXHtml      = handleUrl(collection, item.url, item.id)
             let orderingXHtml = handleOrdering(collection, item.ordering, item.id)
 
             switch (collection) {
+                case 'item':
+                    urlXHtml = ''
+                    break;
                 case 'category':
                     imageXHtml = ''
+                    urlXHtml = ''
                     break;
-            
+                case 'series':
+                    imageXHtml = ''
+                    break;
                 default:
                     break;
             }
@@ -30,6 +38,7 @@
                                 ${imageXHtml}
                                 ${nameXHtml}
                                 ${statusXHtml}
+                                ${urlXHtml}
                                 ${orderingXHtml}
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">

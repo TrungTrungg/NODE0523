@@ -5,6 +5,7 @@ const dashboardRouter = require('./dashboard_router');
 const itemRouter = require('./item_router');
 const categoryRouter = require('./category_router');
 const articleRouter = require('./article_router');
+const seriesRouter = require('./series_router');
 
 router.use('/', (req, res, next) => {
     res.locals.layout = 'backend';
@@ -15,5 +16,6 @@ router.use('/', dashboardRouter);
 router.use('/item', itemRouter);
 router.use('/category', categoryRouter);
 router.use('/article', articleRouter);
+router.use('/series', seriesRouter);
 
 module.exports = router;

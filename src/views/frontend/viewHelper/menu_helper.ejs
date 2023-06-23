@@ -1,0 +1,51 @@
+<%
+    showMegaMenu = (mainCategories, subCategories, listSeries) => {
+        let subMenu = ''
+        let subSeries = ''
+        let isChild = false
+        // console.log('main',mainCategories);
+        // console.log('sub', subCategories);
+        // console.log('series', listSeries);
+        const menu = mainCategories.map((main) => {
+            let subMenuLi = subCategories.map((sub) => {
+                let subSeriesLi = listSeries.map((series) => {
+                    if(series.category_id === sub.id) {
+                        return(`
+                        <li class="menu-item">
+                            <a class="menu-link" href="${series.url}">
+                                <div>${series.name}</div>
+                            </a>
+                        </li>
+                        `)
+                    }  
+                    return ''
+                }).join('')
+                if(subSeriesLi) subSeries = `<ul class="sub-menu-container">${subSeriesLi}</ul>`
+                else subSeries = ''
+                if(sub.category_id === main.id) {
+                    return(`
+                    <li class="menu-item">
+                        <a class="menu-link" href="">
+                            <div>${sub.name}</div>
+                        </a>
+                        ${subSeries}
+                    </li>
+                    `)
+                } 
+                return ''
+            }).join('')
+            if(subMenuLi) subMenu = `<ul class="sub-menu-container">${subMenuLi}</ul>`
+            else subMenu = ''
+            return(`
+                <li class="menu-item">
+                    <a class="menu-link" href="">
+                        <div>${main.name}</div>
+                    </a>
+                    ${subMenu}
+                </li>
+            `)
+        }).join('')
+        return menu
+    }
+
+%>

@@ -19,9 +19,23 @@ const orderingArticle = body('ordering')
     .isInt({ min: validator.ordering.length.min, max: validator.ordering.length.max })
     .withMessage(notify.ERROR_ORDERING_LENGTH);
 const statusArticle = body('status').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+
 const categoryArticle = body('category_id').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+
 const descriptionArticle = body('description').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
-const authornArticle = body('author').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+
+const authorArticle = body('author').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+
+const urlArticle = body('url').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+
+const specialArticle = body('is_special').notEmpty().withMessage(notify.ERROR_STATUS_EMPTY);
+
+const dateArticle = body('post_date')
+    .notEmpty()
+    .withMessage(notify.ERROR_STATUS_EMPTY)
+    .bail()
+    .isDate()
+    .withMessage(notify.ERROR_ORDERING_VALUE);
 
 module.exports = {
     nameArticle,
@@ -29,5 +43,8 @@ module.exports = {
     statusArticle,
     categoryArticle,
     descriptionArticle,
-    authornArticle,
+    authorArticle,
+    dateArticle,
+    urlArticle,
+    specialArticle,
 };

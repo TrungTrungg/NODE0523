@@ -4,6 +4,7 @@ const articleSchema = new mongoose.Schema(
     {
         name: { type: String },
         author: { type: String },
+        url: { type: String },
         status: { type: String },
         ordering: { type: Number },
         slug: { type: String },
@@ -11,6 +12,7 @@ const articleSchema = new mongoose.Schema(
         description: { type: String },
         post_date: { type: Date },
         category_id: { type: String },
+        is_special: { type: Boolean, default: false },
     },
     { timestamps: true },
 );

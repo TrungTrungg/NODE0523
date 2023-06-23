@@ -12,7 +12,7 @@ const deleteOneById = async (id) => {
 };
 
 // Update
-const updateOneById = async (name, status, ordering, slug, category_id) => {
+const updateOneById = async (id, name, status, ordering, slug, category_id) => {
     const condition = { name, status, ordering, slug, category_id };
     return await model.updateOne({ _id: id }, condition);
 };
@@ -25,6 +25,9 @@ const changeOrderingById = async (id, ordering) => {
     return await model.updateOne({ _id: id }, { ordering });
 };
 
+const changeUrlById = async (id, url) => {
+    return await model.updateOne({ _id: id }, { url });
+};
 // Get
 const getOneById = async (id) => {
     return await model.findById(id);
@@ -42,17 +45,24 @@ const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }
         .limit(itemPerPage);
 };
 
-const getAllNameId = async () => {
-    return await model.find({ category_id: { $exists: false } }).select('_id name');
+const getNameId = async (id) => {
+    let condition = { $exists: true, $eq: '' };
+    if (id) condition = id;
+    return await model.find({ category_id: condition }).select('id name category_id');
 };
 
-const getNameIdSub = async (id) => {
-    return await model.find({ category_id: id }).select('_id name');
+const getSubCategory = async () => {
+    let condition = { $exists: true, $ne: '' };
+    return await model.find({ category_id: condition });
 };
 
-const getCateName = async (id) => {
-    const { name } = await model.findById(id);
-    return name;
+const getMainCategory = async () => {
+    let condition = { $exists: true, $eq: '' };
+    return await model.find({ category_id: condition });
+};
+
+const getCategory = async (id) => {
+    return await model.findById(id);
 };
 // Count
 const countByStatus = async (status, keyword, category_id) => {
@@ -68,11 +78,13 @@ module.exports = {
     deleteOneById,
     getOneById,
     getAll,
-    getAllNameId,
-    getNameIdSub,
-    getCateName,
+    getNameId,
+    getSubCategory,
+    getMainCategory,
+    getCategory,
     updateOneById,
     countByStatus,
     changeStatusById,
     changeOrderingById,
+    changeUrlById,
 };

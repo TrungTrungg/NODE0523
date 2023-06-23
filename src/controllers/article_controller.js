@@ -1,8 +1,10 @@
 const { matchedData } = require('express-validator');
+const fs = require('fs');
+const unidecode = require('unidecode');
 
 const { articleService: service, categoryService } = require('@services');
 const { filterOptions, notify, articleCollection: collection } = require('@utils');
-const { handlePagination } = require('@helpers');
+const { handlePagination, getListCategories } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
@@ -51,15 +53,13 @@ const renderList = async (req, res) => {
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
 
     // categories
-    const results = await categoryService.getAllNameId();
-
-    const categories = results.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
-    });
-
+    const categories = await getListCategories();
     let cateName = '';
-    if (category_id) cateName = await categoryService.getCateName(category_id);
+    if (category_id) {
+        let category = await categoryService.getCategory(category_id);
+        const { name } = category;
+        cateName = name;
+    }
 
     // message
     const messages = {
@@ -84,12 +84,7 @@ const renderList = async (req, res) => {
 
 // render add item page
 const renderAddPage = async (req, res) => {
-    const results = await categoryService.getAllNameId();
-
-    const categories = results.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
-    });
+    const categories = await getListCategories();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -110,16 +105,28 @@ const addOne = async (req, res) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/add`);
     } else {
-        let image = '';
-        if (req.file) image = req.file.filename;
-
-        const { name, author, status, ordering, category_id, description } = matchedData(req);
+        let imageName = '';
+        if (req.file) imageName = req.file.filename;
+        const { name, status, ordering, category_id, post_date, author, description, url, is_special } =
+            matchedData(req);
         const slug = name
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.create(name, author, status.toLowerCase(), ordering, slug, image, category_id, description);
+        await service.create(
+            name,
+            status.toLowerCase(),
+            ordering,
+            slug,
+            category_id,
+            post_date,
+            author,
+            description,
+            url,
+            is_special,
+            imageName,
+        );
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
@@ -128,12 +135,7 @@ const addOne = async (req, res) => {
 // delete one item
 const deleteOne = async (req, res) => {
     const { id } = req.params;
-    // Xóa ảnh trong folder
-    const { image } = await service.getOneById(id);
-    const imagePath = `public\\backend\\uploads\\${image}`;
-    if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-    }
+
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
@@ -142,12 +144,9 @@ const deleteOne = async (req, res) => {
 // render Edit item page
 const renderEditPage = async (req, res) => {
     const { id } = req.params;
-    const { name, author, status, ordering, image, category_id, description } = await service.getOneById(id);
-    const results = await categoryService.getAllNameId();
-    const categories = results.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
-    });
+    const { name, status, ordering, category_id, post_date, author, description, image, url, is_special } =
+        await service.getOneById(id);
+    const categories = await getListCategories();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -157,14 +156,16 @@ const renderEditPage = async (req, res) => {
         collection,
         id,
         name,
-        author,
         status,
         ordering,
-        image,
-        messages,
         category_id,
+        post_date,
+        author,
         description,
+        image,
         categories,
+        url,
+        is_special,
     };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
 };
@@ -177,16 +178,20 @@ const editOne = async (req, res) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        // Xử lý ảnh
         let imageName = '';
-        if (req.file) imageName = req.file.filename;
-        const { image } = await service.getOneById(id);
-        const imagePath = `public\\backend\\uploads\\${image}`;
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+        if (req.file) {
+            imageName = req.file.filename;
+            const { image } = await service.getOneById(id);
+            const imagePath = `public\\backend\\uploads\\${image}`;
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
         }
+        console.log(imageName);
         // Lấy data sau khi validate
-        const { name, author, status, ordering, category_id, description } = matchedData(req);
+        const { name, status, ordering, category_id, post_date, author, description, url, is_special } =
+            matchedData(req);
+        console.log(is_special);
         // slug
         const slug = name
             .toLowerCase()
@@ -197,13 +202,15 @@ const editOne = async (req, res) => {
         await service.updateOneById(
             id,
             name,
-            author,
             status.toLowerCase(),
             ordering,
-            slug,
-            imageName,
             category_id,
+            post_date,
+            author,
             description,
+            url,
+            is_special,
+            imageName,
         );
         // message và chuyển hướng
         req.flash('success', notify.SUCCESS_EDIT);
@@ -212,23 +219,23 @@ const editOne = async (req, res) => {
 };
 
 // Change status of item
-const changeStatus = async (req, res) => {
-    const { id, status } = req.params;
-    const { page, search } = req.query;
+// const changeStatus = async (req, res) => {
+//     const { id, status } = req.params;
+//     const { page, search } = req.query;
 
-    // handle query
-    let query = `?page=1`;
-    if (search) query += `&search=${search}`;
+//     // handle query
+//     let query = `?page=1`;
+//     if (search) query += `&search=${search}`;
 
-    // handle change status
-    let newStatus = status;
-    if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
-    else newStatus = filterOptions.active;
+//     // handle change status
+//     let newStatus = status;
+//     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
+//     else newStatus = filterOptions.active;
 
-    await service.changeStatusById(id, newStatus.toLowerCase());
-    req.flash('success', notify.SUCCESS_CHANGE_STATUS);
-    res.redirect(`/admin/item${query}`);
-};
+//     await service.changeStatusById(id, newStatus.toLowerCase());
+//     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
+//     res.redirect(`/admin/item${query}`);
+// };
 
 const changeStatusAjax = async (req, res) => {
     const { id, status } = req.params;
@@ -240,7 +247,7 @@ const changeStatusAjax = async (req, res) => {
     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
     else newStatus = filterOptions.active;
 
-    await service.changeStatusById(id, newStatus.toLowerCase());
+    await service.changeFieldById(id, 'status', newStatus.toLowerCase());
     const allStatus = {
         name: filterOptions.all,
         count: await service.countByStatus('', keyword),
@@ -269,21 +276,21 @@ const changeOrderingAjax = async (req, res) => {
         res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
     } else {
         // handle change status
-        let newOrdering = parseInt(ordering);
-
-        await service.changeOrderingById(id, newOrdering);
-        res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering: newOrdering });
+        await service.changeFieldById(id, 'ordering', ordering);
+        res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering });
     }
+};
+const changeUrlAjax = async (req, res, next) => {
+    const { id, url } = req.params;
+
+    await service.changeFieldById(id, 'url', url);
+
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
 };
 
 const getListCategoriesAjax = async (req, res) => {
     const { category_id } = req.params;
-    const results = await categoryService.getNameIdSub(category_id);
-
-    const categories = results.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
-    });
+    const categories = await getListCategories(category_id);
     res.send({ success: true, categories });
 };
 
@@ -294,8 +301,9 @@ module.exports = {
     deleteOne,
     renderEditPage,
     editOne,
-    changeStatus,
+    // changeStatus,
     changeStatusAjax,
+    changeUrlAjax,
     changeOrderingAjax,
     getListCategoriesAjax,
 };

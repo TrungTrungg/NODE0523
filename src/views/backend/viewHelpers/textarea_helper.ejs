@@ -1,0 +1,10 @@
+<%
+    showTextarea = (label, name, value) => {
+        return(`
+            <div class="form-group">
+                <label for="itemName">${label}</label>
+                <textarea name="${name}" value="${value ? value : ''}"  class="form-control" id="itemName" placeholder="Enter ${label}">${value ? value : ''}</textarea>
+            </div>
+        `)
+    }
+%>

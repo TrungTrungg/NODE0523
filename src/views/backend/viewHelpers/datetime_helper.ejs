@@ -1,7 +1,12 @@
 <%
-    showPostDate = () => {
+    showPostDate = (post_date) => {
         return(`
-        
+            <div class="form-group">
+                <label>Post Date:</label>
+                <div class="input-group" >
+                    <input type="date" class="form-control" name="post_date" value="${post_date ? post_date.toISOString().slice(0, 10) : ''}">
+                </div>
+            </div>
         `)
     }
 %>

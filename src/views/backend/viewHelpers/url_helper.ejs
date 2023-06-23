@@ -1,0 +1,15 @@
+<%
+    handleUrl = (collection, url, id) => {
+        return(`
+            <td id="url-${id}">
+                <input 
+                    onChange="javascript:handleUrlChange('${collection}','${id}')"
+                    type="text" 
+                    value="${url}" 
+                    class="ordering"    
+                />
+            </td>
+        `)
+    }
+
+%>

@@ -6,7 +6,6 @@ const handleStatusClick = (collection, id, status, query) => {
     const filterInactiveDOM = $(`#status-inactive`);
 
     const newUrl = `${collection}/changeStatusAjax/${id}/${status}${query}`;
-
     $.ajax({
         type: 'GET',
         url: new URL(newUrl, `http://localhost:3000/admin/${collection}`).href,
@@ -19,7 +18,8 @@ const handleStatusClick = (collection, id, status, query) => {
                     `<a 
                         type="button" 
                         class="btn btn-${data.status === 'active' ? 'success' : 'danger'}"
-                        href="javascript:handleStatusClick('${id}', '${data.status}', '${query}')">${data.status}
+                        href="javascript:handleStatusClick('${collection}','${id}', '${data.status}', '${query}')"
+                    >${data.status}
                     </a>`,
                 );
                 filterAllDOM.text(`${data.filter.allStatus.name} (${data.filter.allStatus.count})`);
@@ -46,6 +46,42 @@ const handleStatusClick = (collection, id, status, query) => {
                     preventDuplicates: false,
                     showMethod: 'slideDown',
                     timeOut: 30000,
+                });
+            }
+        },
+    });
+};
+// change url
+$(document).ready(function () {
+    $('#check-all').click(() => {
+        const isChecked = $('#check-all').prop('checked');
+        $('.checkbox').prop('checked', isChecked);
+    });
+});
+
+const handleUrlChange = (collection, id) => {
+    const urlDOM = $(`#url-${id}`);
+    const newUrlString = urlDOM.find('input').val();
+    const encodedParam = encodeURIComponent(newUrlString);
+    const url = `${collection}/changeUrlAjax/${id}/${encodedParam}`;
+
+    $.ajax({
+        type: 'GET',
+        url: new URL(url, `http://localhost:3000/admin/${collection}`).pathname,
+        dataType: 'json',
+        success: (data) => {
+            if (data.success) {
+                let toastrMessage = data.message;
+
+                urlDOM.find('input').val(data.url);
+
+                toastr.success(toastrMessage, 'SUCCESS', {
+                    newestOnTop: true,
+                    closeButton: false,
+                    progressBar: true,
+                    preventDuplicates: false,
+                    showMethod: 'slideDown',
+                    timeOut: 10000,
                 });
             }
         },

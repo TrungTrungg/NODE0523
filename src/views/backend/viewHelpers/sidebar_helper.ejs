@@ -49,6 +49,25 @@
             isParent: true,
             url: '#',
             icon: 'fas fa-newspaper',
+            name: 'Series',
+            iconDropdown: 'fas fa-angle-left',
+            child: [
+                {
+                    url: '/admin/series',
+                    icon: 'far fa-circle',
+                    name: 'List'
+                },
+                {
+                    url: '/admin/series/add',
+                    icon: 'far fa-circle',
+                    name: 'Add'
+                },
+            ]
+        },
+        {
+            isParent: true,
+            url: '#',
+            icon: 'fas fa-newspaper',
             name: 'Article',
             iconDropdown: 'fas fa-angle-left',
             child: [
@@ -63,7 +82,8 @@
                     name: 'Add'
                 },
             ]
-        }
+        },
+        
     ]
 
     showListSidebar = () => {

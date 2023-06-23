@@ -1,0 +1,10 @@
+<%
+    showInput = (type, label, name, value) => {
+        return(`
+            <div class="form-group">
+                <label for="itemName">${label}</label>
+                <input name="${name}" value="${value ? value : ''}" type="${type}" class="form-control" id="itemName" placeholder="Enter ${label}" />
+            </div>
+        `)
+    }
+%>

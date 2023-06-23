@@ -1,0 +1,25 @@
+<%
+    const actions = [
+            {name: '', option: 'Bulk Action'},
+            {name: 'change-status/active', option: 'Active'},
+            {name: 'change-status/inactive', option: 'Inactive'},
+            {name: 'change-ordering', option: 'Change Ordering'},
+            {name: 'delete', option: 'Delete'}
+        ]
+    showAction = (collection) => {
+        const xHtmlActions = actions.map((action) => {
+            return (
+                `<option value="/admin/${collection}/${action.name}">${action.option}</option>`
+            )
+        }).join('')
+        return(`
+            <div class="d-flex justify-content-between align-items-center">
+                <select name="action" class="form-control ml-5">
+                    ${xHtmlActions}
+                </select>
+                <button class="btn btn-secondary ml-2" type="button">Apply</button>
+            </div>
+        `)
+    }
+
+%>

@@ -6,6 +6,7 @@ const categorySchema = new mongoose.Schema(
         status: { type: String },
         ordering: { type: Number },
         slug: { type: String },
+        url: { type: String },
         category_id: { type: String },
     },
     { timestamps: true },

@@ -1,4 +1,5 @@
 <% include ../../components/Pagination %>
+<% include ../../components/BulkACtion %>
 <% include ../../viewHelpers/item_helper %>
 <% include ../../components/CategoryFilter %>
 <!-- Content Header (Page header) -->
@@ -8,8 +9,11 @@
     <div class="card">
         <div class="card-header bg-dark">
             <div class="d-flex justify-content-between align-items-center">
-                <h3 class="card-title flex-1">List
-                    <%= collection %></h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="card-title flex-1">List
+                        <%= collection %></h3>
+                    <%- showAction(collection) %>
+                </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <%- showCateFilter(collection, categories, cateName, currentStatus, keyword, false) %>
                     <a type="button" class="btn btn-secondary" style="margin-left: 5px !important;" href="/admin/<%= collection %>/add">Add</a>

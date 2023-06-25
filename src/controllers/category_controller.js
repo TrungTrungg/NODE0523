@@ -8,6 +8,7 @@ const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
 const renderList = async (req, res, next) => {
+    // Lấy dữ liệu từ url: params, query
     const { status } = req.params;
     const { search, page, category } = req.query;
 
@@ -47,7 +48,7 @@ const renderList = async (req, res, next) => {
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword, category_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 3), (pageRange = 3));
+    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
@@ -113,14 +114,14 @@ const addOne = async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/add`);
     } else {
-        const { name, status, ordering } = matchedData(req);
+        const { name, status, ordering, url } = matchedData(req);
         const { category_id } = req.body;
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.create(name, status.toLowerCase(), ordering, slug, category_id);
+        await service.create(name, status.toLowerCase(), ordering, slug, url, category_id);
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
@@ -138,7 +139,7 @@ const deleteOne = async (req, res, next) => {
 const renderEditPage = async (req, res, next) => {
     // Lấy items cần sửa đổi
     const { id } = req.params;
-    const { name, status, ordering, category_id } = await service.getOneById(id);
+    const { name, status, ordering, url, category_id } = await service.getOneById(id);
 
     // categories
     const categories = await getListCategories();
@@ -149,7 +150,7 @@ const renderEditPage = async (req, res, next) => {
         error: req.flash('error'),
     };
 
-    const options = { page: 'Edit', collection, id, name, status, ordering, category_id, categories, messages };
+    const options = { page: 'Edit', collection, id, name, status, ordering, url, category_id, categories, messages };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
 };
 
@@ -161,14 +162,13 @@ const editOne = async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        const { name, status, ordering } = matchedData(req);
-        console.log(category_id);
+        const { name, status, ordering, url } = matchedData(req);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, category_id);
+        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, url, category_id);
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }
@@ -202,8 +202,8 @@ const changeStatusAjax = async (req, res, next) => {
     let newStatus = status;
     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
     else newStatus = filterOptions.active;
+    await service.changeFieldById(id, 'status', newStatus.toLowerCase());
 
-    await service.changeStatusById(id, newStatus.toLowerCase());
     const allStatus = {
         name: filterOptions.all,
         count: await service.countByStatus('', keyword),
@@ -232,10 +232,8 @@ const changeOrderingAjax = async (req, res, next) => {
         res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
     } else {
         // handle change status
-        let newOrdering = parseInt(ordering);
-
-        await service.changeOrderingById(id, newOrdering);
-        res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering: newOrdering });
+        await service.changeFieldById(id, 'ordering', ordering);
+        res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering });
     }
 };
 const changeUrlAjax = async (req, res, next) => {
@@ -243,8 +241,8 @@ const changeUrlAjax = async (req, res, next) => {
 
     // handle change status
 
-    await service.changeUrlById(id, url);
-    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering: newOrdering });
+    await service.changeFieldById(id, 'url', url);
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
 };
 module.exports = {
     renderList,

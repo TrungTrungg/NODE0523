@@ -47,13 +47,13 @@ const renderList = async (req, res) => {
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword, category_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 3), (pageRange = 3));
+    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
 
     // categories
-    const categories = await getListCategories();
+    const categories = await categoryService.getBlogCategory();
     let cateName = '';
     if (category_id) {
         let category = await categoryService.getCategory(category_id);
@@ -84,7 +84,7 @@ const renderList = async (req, res) => {
 
 // render add item page
 const renderAddPage = async (req, res) => {
-    const categories = await getListCategories();
+    const categories = await categoryService.getBlogCategory();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -119,12 +119,12 @@ const addOne = async (req, res) => {
             status.toLowerCase(),
             ordering,
             slug,
-            category_id,
             post_date,
             author,
             description,
             url,
             is_special,
+            category_id,
             imageName,
         );
         req.flash('success', notify.SUCCESS_ADD);
@@ -146,7 +146,7 @@ const renderEditPage = async (req, res) => {
     const { id } = req.params;
     const { name, status, ordering, category_id, post_date, author, description, image, url, is_special } =
         await service.getOneById(id);
-    const categories = await getListCategories();
+    const categories = await categoryService.getBlogCategory();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -191,7 +191,6 @@ const editOne = async (req, res) => {
         // Lấy data sau khi validate
         const { name, status, ordering, category_id, post_date, author, description, url, is_special } =
             matchedData(req);
-        console.log(is_special);
         // slug
         const slug = name
             .toLowerCase()
@@ -204,12 +203,12 @@ const editOne = async (req, res) => {
             name,
             status.toLowerCase(),
             ordering,
-            category_id,
             post_date,
             author,
             description,
             url,
             is_special,
+            category_id,
             imageName,
         );
         // message và chuyển hướng
@@ -288,6 +287,14 @@ const changeUrlAjax = async (req, res, next) => {
     res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
 };
 
+const changeIsSpecialAjax = async (req, res, next) => {
+    const { id, is_special } = req.params;
+
+    await service.changeFieldById(id, 'is_special', is_special);
+
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, is_special });
+};
+
 const getListCategoriesAjax = async (req, res) => {
     const { category_id } = req.params;
     const categories = await getListCategories(category_id);
@@ -305,5 +312,6 @@ module.exports = {
     changeStatusAjax,
     changeUrlAjax,
     changeOrderingAjax,
+    changeIsSpecialAjax,
     getListCategoriesAjax,
 };

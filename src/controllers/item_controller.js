@@ -1,6 +1,6 @@
 const { matchedData } = require('express-validator');
 const unidecode = require('unidecode');
-
+const fs = require('fs');
 let Parser = require('rss-parser');
 let parser = new Parser();
 
@@ -8,6 +8,7 @@ const { itemService: service } = require('@services');
 const { filterOptions, notify, itemCollection: collection } = require('@utils');
 const { handlePagination } = require('@helpers');
 const { resultsValidator } = require('@validators');
+const { stringify } = require('querystring');
 
 // render list items, filter status, pagination
 const renderList = async (req, res, next) => {
@@ -225,17 +226,37 @@ const changeOrderingAjax = async (req, res, next) => {
 };
 
 const getDataRss = async (req, res) => {
-    const feed = await parser.parseURL('https://vnexpress.net/rss/tin-moi-nhat.rss');
-    const image = feed.items.filter((item) => {
-        let start = item.content.indexOf('<img');
-        let end = item.content.indexOf('</a>');
-        console.log('start', item.content.indexOf('<img'));
-        console.log('end', item.content.indexOf('</a>'));
-        console.log('slice', item.content.slice(start, end));
-        item.content = item.content.slice(start, end);
-        return item;
-    });
-    res.send(image);
+    if (fs.existsSync('blog.json')) {
+        let data = fs.readFileSync('blog.json', 'utf-8');
+        let parseData = JSON.parse(data);
+        let then = '';
+        let now = new Date();
+        const newData = parseData.forEach((item) => {
+            then = new Date(item.date);
+        });
+
+        if (now - then === 1) {
+            const feed = await parser.parseURL('https://vnexpress.net/rss/tin-moi-nhat.rss');
+            const newFeed = feed.items.map((item) => {
+                item.date = new Date();
+                return item;
+            });
+            fs.writeFileSync('blog.json', JSON.stringify(newFeed), 'utf-8');
+            data = fs.readFileSync('blog.json', 'utf-8');
+            parseData = JSON.parse(data);
+            console.log('read server');
+            res.send(parseData);
+        }
+        res.send(parseData);
+    } else {
+        const feed = await parser.parseURL('https://vnexpress.net/rss/tin-moi-nhat.rss');
+        feed.date = new Date();
+        fs.writeFileSync('blog.json', JSON.stringify(newFeed), 'utf-8');
+        const data = fs.readFileSync('blog.json', 'utf-8');
+        const parseData = JSON.parse(data);
+        console.log('read server');
+        res.send(parseData);
+    }
 };
 
 module.exports = {

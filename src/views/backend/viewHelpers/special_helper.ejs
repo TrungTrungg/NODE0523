@@ -1,0 +1,20 @@
+<%
+    handleSpecial = (collection, id, isSpecial) => {
+        console.log(isSpecial);
+        return(`
+            <td>
+                <div class="custom-control custom-switch">
+                    <input 
+                        onchange="javascript:handleChangeIsSpecial('${collection}','${id}','${isSpecial}')"
+                        type="checkbox" 
+                        class="custom-control-input" 
+                        id="special-${id}" 
+                        name="is_special"
+                        ${isSpecial ? 'checked' : ''}
+                        >
+                    <label class="custom-control-label" for="special-${id}">Special</label>
+                </div>
+            </td>
+        `)
+    }
+%>

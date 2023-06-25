@@ -47,7 +47,7 @@ const renderList = async (req, res, next) => {
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword, category_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 3), (pageRange = 3));
+    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
@@ -138,7 +138,7 @@ const deleteOne = async (req, res, next) => {
 const renderEditPage = async (req, res, next) => {
     // Lấy items cần sửa đổi
     const { id } = req.params;
-    const { name, status, ordering, category_id } = await service.getOneById(id);
+    const { name, status, ordering, url, category_id } = await service.getOneById(id);
 
     // category
     const {
@@ -163,6 +163,7 @@ const renderEditPage = async (req, res, next) => {
         name,
         status,
         ordering,
+        url,
         category_parent,
         categories,
         messages,

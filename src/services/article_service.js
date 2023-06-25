@@ -6,12 +6,12 @@ const create = async (
     status,
     ordering,
     slug,
-    category_id,
     post_date,
     author,
     description,
     url,
     is_special,
+    category_id,
     image,
 ) => {
     const condition = {
@@ -24,6 +24,7 @@ const create = async (
         author,
         description,
         url,
+        category_id,
     };
     if (is_special === 'yes') condition.is_special = true;
     else condition.is_special = false;
@@ -42,12 +43,12 @@ const updateOneById = async (
     name,
     status,
     ordering,
-    category_id,
     post_date,
     author,
     description,
     url,
     is_special,
+    category_id,
     image,
 ) => {
     const condition = { name, status, ordering, category_id, post_date, author, description, url };
@@ -63,6 +64,7 @@ const changeFieldById = async (id, field, value) => {
     if (field === 'status') conditions.status = value;
     if (field === 'ordering') conditions.ordering = value;
     if (field === 'url') conditions.url = value;
+    if (field === 'is_special') conditions.is_special = value;
 
     return await model.updateOne({ _id: id }, conditions);
 };
@@ -100,9 +102,6 @@ const getArticleSpecial = async () => {
     return await model.find({ is_special: true }).sort({ ordering: 1 });
 };
 
-const getAllNameId = async () => {
-    return await model.find({ category_id: { $exists: false } }).select('_id name');
-};
 // Count
 const countByStatus = async (status, keyword, category_id) => {
     let condition = {};
@@ -119,7 +118,6 @@ module.exports = {
     getOneById,
     getAll,
     getArticleSpecial,
-    getAllNameId,
     updateOneById,
     countByStatus,
     changeFieldById,

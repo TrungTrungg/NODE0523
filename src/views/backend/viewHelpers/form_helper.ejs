@@ -8,7 +8,7 @@
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
 
-    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, category_parent, image, url, description, author, post_date,is_special) => {
+    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, url, category_parent, image, description, author, post_date,is_special) => {
         let nameXHtml = showInput('text', 'Name', 'name', name)
         let authorXHtml = showInput('text', 'Author', 'author', author)
         let urlXHtml = showInput('text', 'Url', 'url', url)
@@ -27,7 +27,6 @@
                 isSpecialXHtml = ''
                 break;
             case 'category':
-                urlXHtml=''
                 imageXHtml = ''
                 descriptionXHtml = ''
                 postdateXHtml = ''

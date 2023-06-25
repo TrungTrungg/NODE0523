@@ -1,8 +1,8 @@
 const { categoryModel: model } = require('@models');
 
 // Create
-const create = async (name, status, ordering, slug, category_id) => {
-    const condition = { name, status, ordering, slug, category_id };
+const create = async (name, status, ordering, slug, url, category_id) => {
+    const condition = { name, status, ordering, slug, url, category_id };
     return await model.create(condition);
 };
 
@@ -12,21 +12,19 @@ const deleteOneById = async (id) => {
 };
 
 // Update
-const updateOneById = async (id, name, status, ordering, slug, category_id) => {
-    const condition = { name, status, ordering, slug, category_id };
+const updateOneById = async (id, name, status, ordering, slug, url, category_id) => {
+    const condition = { name, status, ordering, slug, url, category_id };
     return await model.updateOne({ _id: id }, condition);
 };
 
-const changeStatusById = async (id, status) => {
-    return await model.updateOne({ _id: id }, { status });
-};
+const changeFieldById = async (id, field, value) => {
+    const conditions = {};
 
-const changeOrderingById = async (id, ordering) => {
-    return await model.updateOne({ _id: id }, { ordering });
-};
+    if (field === 'status') conditions.status = value;
+    if (field === 'ordering') conditions.ordering = value;
+    if (field === 'url') conditions.url = value;
 
-const changeUrlById = async (id, url) => {
-    return await model.updateOne({ _id: id }, { url });
+    return await model.updateOne({ _id: id }, conditions);
 };
 // Get
 const getOneById = async (id) => {
@@ -64,6 +62,17 @@ const getMainCategory = async () => {
 const getCategory = async (id) => {
     return await model.findById(id);
 };
+
+const getBlogCategory = async () => {
+    const [{ id }] = await model.find({ name: 'Tin tức' });
+    const BlogChildCategory = await model.find({ category_id: id });
+    const categories = BlogChildCategory.map((result) => {
+        const { _id, name } = result;
+        return { value: _id, name };
+    });
+
+    return categories;
+};
 // Count
 const countByStatus = async (status, keyword, category_id) => {
     let condition = {};
@@ -84,7 +93,6 @@ module.exports = {
     getCategory,
     updateOneById,
     countByStatus,
-    changeStatusById,
-    changeOrderingById,
-    changeUrlById,
+    changeFieldById,
+    getBlogCategory,
 };

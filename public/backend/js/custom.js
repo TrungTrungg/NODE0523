@@ -1,3 +1,10 @@
+$(document).ready(function () {
+    $('#check-all').click(() => {
+        const isChecked = $('#check-all').prop('checked');
+        $('.checkbox').prop('checked', isChecked);
+    });
+});
+
 // change status
 const handleStatusClick = (collection, id, status, query) => {
     const statusDOM = $(`#status-${id}`);
@@ -52,12 +59,6 @@ const handleStatusClick = (collection, id, status, query) => {
     });
 };
 // change url
-$(document).ready(function () {
-    $('#check-all').click(() => {
-        const isChecked = $('#check-all').prop('checked');
-        $('.checkbox').prop('checked', isChecked);
-    });
-});
 
 const handleUrlChange = (collection, id) => {
     const urlDOM = $(`#url-${id}`);
@@ -195,6 +196,33 @@ const handleSelectOption = (collection, category_id) => {
                     })
                     .join('');
                 optionDOM.html(options);
+            }
+        },
+    });
+};
+
+const handleChangeIsSpecial = (collection, id, isSpecial) => {
+    const inputDOM = $(`#special-${id}`);
+    const newValue = inputDOM.prop('checked');
+    const is_special = `${collection}/changeIsSpecialAjax/${id}/${newValue}`;
+    $.ajax({
+        type: 'GET',
+        url: new URL(is_special, `http://localhost:3000/admin/${collection}`).pathname,
+        dataType: 'json',
+        success: (data) => {
+            if (data.success) {
+                let toastrMessage = data.message;
+
+                inputDOM.val(data.is_special);
+
+                toastr.success(toastrMessage, 'SUCCESS', {
+                    newestOnTop: true,
+                    closeButton: false,
+                    progressBar: true,
+                    preventDuplicates: false,
+                    showMethod: 'slideDown',
+                    timeOut: 10000,
+                });
             }
         },
     });

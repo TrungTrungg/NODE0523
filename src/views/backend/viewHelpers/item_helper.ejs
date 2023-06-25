@@ -1,6 +1,8 @@
 <% include ./image_helper %>
 <% include ./name_helper %>
+<% include ./author_helper %>
 <% include ./status_helper %>
+<% include ./special_helper %>
 <% include ./url_helper %>
 <% include ./ordering_helper %>
 
@@ -12,20 +14,29 @@
         const listItems =  items.map((item, index) => {
             let imageXHtml    = handleImage(item.image)
             let nameXHtml     = handleName(item.name, keyword)
+            let authorXHtml   = handleAuthor(item.author)
             let statusXHtml   = handleStatus(collection, item.status, item.id, query)
+            let specialXHtml  = handleSpecial(collection, item.id, item.is_special)
             let urlXHtml      = handleUrl(collection, item.url, item.id)
             let orderingXHtml = handleOrdering(collection, item.ordering, item.id)
 
             switch (collection) {
                 case 'item':
                     urlXHtml = ''
+                    authorXHtml = ''
+                    specialXHtml = ''
                     break;
                 case 'category':
                     imageXHtml = ''
-                    urlXHtml = ''
+                    authorXHtml = ''
+                    specialXHtml = ''
                     break;
                 case 'series':
                     imageXHtml = ''
+                    authorXHtml = ''
+                    specialXHtml = ''
+                    break;
+                case 'article':
                     break;
                 default:
                     break;
@@ -37,7 +48,9 @@
                             <td>${index+=1}</td>
                                 ${imageXHtml}
                                 ${nameXHtml}
+                                ${authorXHtml}
                                 ${statusXHtml}
+                                ${specialXHtml}
                                 ${urlXHtml}
                                 ${orderingXHtml}
                             <td>

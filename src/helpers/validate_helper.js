@@ -1,26 +1,37 @@
-const {
-    nameArticle,
-    orderingArticle,
-    statusArticle,
-    categoryArticle,
-    descriptionArticle,
-    authorArticle,
-    dateArticle,
-    urlArticle,
-    specialArticle,
-} = require('@validators');
+const { itemValidator, categoryValidator, articleValidator, seriesValidator } = require('@validators');
 
-const articleValidateForm = [
-    nameArticle,
-    orderingArticle,
-    statusArticle,
-    descriptionArticle,
-    authorArticle,
-    dateArticle,
-    specialArticle,
-    urlArticle,
+const itemFormValidate = [itemValidator.nameCheck, itemValidator.orderingCheck, itemValidator.statusCheck];
+
+const categoryFormValidate = [
+    categoryValidator.nameCheck,
+    categoryValidator.orderingCheck,
+    categoryValidator.statusCheck,
+    categoryValidator.urlCheck,
+];
+
+const articleFormValidate = [
+    articleValidator.nameCheck,
+    articleValidator.orderingCheck,
+    articleValidator.statusCheck,
+    articleValidator.descriptionCheck,
+    articleValidator.authorCheck,
+    articleValidator.dateCheck,
+    articleValidator.specialCheck,
+    articleValidator.urlCheck,
+    articleValidator.categoryCheck,
+];
+
+const seriesFormValidate = [
+    seriesValidator.nameCheck,
+    seriesValidator.orderingCheck,
+    seriesValidator.statusCheck,
+    seriesValidator.urlCheck,
+    seriesValidator.categoryCheck,
 ];
 
 module.exports = {
-    articleValidateForm,
+    itemFormValidate,
+    categoryFormValidate,
+    articleFormValidate,
+    seriesFormValidate,
 };

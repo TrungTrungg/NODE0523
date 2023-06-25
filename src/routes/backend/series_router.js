@@ -1,13 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    nameSeries: nameCheck,
-    orderingSeries: orderingCheck,
-    statusSeries: statusCheck,
-    categorySeries: categoryCheck,
-    urlSeries: urlCheck,
-} = require('@validators');
+const { validator } = require('@helpers');
 
 const { seriesController: controller } = require('@controllers');
 
@@ -18,7 +12,7 @@ router.get('(/status/:status)?', controller.renderList);
 router.get('/add', controller.renderAddPage);
 
 // Thêm 1 Item
-router.post('/', [nameCheck, orderingCheck, statusCheck, categoryCheck, urlCheck], controller.addOne);
+router.post('/', validator.seriesFormValidate, controller.addOne);
 
 // Xóa 1 Item
 router.get('/delete/:id', controller.deleteOne);
@@ -27,7 +21,7 @@ router.get('/delete/:id', controller.deleteOne);
 router.get('/edit/:id', controller.renderEditPage);
 
 // Sửa 1 Item
-router.post('/edit', [nameCheck, orderingCheck, statusCheck, categoryCheck, urlCheck], controller.editOne);
+router.post('/edit', validator.seriesFormValidate, controller.editOne);
 
 // Sửa status của 1 Item
 // router.get('(/:id/:status)?', controller.changeStatus);

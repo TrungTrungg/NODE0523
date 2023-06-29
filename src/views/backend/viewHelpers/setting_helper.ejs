@@ -1,0 +1,285 @@
+<%
+    showHeaderSetting = ({header}) => {
+        return(`
+          <div>
+            <div class="form-group">
+              <label for="SIcon">Search Icon</label>
+              <input name="headerSIcon" value="${header?.searchIcon ? header.searchIcon : ''}" type="text" class="form-control" id="SIcon" placeholder="Enter Search Icon " />
+            </div>
+            <div class="form-group">
+              <label for="CIcon">Cart ICon</label>
+              <input name="headerCIcon" value="${header?.cartIcon ? header.cartIcon : ''}" type="text" class="form-control" id="CIcon" placeholder="Enter Cart Icon " />
+            </div>
+            <div class="form-group">
+              <div class="form-group">
+                <label>Logo</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="add-image" class="custom-file-input" onchange="javascript:handleShowImage()" name="headerLogo">
+                    <label class="custom-file-label" for="add-image">Choose file</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group d-flex justify-content-center">
+                <img class="img-fluid img-thumbnail img-lg w-50 h-auto" src="/uploads/setting/${header?.logo}" alt="" id="show-image">
+              </div>
+              </div>
+          </div>
+        `)
+    }
+
+    showInfoSetting = ({info}) => {
+        return(`
+            <div>
+            <h4 class="text-center font-weight-bold">Left</h4>
+            <div class="form-group">
+              <label for="Lname">Name</label>
+              <input name="infoLName" value="${info?.left.name ? info.left.name : ''}" type="text" class="form-control" id="Lname" placeholder="Enter " />
+            </div>
+            <div class="form-group">
+              <label for="Ldes">Description</label>
+              <textarea name="infoLDes" value="" type="text" class="form-control" id="Ldes" placeholder="Enter ">${info?.left.description ? info.left.description : ''}</textarea>
+            </div>
+
+            <h4 class="text-center font-weight-bold">Middle</h4>
+            <div class="form-group">
+              <label for="Mname">Name</label>
+              <input name="infoMName" value="${info?.mid.name ? info.mid.name : ''}" type="text" class="form-control" id="Mname" placeholder="Enter " />
+            </div>
+            <div class="form-group">
+              <label for="Mdes">Description</label>
+              <textarea name="infoMDes" value="" type="text" class="form-control" id="Mdes" placeholder="Enter ">${info?.mid.description ? info.mid.description : ''}</textarea>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label for="ButtMname">Button name</label>
+                <input name="infoButtMName" value="${info?.mid.button.name ? info.mid.button.name : ''}" type="text" class="form-control" id="ButtMname" placeholder="Enter " />
+              </div>
+              <div class="form-group col">
+                <label for="ButtMicon">Button icon</label>
+                <input name="infoButtMIcon" value="${info?.mid.button.icon ? info.mid.button.icon : ''}" type="text" class="form-control" id="ButtMicon" placeholder="Enter " />
+              </div>
+              <div class="form-group col">
+                <label for="ButtMcolor">Button color</label>
+                <input name="infoButtMColor" value="${info?.mid.button.color ? info.mid.button.color : ''}" type="text" class="form-control" id="ButtMcolor" placeholder="Enter " />
+              </div>
+            </div>
+            
+            <h4 class="text-center font-weight-bold">Right</h4>
+            <div class="form-group">
+              <label for="Rname">Name</label>
+              <input name="infoRName" value="${info?.right.name ? info.right.name : ''}" type="text" class="form-control" id="Rname" placeholder="Enter " />
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label for="linkFb">Link Facebook</label>
+                <input name="infoLinkFb" value="${info?.right.link.facebook ? info.right.link.facebook : ''}" type="text" class="form-control" id="linkFb" placeholder="Enter " />
+              </div>
+              <div class="form-group col">
+                <label for="linkZalo">Link Zalo</label>
+                <input name="infoLinkZalo" value="${info?.right.link.zalo ? info.right.link.zalo : ''}" type="text" class="form-control" id="linkZalo" placeholder="Enter " />
+              </div>
+              <div class="form-group col">
+                <label for="phone">Phone Number</label>
+                <input name="infoPhone" value="${info?.right.link.phone ? info.right.link.phone : ''}" type="text" class="form-control" id="phone" placeholder="Enter " />
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label for="linkIns">Link Instagram</label>
+                <input name="infoLinkIns" value="${info?.right.link.instagram ? info.right.link.instagram : ''}" type="text" class="form-control" id="linkIns" placeholder="Enter " />
+              </div>
+              <div class="form-group col">
+                <label for="linkGit">Link GitHub</label>
+                <input name="infoLinkGit" value="${info?.right.link.git ? info.right.link.git : ''}" type="text" class="form-control" id="linkGit" placeholder="Enter " />
+              </div>
+              <div class="form-group col">
+                <label for="gmail">Gmail</label>
+                <input name="infoGmail" value="${info?.right.link.gmail ? info.right.link.gmail : ''}" type="text" class="form-control" id="gmail" placeholder="Enter " />
+              </div>
+            </div>
+            </div>
+        `)
+    }
+
+    showPurchaseSetting = ({purchase}) => {
+        return(`
+            <div class="form-group">
+                <h4 class="text-center font-weight-bold">First</h4>
+                <div class="form-group">
+                  <label for="purSTName">Name</label>
+                  <input name="purchaseSTName" value="${purchase?.first.name ? purchase.first.name : ''}" type="text" class="form-control" id="purSTName" placeholder="Enter " />
+                </div>
+                <div class="form-group">
+                  <label for="purSTIcon">Icon</label>
+                  <input name="purchaseSTIcon" value="${purchase?.first.icon ? purchase.first.icon : ''}" type="text" class="form-control" id="purSTIcon" placeholder="Enter " />
+                </div>
+                <div class="form-group">
+                  <label for="purSTdes">Description</label>
+                  <textarea name="purchaseSTDes" value="" type="text" class="form-control" id="purSTdes" placeholder="Enter ">${purchase?.first.description ? purchase.first.description : ''}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <h4 class="text-center font-weight-bold">Second</h4>
+              <div class="form-group">
+                <label for="purNDName">Name</label>
+                <input name="purchaseNDName" value="${purchase?.second.name ? purchase.second.name : ''}" type="text" class="form-control" id="purNDName" placeholder="Enter " />
+              </div>
+              <div class="form-group">
+                <label for="purNDIcon">Icon</label>
+                <input name="purchaseNDIcon" value="${purchase?.second.icon ? purchase.second.icon : ''}" type="text" class="form-control" id="purNDIcon" placeholder="Enter " />
+              </div>
+              <div class="form-group">
+                <label for="purNDdes">Description</label>
+                <textarea name="purchaseNDDes" value="" type="text" class="form-control" id="purNDdes" placeholder="Enter ">${purchase?.second.description ? purchase.second.description : ''}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <h4 class="text-center font-weight-bold">Third</h4>
+              <div class="form-group">
+                <label for="purRDName">Name</label>
+                <input name="purchaseRDName" value="${purchase?.third.name ? purchase.third.name : ''}" type="text" class="form-control" id="purRDName" placeholder="Enter " />
+              </div>
+              <div class="form-group">
+                <label for="purRDIcon">Icon</label>
+                <input name="purchaseRDIcon" value="${purchase?.third.icon ? purchase.third.icon : ''}" type="text" class="form-control" id="purRDIcon" placeholder="Enter " />
+              </div>
+              <div class="form-group">
+                <label for="purRDdes">Description</label>
+                <textarea name="purchaseRDDes" value="" type="text" class="form-control" id="purRDdes" placeholder="Enter ">${purchase?.third.description ? purchase.third.description : ''}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <h4 class="text-center font-weight-bold">Fourth</h4>
+              <div class="form-group">
+                <label for="purTHName">Name</label>
+                <input name="purchaseTHName" value="${purchase?.fourth.name ? purchase.fourth.name : ''}" type="text" class="form-control" id="purTHName" placeholder="Enter " />
+              </div>
+              <div class="form-group">
+                <label for="purTHIcon">Icon</label>
+                <input name="purchaseTHIcon" value="${purchase?.fourth.icon ? purchase.fourth.icon : ''}" type="text" class="form-control" id="purTHIcon" placeholder="Enter " />
+              </div>
+              <div class="form-group">
+                <label for="purTHdes">Description</label>
+                <textarea name="purchaseTHDes" value="" type="text" class="form-control" id="purTHdes" placeholder="Enter ">${purchase?.fourth.description ? purchase.fourth.description : ''}</textarea>
+              </div>
+            </div>
+        `)
+    }
+
+    showDiscountSetting = ({discount}) => {
+        return(`
+            <div>
+                <div class="form-group">
+                    <label for="disName">Name</label>
+                    <input name="discountName" value="${discount?.name ? discount.name : ''}" type="text" class="form-control" id="disName" placeholder="Enter " />
+                </div>
+                <div class="form-group">
+                    <label for="disDes">Description</label>
+                    <textarea name="discountDes" value="" type="text" class="form-control" id="disDes" placeholder="Enter ">${discount?.description ? discount.description : ''}</textarea>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label for="disname">Button name</label>
+                        <input name="discountButtName" value="${discount?.button.name ? discount.button.name : ''}" type="text" class="form-control" id="disname" placeholder="Enter " />
+                    </div>
+                    <div class="form-group col">
+                        <label for="disicon">Button icon</label>
+                        <input name="discountButtIcon" value="${discount?.button.icon ? discount.button.icon : ''}" type="text" class="form-control" id="disicon" placeholder="Enter " />
+                    </div>
+                    <div class="form-group col">
+                        <label for="discolor">Button color</label>
+                        <input name="discountButtColor" value="${discount?.button.color ? discount.button.color : ''}" type="text" class="form-control" id="discolor" placeholder="Enter " />
+                    </div>
+                </div>
+            <div class="form-group">
+                <label>Image</label>
+                <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" id="add-image-dis" class="custom-file-input" onchange="javascript:handleShowImageDis()" name="discountImage">
+                    <label class="custom-file-label" for="add-image">Choose file</label>
+                </div>
+                </div>
+            </div>
+            <div class="form-group d-flex justify-content-center">
+                <img class="img-fluid img-thumbnail img-lg w-50 h-auto" src="/uploads/setting/${discount?.image}" alt="" id="show-image-dis">
+            </div>
+            </div>
+        `)
+    }
+
+    showFooterSetting = ({footer}) => {
+        return(`
+            <div>
+                <div class="form-group">
+                    <label for="fooAddr">Address</label>
+                    <input name="footerAddress" value="${footer?.address ? footer.address : ''}" type="text" class="form-control" id="fooAddr" placeholder="Enter " />
+                </div>
+                <div class="form-group">
+                    <label for="fooPhone">Phone</label>
+                    <input name="footerPhone" value="${footer?.phone ? footer.phone : ''}" type="text" class="form-control" id="fooPhone" placeholder="Enter " />
+                </div>
+                <div class="form-group">
+                    <label for="fooFax">Fax</label>
+                    <input name="footerFax" value="${footer?.fax ? footer.fax : ''}" type="text" class="form-control" id="fooFax" placeholder="Enter " />
+                </div>
+                <div class="form-group">
+                    <label for="fooEmail">Email</label>
+                    <input name="footerEmail" value="${footer?.email ? footer.email : ''}" type="text" class="form-control" id="foo"Email placeholder="Enter " />
+                </div>
+            <div class="form-group">
+              <label for="fooDes">Description</label>
+              <textarea name="footerDes" value="" type="text" class="form-control" id="fooDes" placeholder="Enter ">${footer.subcribeDescription ? footer.subcribeDescription : ''}</textarea>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label for="fooname">Button name</label>
+                    <input name="footerButtName" value="${footer?.button.name ? footer.button.name : ''}" type="text" class="form-control" id="fooname" placeholder="Enter " />
+                </div>
+                <div class="form-group col">
+                    <label for="fooicon">Button icon</label>
+                    <input name="footerButtIcon" value="${footer?.button.icon ? footer.button.icon : ''}" type="text" class="form-control" id="fooicon" placeholder="Enter " />
+                </div>
+                <div class="form-group col">
+                    <label for="foocolor">Button color</label>
+                    <input name="footerButtColor" value="${footer?.button.color ? footer.button.color : ''}" type="text" class="form-control" id="foocolor" placeholder="Enter " />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                  <label for="linkFFb">Link Facebook</label>
+                  <input name="footerLinkFb" value="${footer?.link.facebook ? footer.link.facebook : ''}" type="text" class="form-control" id="linkFFb" placeholder="Enter " />
+                </div>
+                <div class="form-group col">
+                  <label for="linkGit">Link GitHub</label>
+                  <input name="footerLinkGit" value="${footer?.link.git ? footer.link.git : ''}" type="text" class="form-control" id="linkGit" placeholder="Enter " />
+                </div>
+            </div>
+            </div>
+            <div class="form-group">
+              <div class="form-group">
+                <label>Image</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="add-image-foo" class="custom-file-input" onchange="javascript:handleShowImageFoo()" name="footerLogo">
+                    <label class="custom-file-label" for="add-image">Choose file</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group d-flex justify-content-center">
+                <img class="img-fluid img-thumbnail img-lg w-50 h-auto" src="/uploads/setting/${footer?.logo}" alt="" id="show-image-foo">
+              </div>
+            </div>
+        `)
+    }
+%>

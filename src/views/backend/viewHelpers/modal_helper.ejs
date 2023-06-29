@@ -1,0 +1,33 @@
+<%
+    showModal = () => {
+        return(`
+            <div class="modal fade" id="sendMailModal" tabindex="-1" role="dialog" aria-labelledby="sendMailModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content bg-dark">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="sendMailModalLabel">Nhập dữ liệu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    
+                      <div class="form-group">
+                        <label for="inputName">Tiêu đề</label>
+                        <input name="subject" type="text" class="form-control" id="inputName" placeholder="Nhập tiêu đề">
+                      </div>
+                      <div class="form-group">
+                        <label for="inputContent">Nột dung</label>
+                        <textarea name="text" type="email" class="form-control" id="inputContent" placeholder="Nhập nội dung"></textarea>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="cancel" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-secondary">Gửi</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        `)
+    }
+%>

@@ -25,23 +25,19 @@
                             <ul>
                                 <li>
                                     <i class="icon-calendar3"></i>
-                                    ${article.post_date.toISOString().slice(0, 10)}</li>
+                                    ${article.createdAt.toISOString().slice(0, 10)}</li>
                                 <li>
-                                    <a href="#">
+                                    <a>
                                         <i class="icon-user"></i>
                                         ${article.author}</a>
                                 </li>
                                 <li>
                                     <i class="icon-folder-open"></i>
-                                    <a href="#">News</a>
+                                    <a>Tin mới</a>
                                 </li>
+                                
                                 <li>
-                                    <a href="blog-single.html#comments">
-                                        <i class="icon-comments"></i>
-                                        13</a>
-                                </li>
-                                <li>
-                                    <a href="#">
+                                    <a>
                                         <i class="icon-camera-retro"></i>
                                     </a>
                                 </li>
@@ -49,7 +45,7 @@
                         </div>
                         <div class="entry-content">
                             <p>${article.description}</p>
-                            <a href="blog-single.html" class="more-link">Read More</a>
+                            <a href="/blog/detail/${article.id}" class="more-link">Xem thêm</a>
                         </div>
                     </div>
                 </div>
@@ -57,6 +53,49 @@
             `)
         }).join('')
         return listArticles
+    }
+
+    showSidebarArticle = (articles) => {
+         let listArticles = articles.map((article, index) => {
+            let reverseImg = ''
+            let reverseContent = 'ps-md-4'
+            if(index % 2 != 0) {
+                reverseImg = 'order-md-last'
+                reverseContent = 'pe-md-4'
+            }
+            return(`
+                <div class="entry col-12">
+                    <div class="grid-inner row g-0">
+                        <div class="col-auto">
+                            <div class="entry-image">
+                                <a>
+                                    <img class="rounded-circle" src="/backend/uploads/${article.image}" alt="Image">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col ps-3">
+                            <div class="entry-title">
+                                <h4>
+                                    <a>${article.name}</a>
+                                </h4>
+                            </div>
+                            <div class="entry-meta">
+                                <ul>
+                                    <li>
+                                        <a>
+                                            <i class="icon-user"></i>
+                                            ${article.author}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            `)
+        }).join('')
+        return listArticles
+
     }
 
 %>

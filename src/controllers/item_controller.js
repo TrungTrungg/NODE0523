@@ -8,7 +8,6 @@ const { itemService: service } = require('@services');
 const { filterOptions, notify, itemCollection: collection } = require('@utils');
 const { handlePagination } = require('@helpers');
 const { resultsValidator } = require('@validators');
-const { stringify } = require('querystring');
 
 // render list items, filter status, pagination
 const renderList = async (req, res, next) => {

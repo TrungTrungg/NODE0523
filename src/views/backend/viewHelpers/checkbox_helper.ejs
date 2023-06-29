@@ -1,0 +1,7 @@
+<%
+    handleCheckbox = (id, email) => {
+        return(`
+            <input id="checkbox-${id}" type="checkbox" class="checkbox" name="cid" value="${email ? email : id}" />
+        `)
+    }
+%>

@@ -1,55 +1,58 @@
 <div class="section mb-0">
-    <div class="container">
+  <div class="container">
 
-        <div class="row col-mb-50">
-            <div class="col-sm-6 col-lg-3">
-                <div class="feature-box fbox-plain fbox-dark fbox-sm">
-                    <div class="fbox-icon">
-                        <i class="icon-thumbs-up2"></i>
-                    </div>
-                    <div class="fbox-content">
-                        <h3>100% Original</h3>
-                        <p class="mt-0">We guarantee you the sale of Original Brands.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-lg-3">
-                <div class="feature-box fbox-plain fbox-dark fbox-sm">
-                    <div class="fbox-icon">
-                        <i class="icon-credit-cards"></i>
-                    </div>
-                    <div class="fbox-content">
-                        <h3>Payment Options</h3>
-                        <p class="mt-0">We accept Visa, MasterCard and American Express.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-lg-3">
-                <div class="feature-box fbox-plain fbox-dark fbox-sm">
-                    <div class="fbox-icon">
-                        <i class="icon-truck2"></i>
-                    </div>
-                    <div class="fbox-content">
-                        <h3>Free Shipping</h3>
-                        <p class="mt-0">Free Delivery to 100+ Locations on orders above $40.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-lg-3">
-                <div class="feature-box fbox-plain fbox-dark fbox-sm">
-                    <div class="fbox-icon">
-                        <i class="icon-undo"></i>
-                    </div>
-                    <div class="fbox-content">
-                        <h3>30-Days Returns</h3>
-                        <p class="mt-0">Return or exchange items purchased within 30 days.</p>
-                    </div>
-                </div>
-            </div>
+    <div class="row col-mb-50">
+      <div class="col-sm-6 col-lg-3">
+        <div class="feature-box fbox-plain fbox-dark fbox-sm">
+          <div class="fbox-icon">
+            <i class="<%= purchaseSetting.first.icon %>"></i>
+          </div>
+          <div class="fbox-content">
+            <h3><%= purchaseSetting.first.name %></h3>
+            <p class="mt-0"><%= purchaseSetting.first.description %></p>
+          </div>
         </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="feature-box fbox-plain fbox-dark fbox-sm">
+          <div class="fbox-icon">
+            <i class="<%= purchaseSetting.second.icon %>"></i>
+          </div>
+          <div class="fbox-content">
+            <h3><%= purchaseSetting.second.name %></h3>
+            <p class="mt-0"><%= purchaseSetting.second.description %></p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="feature-box fbox-plain fbox-dark fbox-sm">
+          <div class="fbox-icon">
+            <i class="<%= purchaseSetting.third.icon %>"></i>
+          </div>
+          <div class="fbox-content">
+            <h3><%= purchaseSetting.third.name %></h3>
+            <p class="mt-0"><%= purchaseSetting.third.description %></p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="feature-box fbox-plain fbox-dark fbox-sm">
+          <div class="fbox-icon">
+            <i class="<%= purchaseSetting.fourth.icon %>"></i>
+          </div>
+          <div class="fbox-content">
+            <h3><%= purchaseSetting.fourth.name %></h3>
+            <p class="mt-0"><%= purchaseSetting.fourth.description %></p>
+          </div>
+        </div>
+      </div>
 
     </div>
+
+  </div>
 </div>

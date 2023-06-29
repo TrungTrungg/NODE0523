@@ -1,3 +1,4 @@
+<% include ./checkbox_helper %>
 <% include ./image_helper %>
 <% include ./name_helper %>
 <% include ./author_helper %>
@@ -12,14 +13,17 @@
         if(keyword) 
             query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
+            let checkboxXHtml = handleCheckbox(item.id, item.email)
             let imageXHtml    = handleImage(item.image)
+            let emailXHtml    = handleName(item.email, keyword)
             let nameXHtml     = handleName(item.name, keyword)
             let authorXHtml   = handleAuthor(item.author)
             let statusXHtml   = handleStatus(collection, item.status, item.id, query)
             let specialXHtml  = handleSpecial(collection, item.id, item.is_special)
             let urlXHtml      = handleUrl(collection, item.url, item.id)
             let orderingXHtml = handleOrdering(collection, item.ordering, item.id)
-
+            let editXHml = `<a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>`
+            let deleteXHml = `<a type="button" class="btn btn-danger" onclick="javascript:handleDelete('${collection}','${item._id}')">Delete</a>`
             switch (collection) {
                 case 'item':
                     urlXHtml = ''
@@ -38,16 +42,25 @@
                     break;
                 case 'article':
                     break;
+                case 'subcribe':
+                    imageXHtml = ''
+                    nameXHtml = ''
+                    authorXHtml = '' 
+                    specialXHtml = '' 
+                    urlXHtml = ''
+                    orderingXHtml = '' 
+                    editXHml = ''
                 default:
                     break;
             }
            
             return  (`
                         <tr>
-                            <td><input type="checkbox" class="checkbox"/></td>
+                            <td>${checkboxXHtml}</td>
                             <td>${index+=1}</td>
                                 ${imageXHtml}
                                 ${nameXHtml}
+                                ${emailXHtml}
                                 ${authorXHtml}
                                 ${statusXHtml}
                                 ${specialXHtml}
@@ -55,8 +68,8 @@
                                 ${orderingXHtml}
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                    <a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>
-                                    <a type="button" class="btn btn-danger" onclick="javascript:handleDelete('${collection}','${item._id}')">Delete</a>
+                                ${editXHml}
+                                ${deleteXHml}
                                 </div>
                             </td>
                         </tr>

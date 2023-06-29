@@ -1,35 +1,31 @@
 <% include ./input_helper %>
 <% include ./image_helper %>
 <% include ./selectBox_helper %>
-<% include ./datetime_helper %>
 <% include ./radio_helper %>
 <% include ./textarea_helper %>
 
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
 
-    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, url, category_parent, image, description, author, post_date,is_special) => {
+    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, url, category_parent, image, description, author,is_special) => {
         let nameXHtml = showInput('text', 'Name', 'name', name)
         let authorXHtml = showInput('text', 'Author', 'author', author)
         let urlXHtml = showInput('text', 'Url', 'url', url)
         let orderingXHtml = showInput('number', 'Ordering', 'ordering', ordering)
         let descriptionXHtml = showTextarea('Description', 'description', description)
         let imageXHtml = showUploadImage(image)
-        let postdateXHtml = showPostDate(post_date)
         let isSpecialXHtml = showRadio(is_special)
         let categoryXHtml = ''
         let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
         switch (collection) {
             case 'item':
                 descriptionXHtml = ''
-                postdateXHtml = ''
                 authorXHtml = ''
                 isSpecialXHtml = ''
                 break;
             case 'category':
                 imageXHtml = ''
                 descriptionXHtml = ''
-                postdateXHtml = ''
                 isSpecialXHtml = ''
                 authorXHtml = ''
                 categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
@@ -37,7 +33,6 @@
             case 'series':
                 imageXHtml = ''
                 descriptionXHtml = ''
-                postdateXHtml = ''
                 isSpecialXHtml = ''
                 authorXHtml = ''
                 categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_parent, true, '') + 
@@ -59,12 +54,13 @@
                         ${orderingXHtml}
                         ${urlXHtml}
                         ${isSpecialXHtml}
-                        ${statusXHtml}
+                        <div class="form-group row">
+                            ${statusXHtml}
+                        </div>
                         <div class="form-group row">
                             ${categoryXHtml}
                         </div>
                         ${descriptionXHtml}
-                        ${postdateXHtml}
                         ${imageXHtml}
                 </div>
                 <div class="card-footer">

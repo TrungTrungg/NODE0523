@@ -107,8 +107,7 @@ const addOne = async (req, res) => {
     } else {
         let imageName = '';
         if (req.file) imageName = req.file.filename;
-        const { name, status, ordering, category_id, post_date, author, description, url, is_special } =
-            matchedData(req);
+        const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
         const slug = name
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
@@ -119,7 +118,6 @@ const addOne = async (req, res) => {
             status.toLowerCase(),
             ordering,
             slug,
-            post_date,
             author,
             description,
             url,
@@ -144,7 +142,7 @@ const deleteOne = async (req, res) => {
 // render Edit item page
 const renderEditPage = async (req, res) => {
     const { id } = req.params;
-    const { name, status, ordering, category_id, post_date, author, description, image, url, is_special } =
+    const { name, status, ordering, category_id, author, description, image, url, is_special } =
         await service.getOneById(id);
     const categories = await categoryService.getBlogCategory();
     const messages = {
@@ -159,7 +157,6 @@ const renderEditPage = async (req, res) => {
         status,
         ordering,
         category_id,
-        post_date,
         author,
         description,
         image,
@@ -187,10 +184,8 @@ const editOne = async (req, res) => {
                 fs.unlinkSync(imagePath);
             }
         }
-        console.log(imageName);
         // Lấy data sau khi validate
-        const { name, status, ordering, category_id, post_date, author, description, url, is_special } =
-            matchedData(req);
+        const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
         // slug
         const slug = name
             .toLowerCase()
@@ -203,7 +198,6 @@ const editOne = async (req, res) => {
             name,
             status.toLowerCase(),
             ordering,
-            post_date,
             author,
             description,
             url,

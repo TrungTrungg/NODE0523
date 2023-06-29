@@ -1,0 +1,17 @@
+<% include ../../viewHelpers/article_helper %>
+<% include ./Pagination %>
+<div
+    class="postcontent col-lg-9 order-lg-last">
+
+    <!-- Posts ============================================= -->
+    <div id="posts" class="row grid-container gutter-40">
+
+        <%- showArticle(articles) %>
+    </div>
+    <!-- #posts end -->
+
+    <!-- Pager ============================================= -->
+    <%- handlePagination(pagination, category_id) %>
+    <!-- .pager end -->
+
+</div>

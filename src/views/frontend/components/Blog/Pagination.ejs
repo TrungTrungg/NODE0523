@@ -1,0 +1,33 @@
+<%
+    handlePagination = (pagination, category_id) => {
+        if(pagination.totalPages <= 1) return 
+
+        let previous = pagination.currentPage - 1
+        let next = pagination.currentPage + 1
+        let disabledPrevious = ''
+        let disabledNext = ''
+
+        if(pagination.currentPage === 1) {
+            previous = pagination.currentPage
+            disabledPrevious = 'disabled'
+        }
+
+        if(pagination.currentPage === pagination.totalPages) {
+            next = pagination.totalPages
+            disabledNext = 'disabled'
+        }
+        
+        return(`
+            <div class="d-flex justify-content-between mt-5">
+                <a 
+                    href="/blog/${category_id}?page=${next}" 
+                    class="btn btn-outline-secondary ${disabledNext}"
+                >&larr; Older</a>
+                <a 
+                    href="/blog/${category_id}?page=${previous}" 
+                    class="btn btn-outline-dark ${disabledPrevious}"
+                >Newer &rarr;</a>
+            </div>
+        `)
+    }
+%>

@@ -1,4 +1,10 @@
-const { itemValidator, categoryValidator, articleValidator, seriesValidator } = require('@validators');
+const {
+    itemValidator,
+    categoryValidator,
+    articleValidator,
+    seriesValidator,
+    subcribeValidator,
+} = require('@validators');
 
 const itemFormValidate = [itemValidator.nameCheck, itemValidator.orderingCheck, itemValidator.statusCheck];
 
@@ -15,7 +21,6 @@ const articleFormValidate = [
     articleValidator.statusCheck,
     articleValidator.descriptionCheck,
     articleValidator.authorCheck,
-    articleValidator.dateCheck,
     articleValidator.specialCheck,
     articleValidator.urlCheck,
     articleValidator.categoryCheck,
@@ -29,9 +34,12 @@ const seriesFormValidate = [
     seriesValidator.categoryCheck,
 ];
 
+const subcribeFormValidate = [subcribeValidator.mailCheck];
+
 module.exports = {
     itemFormValidate,
     categoryFormValidate,
     articleFormValidate,
     seriesFormValidate,
+    subcribeFormValidate,
 };

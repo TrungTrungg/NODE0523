@@ -1,19 +1,7 @@
 const { articleModel: model } = require('@models');
 
 // Create
-const create = async (
-    name,
-    status,
-    ordering,
-    slug,
-    post_date,
-    author,
-    description,
-    url,
-    is_special,
-    category_id,
-    image,
-) => {
+const create = async (name, status, ordering, slug, author, description, url, is_special, category_id, image) => {
     const condition = {
         name,
         status,
@@ -38,20 +26,8 @@ const deleteOneById = async (id) => {
 };
 
 // Update
-const updateOneById = async (
-    id,
-    name,
-    status,
-    ordering,
-    post_date,
-    author,
-    description,
-    url,
-    is_special,
-    category_id,
-    image,
-) => {
-    const condition = { name, status, ordering, category_id, post_date, author, description, url };
+const updateOneById = async (id, name, status, ordering, author, description, url, is_special, category_id, image) => {
+    const condition = { name, status, ordering, category_id, author, description, url };
     if (image) condition.image = image;
     if (is_special === 'yes') condition.is_special = true;
     else condition.is_special = false;
@@ -67,18 +43,6 @@ const changeFieldById = async (id, field, value) => {
     if (field === 'is_special') conditions.is_special = value;
 
     return await model.updateOne({ _id: id }, conditions);
-};
-
-const changeStatusById = async (id, status) => {
-    return await model.updateOne({ _id: id }, { status });
-};
-
-const changeUrlById = async (id, url) => {
-    return await model.updateOne({ _id: id }, { url });
-};
-
-const changeOrderingById = async (id, ordering) => {
-    return await model.updateOne({ _id: id }, { ordering });
 };
 
 // Get
@@ -98,8 +62,20 @@ const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }
         .limit(itemPerPage);
 };
 
-const getArticleSpecial = async () => {
-    return await model.find({ is_special: true }).sort({ ordering: 1 });
+const getArticleSpecial = async (category_id) => {
+    const conditions = { is_special: true };
+    if (category_id) conditions.category_id = category_id;
+    return await model.find(conditions).sort({ ordering: 1 }).limit(3);
+};
+
+const getArticleCurrent = async (category_id) => {
+    const conditions = {};
+    if (category_id) conditions.category_id = category_id;
+    return await model.find(conditions).sort({ createdAt: -1 }).limit(3);
+};
+
+const getArticleWithCategory = async (category_id, { itemPerPage, skip }) => {
+    return await model.find({ category_id }).sort({ createdAt: -1 }).skip(skip).limit(itemPerPage);
 };
 
 // Count
@@ -112,16 +88,20 @@ const countByStatus = async (status, keyword, category_id) => {
     return await model.count(condition);
 };
 
+const countArticleByCategory = async (category_id) => {
+    return await model.count({ category_id });
+};
+
 module.exports = {
     create,
     deleteOneById,
     getOneById,
     getAll,
     getArticleSpecial,
+    getArticleCurrent,
+    getArticleWithCategory,
     updateOneById,
-    countByStatus,
     changeFieldById,
-    changeStatusById,
-    changeOrderingById,
-    changeUrlById,
+    countByStatus,
+    countArticleByCategory,
 };

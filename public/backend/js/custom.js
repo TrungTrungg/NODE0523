@@ -1,9 +1,35 @@
-$(document).ready(function () {
-    $('#check-all').click(() => {
-        const isChecked = $('#check-all').prop('checked');
-        $('.checkbox').prop('checked', isChecked);
-    });
+const checkAll = $('#checkAll');
+const checked = $('input[name="cid"]');
+// let arrChecked = [];
+$(document).ready(() => {
+    checkAll.prop('checked', false);
 });
+// check all
+checkAll.change(function () {
+    const isChecked = $(checkAll).prop('checked');
+    checked.prop('checked', isChecked);
+    // if (isChecked) {
+    //     checked.each(function () {
+    //         arrChecked.push($(this).val());
+    //     });
+    // } else arrChecked = [];
+    // console.log(arrChecked);
+});
+
+// // input checked
+// const handleCheckbox = (id) => {
+//     const checkboxDOM = $(`#checkbox-${id}`);
+//     const arrDOM = $(`#cid`);
+//     console.log(checkboxDOM.prop('checked'));
+//     if (checkboxDOM.prop('checked')) {
+//         arrChecked.push(id);
+//     } else {
+//         arrChecked = arrChecked.filter((arrId) => arrId !== id);
+//     }
+//     arrDOM.val(arrChecked);
+//     console.log(arrChecked);
+//     console.log(arrDOM);
+// };
 
 // change status
 const handleStatusClick = (collection, id, status, query) => {
@@ -150,6 +176,34 @@ const handleShowImage = () => {
     }
 };
 
+const handleShowImageDis = () => {
+    const inputDOM = $('#add-image-dis');
+    const imageDOM = $('#show-image-dis');
+    const file = inputDOM.prop('files')[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const imageSrc = event.target.result;
+            imageDOM.prop('src', imageSrc);
+        };
+
+        reader.readAsDataURL(file);
+    }
+};
+const handleShowImageFoo = () => {
+    const inputDOM = $('#add-image-foo');
+    const imageDOM = $('#show-image-foo');
+    const file = inputDOM.prop('files')[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const imageSrc = event.target.result;
+            imageDOM.prop('src', imageSrc);
+        };
+
+        reader.readAsDataURL(file);
+    }
+};
 const handleFilterOption = (collection, category_id, category_name, path, query) => {
     const optionDOM = $('#list-categories');
     const buttDOM = $('#menu-dropdown');

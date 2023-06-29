@@ -1,0 +1,12 @@
+<%
+    showFlickr = (articles) => {
+        return articles.map((article, index) => {
+            if(index >= 16) return
+            
+            return(`
+                <a class="grid-item" href="/backend/uploads/${article.image}"  data-lightbox="gallery-item" style="position: absolute; left: 0%; top: 0px;"><img src="/backend/uploads/${article.image}" alt="Article Image"></a>
+            `)
+        })
+    }
+
+%>

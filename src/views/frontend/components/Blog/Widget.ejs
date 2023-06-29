@@ -1,0 +1,28 @@
+<% include ../../viewHelpers/article_helper %>
+
+<div class="tabs mb-0 clearfix" id="sidebar-tabs">
+
+    <ul class="tab-nav clearfix">
+        <li>
+            <a href="#tabs-1">Nổi bật</a>
+        </li>
+        <li>
+            <a href="#tabs-2">Gần đây</a>
+        </li>
+    </ul>
+
+    <div class="tab-container">
+        <div class="tab-content clearfix" id="tabs-1">
+            <div class="posts-sm row col-mb-30" id="popular-post-list-sidebar">
+                <%- showSidebarArticle(popularArticles) %>
+            </div>
+        </div>
+        <div class="tab-content clearfix" id="tabs-2">
+            <div class="posts-sm row col-mb-30" id="recent-post-list-sidebar">
+                <%- showSidebarArticle(currentArticles) %>
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -76,7 +76,7 @@ const addEmailAndSend = async (req, res) => {
         const { email } = matchedData(req);
         const findEmail = await service.getOne(email);
 
-        if (!findEmail.join('')) {
+        if (findEmail.length <= 0) {
             await service.create(email);
             const transporter = nodemailer.createTransport({
                 service: 'Gmail',

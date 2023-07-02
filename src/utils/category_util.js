@@ -4,6 +4,8 @@ const categoryValidator = {
 };
 
 module.exports = {
-    categoryCollection: 'category',
+    mainCategoriesCollection: 'category/main',
+    articleCategoriesCollection: 'category/article',
+    productCategoriesCollection: 'category/product',
     categoryValidator,
 };

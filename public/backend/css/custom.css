@@ -11,3 +11,26 @@ tr td {
 .ordering {
     text-align: center;
 }
+.custom-dropdown-parent {
+    position: relative;
+
+}
+
+.custom-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    color: #fff;
+    left: -107.5%;
+    top: -8px;
+    list-style: none;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.175);
+    padding: 0;
+}
+
+.custom-dropdown-parent:hover>.custom-dropdown {
+    display: block;
+
+}

@@ -14,12 +14,13 @@
             query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
             let checkboxXHtml = handleCheckbox(item.id, item.email)
-            let imageXHtml    = handleImage(item.image)
+            let imageXHtml = handleImage(item.image,collection)
             let emailXHtml    = handleName(item.email, keyword)
             let nameXHtml     = handleName(item.name, keyword)
             let authorXHtml   = handleAuthor(item.author)
             let statusXHtml   = handleStatus(collection, item.status, item.id, query)
-            let specialXHtml  = handleSpecial(collection, item.id, item.is_special)
+            let specialXHtml = handleSpecial(collection, item.id, 'Special', item.is_special)
+            let menuXHtml     =    handleSpecial(collection, item.id, '', item.isMenu)
             let urlXHtml      = handleUrl(collection, item.url, item.id)
             let orderingXHtml = handleOrdering(collection, item.ordering, item.id)
             let editXHml = `<a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>`
@@ -29,26 +30,54 @@
                     urlXHtml = ''
                     authorXHtml = ''
                     specialXHtml = ''
+                    menuXHtml = ''
+                    emailXHtml = ''  
                     break;
-                case 'category':
+                case 'category/main':
                     imageXHtml = ''
                     authorXHtml = ''
                     specialXHtml = ''
+                    emailXHtml = ''
                     break;
-                case 'series':
+                case 'category/article':
                     imageXHtml = ''
                     authorXHtml = ''
+                    menuXHtml = ''
                     specialXHtml = ''
+                    emailXHtml = ''
+                    break;
+                case 'category/product':
+                    imageXHtml = ''
+                    authorXHtml = ''
+                    menuXHtml = ''
+                    specialXHtml = ''
+                    emailXHtml = ''
+                    break;
+                case 'brand':
+                    urlXHtml = ''
+                    authorXHtml = ''
+                    menuXHtml = ''
+                    emailXHtml = ''
+                    break;
+                case 'brand':
+                    urlXHtml = ''
+                    authorXHtml = ''
+                    menuXHtml = ''
+                    emailXHtml = ''
                     break;
                 case 'article':
+                    urlXHtml = ''
+                    menuXHtml = ''
+                    emailXHtml = ''  
                     break;
-                case 'subcribe':
+                case 'subscribe':
                     imageXHtml = ''
                     nameXHtml = ''
                     authorXHtml = '' 
                     specialXHtml = '' 
                     urlXHtml = ''
                     orderingXHtml = '' 
+                    menuXHtml = ''
                     editXHml = ''
                 default:
                     break;
@@ -64,6 +93,7 @@
                                 ${authorXHtml}
                                 ${statusXHtml}
                                 ${specialXHtml}
+                                ${menuXHtml}
                                 ${urlXHtml}
                                 ${orderingXHtml}
                             <td>

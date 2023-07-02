@@ -1,5 +1,5 @@
 <%
-    handleSpecial = (collection, id, isSpecial) => {
+    handleSpecial = (collection, id, label, isSpecial) => {
         return(`
             <td>
                 <div class="custom-control custom-switch">
@@ -11,7 +11,7 @@
                         name="is_special"
                         ${isSpecial ? 'checked' : ''}
                         >
-                    <label class="custom-control-label" for="special-${id}">Special</label>
+                    <label class="custom-control-label" for="special-${id}">${label}</label>
                 </div>
             </td>
         `)

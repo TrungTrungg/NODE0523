@@ -1,36 +1,3 @@
-const checkAll = $('#checkAll');
-const checked = $('input[name="cid"]');
-// let arrChecked = [];
-$(document).ready(() => {
-    checkAll.prop('checked', false);
-});
-// check all
-checkAll.change(function () {
-    const isChecked = $(checkAll).prop('checked');
-    checked.prop('checked', isChecked);
-    // if (isChecked) {
-    //     checked.each(function () {
-    //         arrChecked.push($(this).val());
-    //     });
-    // } else arrChecked = [];
-    // console.log(arrChecked);
-});
-
-// // input checked
-// const handleCheckbox = (id) => {
-//     const checkboxDOM = $(`#checkbox-${id}`);
-//     const arrDOM = $(`#cid`);
-//     console.log(checkboxDOM.prop('checked'));
-//     if (checkboxDOM.prop('checked')) {
-//         arrChecked.push(id);
-//     } else {
-//         arrChecked = arrChecked.filter((arrId) => arrId !== id);
-//     }
-//     arrDOM.val(arrChecked);
-//     console.log(arrChecked);
-//     console.log(arrDOM);
-// };
-
 // change status
 const handleStatusClick = (collection, id, status, query) => {
     const statusDOM = $(`#status-${id}`);
@@ -41,7 +8,7 @@ const handleStatusClick = (collection, id, status, query) => {
     const newUrl = `${collection}/changeStatusAjax/${id}/${status}${query}`;
     $.ajax({
         type: 'GET',
-        url: new URL(newUrl, `http://localhost:3000/admin/${collection}`).href,
+        url: new URL(`http://localhost:3000/admin/${collection}/changeStatusAjax/${id}/${status}${query}`),
         dataType: 'json',
         success: (data) => {
             if (data.success) {
@@ -94,7 +61,7 @@ const handleUrlChange = (collection, id) => {
 
     $.ajax({
         type: 'GET',
-        url: new URL(url, `http://localhost:3000/admin/${collection}`).pathname,
+        url: new URL(`http://localhost:3000/admin/${collection}/changeUrlAjax/${id}/${encodedParam}`),
         dataType: 'json',
         success: (data) => {
             if (data.success) {
@@ -124,7 +91,7 @@ const handleOrderingChange = (collection, id) => {
 
     $.ajax({
         type: 'GET',
-        url: new URL(orderingUrl, `http://localhost:3000/admin/${collection}`).pathname,
+        url: new URL(`http://localhost:3000/admin/${collection}/changeOrderingAjax/${id}/${newOrdering}`),
         dataType: 'json',
         success: (data) => {
             if (data.success) {
@@ -210,7 +177,7 @@ const handleFilterOption = (collection, category_id, category_name, path, query)
     const url = `${collection}/getListCategoriesAjax/${category_id}`;
     $.ajax({
         type: 'GET',
-        url: new URL(url, `http://localhost:3000/admin/${collection}`).pathname,
+        url: new URL(`http://localhost:3000/admin/${collection}/getListCategoriesAjax/${category_id}`),
         dataType: 'json',
         success: (data) => {
             if (data.success) {
@@ -236,7 +203,7 @@ const handleSelectOption = (collection, category_id) => {
     const url = `${collection}/getListCategoriesAjax/${category_id}`;
     $.ajax({
         type: 'GET',
-        url: new URL(url, `http://localhost:3000/admin/${collection}`).pathname,
+        url: new URL(`http://localhost:3000/admin/${collection}/getListCategoriesAjax/${category_id}`),
         dataType: 'json',
         success: (data) => {
             if (data.success) {
@@ -261,7 +228,7 @@ const handleChangeIsSpecial = (collection, id, isSpecial) => {
     const is_special = `${collection}/changeIsSpecialAjax/${id}/${newValue}`;
     $.ajax({
         type: 'GET',
-        url: new URL(is_special, `http://localhost:3000/admin/${collection}`).pathname,
+        url: new URL(`http://localhost:3000/admin/${collection}/changeIsSpecialAjax/${id}/${newValue}`),
         dataType: 'json',
         success: (data) => {
             if (data.success) {

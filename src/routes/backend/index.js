@@ -3,10 +3,12 @@ const router = express.Router();
 
 const dashboardRouter = require('./dashboard_router');
 const itemRouter = require('./item_router');
-const categoryRouter = require('./category_router');
-const articleRouter = require('./article_router');
+const categoryRouter = require('./category');
+const brandRouter = require('./brand_router');
+const productRouter = require('./product_router');
 const seriesRouter = require('./series_router');
-const subcribeRouter = require('./subcribe_router');
+const articleRouter = require('./article_router');
+const subscribeRouter = require('./subscribe_router');
 
 const settingRouter = require('./setting_router');
 
@@ -18,9 +20,11 @@ router.use('/', (req, res, next) => {
 router.use('/', dashboardRouter);
 router.use('/item', itemRouter);
 router.use('/category', categoryRouter);
-router.use('/article', articleRouter);
+router.use('/brand', brandRouter);
+router.use('/product', productRouter);
 router.use('/series', seriesRouter);
-router.use('/subcribe', subcribeRouter);
+router.use('/article', articleRouter);
+router.use('/subscribe', subscribeRouter);
 
 router.use('/setting', settingRouter);
 

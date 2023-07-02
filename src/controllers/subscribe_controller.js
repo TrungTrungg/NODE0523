@@ -1,13 +1,13 @@
 const nodemailer = require('nodemailer');
 const { matchedData } = require('express-validator');
 
-const { subcribeService: service } = require('@services');
+const { subscriberService: service } = require('@services');
 const { filterOptions, notify } = require('@utils');
-const { handlePagination } = require('@helpers');
+const { handlePagination, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
-const renderList = async (req, res) => {
+const renderList = catchAsync(async (req, res) => {
     const { status } = req.params;
     const { search, page } = req.query;
 
@@ -54,8 +54,8 @@ const renderList = async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
-        page: 'Subcribe',
-        collection: 'subcribe',
+        page: 'Subscribe',
+        collection: 'subscribe',
         items,
         filter,
         statusFilterOptions,
@@ -64,10 +64,10 @@ const renderList = async (req, res) => {
         keyword,
         messages,
     };
-    res.render(`backend/pages/subcribe`, options);
-};
+    res.render(`backend/pages/subscribe`, options);
+});
 
-const addEmailAndSend = async (req, res) => {
+const addEmailAndSend = catchAsync(async (req, res) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
@@ -104,9 +104,9 @@ const addEmailAndSend = async (req, res) => {
             res.redirect(`/`);
         }
     }
-};
+});
 
-const sendAllMail = async (req, res) => {
+const sendAllMail = catchAsync(async (req, res) => {
     const { subject, text, cid } = req.body;
 
     const transporter = nodemailer.createTransport({
@@ -128,19 +128,19 @@ const sendAllMail = async (req, res) => {
         if (error) {
             console.log(error);
         } else {
-            res.redirect('/admin/subcribe');
+            res.redirect('/admin/subscribe');
         }
     });
-};
+});
 
-const deleteOne = async (req, res) => {
+const deleteOne = catchAsync(async (req, res) => {
     const { id } = req.params;
 
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
-    res.redirect(`/admin/subcribe`);
-};
-const changeStatusAjax = async (req, res) => {
+    res.redirect(`/admin/subscribe`);
+});
+const changeStatusAjax = catchAsync(async (req, res) => {
     const { id, status } = req.params;
     const { search } = req.query;
     let keyword = '';
@@ -171,7 +171,7 @@ const changeStatusAjax = async (req, res) => {
         status: newStatus.toLowerCase(),
         filter: { allStatus, activeStatus, inactiveStatus },
     });
-};
+});
 module.exports = {
     renderList,
     addEmailAndSend,

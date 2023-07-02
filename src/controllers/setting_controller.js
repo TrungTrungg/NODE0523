@@ -1,17 +1,18 @@
 const fs = require('fs');
 
 const { settingService: service } = require('@services');
+const { catchAsync } = require('@helpers');
 
-const renderSetting = async (req, res) => {
+const renderSetting = catchAsync(async (req, res) => {
     const setting = await service.getSetting();
     const options = {
         page: 'Setting',
         setting,
     };
     res.render('backend/pages/setting', options);
-};
+});
 
-const handleUpdateSetting = async (req, res) => {
+const handleUpdateSetting = catchAsync(async (req, res) => {
     const formData = req.body;
     const setting = await service.getSetting();
     let headerLogo = setting.header.logo;
@@ -126,7 +127,7 @@ const handleUpdateSetting = async (req, res) => {
     const stringData = JSON.stringify(data);
     await service.updateSetting(stringData);
     res.redirect('/admin/setting');
-};
+});
 
 module.exports = {
     renderSetting,

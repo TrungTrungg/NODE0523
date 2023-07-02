@@ -1,8 +1,8 @@
 <%
-    handleImage = (image) => {
+    handleImage = (image, collection) => {
         return(`
         <td class="d-flex justify-content-center">
-            <img class="img-thumbnail img-md" src="/backend/uploads/${image ? image : 'no-image.png'}" alt="" id="show-image">
+            <img class="img-thumbnail img-md" src="/uploads/${collection}/${image ? image : 'no-image.png'}" alt="" id="show-image">
         </td>
         `)
     }
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="form-group d-flex justify-content-center">
-                <img class="img-fluid img-thumbnail img-lg w-50 h-auto" src="${image ? '/backend/uploads/'+image : ''}" alt="" id="show-image">
+                <img class="img-fluid img-thumbnail img-lg w-50 h-auto" src="${image ? '/uploads/'+collection+ '/' + image : ''}" alt="" id="show-image">
             </div>
         `)
     }

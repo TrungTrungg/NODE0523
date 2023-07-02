@@ -7,47 +7,46 @@
 <% include ../../components/PageHeader %>
 <% include ../../components/StatusFilter %>
 <div class="col-md-12">
-    <div class="card">
-        <div class="card-header bg-dark">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="card-title flex-1">List
-                        <%= collection %></h3>
-                    <%- showAction(collection) %>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <%- showCateFilter(collection, categories, cateName, currentStatus, keyword, false) %>
-                    <a type="button" class="btn btn-secondary" style="margin-left: 5px !important;" href="/admin/<%= collection %>/add">Add</a>
-                </div>
-            </div>
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="card-title flex-1">List
+            <%= collection %></h3>
+          <%- showAction(collection) %>
         </div>
-        <!-- /.card-header -->
-        <div class="card-body p-0">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" value="" id="check-all"/></th>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Author</th>
-                        <th>Status</th>
-                        <th>Special/Show</th>
-                        <th>Url</th>
-                        <th>Ordering</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%- showListItems(collection, items, currentStatus,  keyword, pagination)  %>
-                </tbody>
-            </table>
+        <div class="d-flex justify-content-between align-items-center">
+          <%- showCateFilter(collection, categories, cateName, currentStatus, keyword, false) %>
+          <a type="button" class="btn btn-secondary" style="margin-left: 5px !important;" href="/admin/<%= collection %>/add">Add</a>
         </div>
-        <div class="card-footer clearfix">
-            <nav aria-label="Page navigation example" class="float-right">
-                <%- showPagination(collection, currentStatus, keyword, pagination) %>
-            </nav>
-
-        </div>
+      </div>
     </div>
+    <!-- /.card-header -->
+    <div class="card-body p-0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" value="" id="check-all" /></th>
+            <th>#</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Special/Show</th>
+            <th>Ordering</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- showListItems(collection, items, currentStatus,  keyword, pagination)  %>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer clearfix">
+      <nav aria-label="Page navigation example" class="float-right">
+        <%- showPagination(collection, currentStatus, keyword, pagination) %>
+      </nav>
+
+    </div>
+  </div>
 </div>

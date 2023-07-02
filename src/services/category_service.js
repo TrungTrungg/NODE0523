@@ -23,6 +23,7 @@ const changeFieldById = async (id, field, value) => {
     if (field === 'status') conditions.status = value;
     if (field === 'ordering') conditions.ordering = value;
     if (field === 'url') conditions.url = value;
+    if (field === 'isMenu') conditions.isMenu = value;
 
     return await model.updateOne({ _id: id }, conditions);
 };
@@ -43,6 +44,18 @@ const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }
         .limit(itemPerPage);
 };
 
+const getArticleCategories = async (status, keyword, { currentPage, itemPerPage }) => {
+    const [{ id }] = await model.find({ name: 'Tin tức' });
+    let condition = { category_id: id };
+    if (status) condition.status = status.toLowerCase();
+    if (keyword) condition.name = new RegExp(keyword, 'i');
+    return await model
+        .find(condition)
+        .sort({ updatedAt: -1, createdAt: -1 })
+        .skip(itemPerPage * (currentPage - 1))
+        .limit(itemPerPage);
+};
+
 const getNameId = async (id) => {
     let condition = { $exists: true, $eq: '' };
     if (id) condition = id;
@@ -54,9 +67,8 @@ const getSubCategory = async () => {
     return await model.find({ category_id: condition });
 };
 
-const getMainCategory = async () => {
-    let condition = { $exists: true, $eq: '' };
-    return await model.find({ category_id: condition });
+const getMainCategory = async (id) => {
+    return await model.find({ isMenu: true }).sort({ ordering: 1 });
 };
 
 const getCategory = async (id) => {
@@ -73,6 +85,14 @@ const getBlogCategory = async () => {
 
     return categories;
 };
+
+const getArticleCategoriesID = async () => {
+    return await model.find({ name: 'Tin tức' });
+};
+
+const getShopCategoriesID = async () => {
+    return await model.find({ name: 'Shop' });
+};
 // Count
 const countByStatus = async (status, keyword, category_id) => {
     let condition = {};
@@ -87,10 +107,13 @@ module.exports = {
     deleteOneById,
     getOneById,
     getAll,
+    getArticleCategories,
     getNameId,
     getSubCategory,
     getMainCategory,
     getCategory,
+    getArticleCategoriesID,
+    getShopCategoriesID,
     updateOneById,
     countByStatus,
     changeFieldById,

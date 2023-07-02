@@ -1,5 +1,5 @@
 <%
-    showCateFilter = (collection, categories, cateName, currentStatus, keyword, isParent, eleId) => {
+    showCateFilter = (collection, categories, cateName, currentStatus, keyword, isParent, eleId, filterName = 'Filter by Category') => {
         let query = ''
         let path = ''
         if(currentStatus) {
@@ -14,10 +14,12 @@
                     if(isParent) url = `javascript:handleFilterOption('${collection}','${category.value}','${category.name}','${path}', '${query}')`
                     else url = `/admin/${collection}${path}?page=1${query}&category=${category.value}`
                 return(`
-                    <a 
+                    <li class="custom-dropdown-parent"><a 
                         class="dropdown-item"  
                         href="${url}" 
+                         aria-expanded="false"
                     >${category.name}</a>
+                    </li>
                 `)
             }
             ).join('')
@@ -31,7 +33,7 @@
                 data-toggle="dropdown"  
                 aria-expanded="false" 
                 }>
-                ${cateName ? cateName : 'Filter by category'}
+                ${cateName ? cateName : filterName}
             </button>
             <div class="dropdown-menu" aria-labelledby="menu-dropdown" id="${eleId}">
                 ${options}

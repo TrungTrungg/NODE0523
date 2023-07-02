@@ -7,22 +7,46 @@
             iconDropdown: '',
             name: 'Dashboard'
         },
+        // {
+        //     isParent: true,
+        //     url: '#',
+        //     icon: 'fas fa-th',
+        //     name: 'Item',
+        //     iconDropdown: 'fas fa-angle-left',
+        //     child: [
+        //         {
+        //             url: '/admin/item',
+        //             icon: 'far fa-circle',
+        //             name: 'List'
+        //         },
+        //         {
+        //             url: '/admin/item/add',
+        //             icon: 'far fa-circle',
+        //             name: 'Add'
+        //         },
+        //     ]
+        // },
         {
             isParent: true,
             url: '#',
-            icon: 'fas fa-th',
-            name: 'Item',
+            icon: 'fas fa-th-list',
+            name: 'Categories',
             iconDropdown: 'fas fa-angle-left',
             child: [
                 {
-                    url: '/admin/item',
+                    url: '/admin/category/main',
                     icon: 'far fa-circle',
-                    name: 'List'
+                    name: `Main Category`
                 },
                 {
-                    url: '/admin/item/add',
+                    url: '/admin/category/article',
                     icon: 'far fa-circle',
-                    name: 'Add'
+                    name: `Article's Categories`
+                },
+                {
+                    url: '/admin/category/product',
+                    icon: 'far fa-circle',
+                    name: `Product's Categories`
                 },
             ]
         },
@@ -30,56 +54,23 @@
             isParent: true,
             url: '#',
             icon: 'fas fa-th-list',
-            name: 'Category',
-            iconDropdown: 'fas fa-angle-left',
-            child: [
-                {
-                    url: '/admin/category',
-                    icon: 'far fa-circle',
-                    name: 'List'
-                },
-                {
-                    url: '/admin/category/add',
-                    icon: 'far fa-circle',
-                    name: 'Add'
-                },
-            ]
-        },
-        {
-            isParent: true,
-            url: '#',
-            icon: 'fas fa-newspaper',
-            name: 'Series',
-            iconDropdown: 'fas fa-angle-left',
-            child: [
-                {
-                    url: '/admin/series',
-                    icon: 'far fa-circle',
-                    name: 'List'
-                },
-                {
-                    url: '/admin/series/add',
-                    icon: 'far fa-circle',
-                    name: 'Add'
-                },
-            ]
-        },
-        {
-            isParent: true,
-            url: '#',
-            icon: 'fas fa-newspaper',
-            name: 'Article',
+            name: 'Items',
             iconDropdown: 'fas fa-angle-left',
             child: [
                 {
                     url: '/admin/article',
-                    icon: 'far fa-circle',
-                    name: 'List'
+                    icon: 'fas fa-newspaper',
+                    name: `Articles`
                 },
                 {
-                    url: '/admin/article/add',
-                    icon: 'far fa-circle',
-                    name: 'Add'
+                    url: '/admin/product',
+                    icon: 'fab fa-product-hunt',
+                    name: `Products`
+                },
+                {
+                    url: '/admin/brand',
+                    icon: 'fas fa-copyright',
+                    name: `Brands`
                 },
             ]
         },
@@ -91,11 +82,11 @@
             name: 'Setting'
         },
         {
-        isParent: false,
-        url: '/admin/subcribe' ,
-        icon: 'fas fa-tachometer-alt',
-        iconDropdown: '',
-        name: 'Subscribe'
+            isParent: false,
+            url: '/admin/subscribe' ,
+            icon: 'fas fa-tachometer-alt',
+            iconDropdown: '',
+            name: 'Subscribe'
         },
     ]
 
@@ -113,9 +104,11 @@
                     if(currentUrl.includes(dataChild.url)) {
                         parentActive = 'active'
                         menuOpen = 'menu-open'
+                        childActive = 'active'
+                    }else {
+                        childActive = ''
                     }
-                    if(dataChild.url === currentUrl) childActive = 'active'
-                    else childActive = ''
+                   
 
                     return (`
                         <li class="nav-item">

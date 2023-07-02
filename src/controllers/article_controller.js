@@ -4,11 +4,11 @@ const unidecode = require('unidecode');
 
 const { articleService: service, categoryService } = require('@services');
 const { filterOptions, notify, articleCollection: collection } = require('@utils');
-const { handlePagination, getListCategories } = require('@helpers');
+const { handlePagination, getListCategories, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
-const renderList = async (req, res) => {
+const renderList = catchAsync(async (req, res) => {
     const { status } = req.params;
     const { search, page, category } = req.query;
 
@@ -80,10 +80,10 @@ const renderList = async (req, res) => {
         messages,
     };
     res.render(`backend/pages/${collection}`, options);
-};
+});
 
 // render add item page
-const renderAddPage = async (req, res) => {
+const renderAddPage = catchAsync(async (req, res) => {
     const categories = await categoryService.getBlogCategory();
     const messages = {
         success: req.flash('success'),
@@ -96,10 +96,10 @@ const renderAddPage = async (req, res) => {
         messages,
     };
     res.render(`backend/pages/${collection}/${collection}_add`, options);
-};
+});
 
 // add item
-const addOne = async (req, res) => {
+const addOne = catchAsync(async (req, res) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
@@ -128,19 +128,19 @@ const addOne = async (req, res) => {
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
-};
+});
 
 // delete one item
-const deleteOne = async (req, res) => {
+const deleteOne = catchAsync(async (req, res) => {
     const { id } = req.params;
 
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
-};
+});
 
 // render Edit item page
-const renderEditPage = async (req, res) => {
+const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
     const { name, status, ordering, category_id, author, description, image, url, is_special } =
         await service.getOneById(id);
@@ -165,10 +165,10 @@ const renderEditPage = async (req, res) => {
         is_special,
     };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
-};
+});
 
 // Edit item
-const editOne = async (req, res) => {
+const editOne = catchAsync(async (req, res) => {
     const { id } = req.body;
     const errors = resultsValidator(req);
     if (errors.length > 0) {
@@ -209,10 +209,10 @@ const editOne = async (req, res) => {
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }
-};
+});
 
 // Change status of item
-// const changeStatus = async (req, res) => {
+// const changeStatus = catchAsync(async (req, res) => {
 //     const { id, status } = req.params;
 //     const { page, search } = req.query;
 
@@ -228,9 +228,9 @@ const editOne = async (req, res) => {
 //     await service.changeStatusById(id, newStatus.toLowerCase());
 //     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
 //     res.redirect(`/admin/item${query}`);
-// };
+// })
 
-const changeStatusAjax = async (req, res) => {
+const changeStatusAjax = catchAsync(async (req, res) => {
     const { id, status } = req.params;
     const { search } = req.query;
     let keyword = '';
@@ -261,9 +261,9 @@ const changeStatusAjax = async (req, res) => {
         status: newStatus.toLowerCase(),
         filter: { allStatus, activeStatus, inactiveStatus },
     });
-};
+});
 
-const changeOrderingAjax = async (req, res) => {
+const changeOrderingAjax = catchAsync(async (req, res) => {
     const { id, ordering } = req.params;
     if (isNaN(ordering)) {
         res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
@@ -272,7 +272,7 @@ const changeOrderingAjax = async (req, res) => {
         await service.changeFieldById(id, 'ordering', ordering);
         res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering });
     }
-};
+});
 const changeUrlAjax = async (req, res, next) => {
     const { id, url } = req.params;
 
@@ -289,11 +289,11 @@ const changeIsSpecialAjax = async (req, res, next) => {
     res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, is_special });
 };
 
-const getListCategoriesAjax = async (req, res) => {
+const getListCategoriesAjax = catchAsync(async (req, res) => {
     const { category_id } = req.params;
     const categories = await getListCategories(category_id);
     res.send({ success: true, categories });
-};
+});
 
 module.exports = {
     renderList,

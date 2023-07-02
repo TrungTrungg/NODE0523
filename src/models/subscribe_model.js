@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const subcribeSchema = new mongoose.Schema(
+const subscribeSchema = new mongoose.Schema(
     {
         email: { type: String },
         status: { type: String },
@@ -8,4 +8,4 @@ const subcribeSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-module.exports = new mongoose.model('subcribes', subcribeSchema);
+module.exports = new mongoose.model('subscribes', subscribeSchema);

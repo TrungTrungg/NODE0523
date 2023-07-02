@@ -1,14 +1,15 @@
 const { matchedData } = require('express-validator');
+const fs = require('fs');
 const unidecode = require('unidecode');
 
-const { categoryService: service } = require('@services');
-const { filterOptions, notify, categoryCollection: collection } = require('@utils');
-const { handlePagination, getListCategories } = require('@helpers');
+const { productService: service, categoryService } = require('@services');
+const { filterOptions, notify, productCollection: collection } = require('@utils');
+const { handlePagination, getListCategories, catchAsync } = require('@helpers');
+
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
-const renderList = async (req, res, next) => {
-    // Lấy dữ liệu từ url: params, query
+const renderList = catchAsync(async (req, res) => {
     const { status } = req.params;
     const { search, page, category } = req.query;
 
@@ -39,7 +40,6 @@ const renderList = async (req, res, next) => {
         },
     ];
 
-    // So sánh với param để active trang thái filter
     const statusFilterOptions = {
         all: filterOptions.all,
         active: filterOptions.active,
@@ -53,23 +53,20 @@ const renderList = async (req, res, next) => {
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
 
-    // Lấy danh sách danh mục
-    const categories = await getListCategories();
-    // Hiển thị danh mục đang dược lọc
+    // categories
+    const categories = await categoryService.getBlogCategory();
     let cateName = '';
     if (category_id) {
-        let category = await service.getCategory(category_id);
+        let category = await categoryService.getCategory(category_id);
         const { name } = category;
         cateName = name;
     }
 
-    // Message
+    // message
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-
-    // Options
     const options = {
         page: collection,
         collection,
@@ -84,116 +81,157 @@ const renderList = async (req, res, next) => {
         messages,
     };
     res.render(`backend/pages/${collection}`, options);
-};
+});
 
 // render add item page
-const renderAddPage = async (req, res, next) => {
-    // Get list categories
-    const categories = await getListCategories();
-
-    // Message - use connect-flash
+const renderAddPage = catchAsync(async (req, res) => {
+    const categories = await categoryService.getBlogCategory();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-
-    // Options
     const options = {
         page: 'Add',
         collection,
-        messages,
         categories,
+        messages,
     };
     res.render(`backend/pages/${collection}/${collection}_add`, options);
-};
+});
 
 // add item
-const addOne = async (req, res, next) => {
+const addOne = catchAsync(async (req, res) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/add`);
     } else {
-        const { name, status, ordering, url } = matchedData(req);
-        const { category_id } = req.body;
-        const slug = unidecode(name)
+        let imageName = '';
+        if (req.file) imageName = req.file.filename;
+        const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
+        const slug = name
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.create(name, status.toLowerCase(), ordering, slug, url, category_id);
+        await service.create(
+            name,
+            status.toLowerCase(),
+            ordering,
+            slug,
+            author,
+            description,
+            url,
+            is_special,
+            category_id,
+            imageName,
+        );
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
-};
+});
 
 // delete one item
-const deleteOne = async (req, res, next) => {
+const deleteOne = catchAsync(async (req, res) => {
     const { id } = req.params;
+
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
-};
+});
 
 // render Edit item page
-const renderEditPage = async (req, res, next) => {
-    // Lấy items cần sửa đổi
+const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const { name, status, ordering, url, category_id } = await service.getOneById(id);
-
-    // categories
-    const categories = await getListCategories();
-
-    // message
+    const { name, status, ordering, category_id, author, description, image, url, is_special } =
+        await service.getOneById(id);
+    const categories = await categoryService.getBlogCategory();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-
-    const options = { page: 'Edit', collection, id, name, status, ordering, url, category_id, categories, messages };
+    const options = {
+        page: 'Item',
+        collection,
+        id,
+        name,
+        status,
+        ordering,
+        category_id,
+        author,
+        description,
+        image,
+        categories,
+        url,
+        is_special,
+    };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
-};
+});
 
 // Edit item
-const editOne = async (req, res, next) => {
-    const { id, category_id } = req.body;
+const editOne = catchAsync(async (req, res) => {
+    const { id } = req.body;
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        const { name, status, ordering, url } = matchedData(req);
-        const slug = unidecode(name)
+        let imageName = '';
+        if (req.file) {
+            imageName = req.file.filename;
+            const { image } = await service.getOneById(id);
+            const imagePath = `public\\backend\\uploads\\${image}`;
+            if (fs.existsSync(imagePath)) {
+                fs.unlinkSync(imagePath);
+            }
+        }
+        // Lấy data sau khi validate
+        const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
+        // slug
+        const slug = name
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, url, category_id);
+        // update
+        await service.updateOneById(
+            id,
+            name,
+            status.toLowerCase(),
+            ordering,
+            author,
+            description,
+            url,
+            is_special,
+            category_id,
+            imageName,
+        );
+        // message và chuyển hướng
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }
-};
+});
 
 // Change status of item
-const changeStatus = async (req, res, next) => {
-    const { id, status } = req.params;
-    const { page, search } = req.query;
+// const changeStatus = catchAsync(async (req, res) => {
+//     const { id, status } = req.param);
+//     const { page, search } = req.query;
 
-    // handle query
-    let query = `?page=1`;
-    if (search) query += `&search=${search}`;
+//     // handle query
+//     let query = `?page=1`;
+//     if (search) query += `&search=${search}`;
 
-    // handle change status
-    let newStatus = status;
-    if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
-    else newStatus = filterOptions.active;
+//     // handle change status
+//     let newStatus = status;
+//     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
+//     else newStatus = filterOptions.active;
 
-    await service.changeStatusById(id, newStatus.toLowerCase());
-    req.flash('success', notify.SUCCESS_CHANGE_STATUS);
-    res.redirect(`/admin/${collection}${query}`);
-};
+//     await service.changeStatusById(id, newStatus.toLowerCase());
+//     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
+//     res.redirect(`/admin/item${query}`);
+// };
 
-const changeStatusAjax = async (req, res, next) => {
+const changeStatusAjax = catchAsync(async (req, res) => {
     const { id, status } = req.params;
     const { search } = req.query;
     let keyword = '';
@@ -202,8 +240,8 @@ const changeStatusAjax = async (req, res, next) => {
     let newStatus = status;
     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
     else newStatus = filterOptions.active;
-    await service.changeFieldById(id, 'status', newStatus.toLowerCase());
 
+    await service.changeFieldById(id, 'status', newStatus.toLowerCase());
     const allStatus = {
         name: filterOptions.all,
         count: await service.countByStatus('', keyword),
@@ -224,9 +262,9 @@ const changeStatusAjax = async (req, res, next) => {
         status: newStatus.toLowerCase(),
         filter: { allStatus, activeStatus, inactiveStatus },
     });
-};
+});
 
-const changeOrderingAjax = async (req, res, next) => {
+const changeOrderingAjax = catchAsync(async (req, res) => {
     const { id, ordering } = req.params;
     if (isNaN(ordering)) {
         res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
@@ -235,15 +273,29 @@ const changeOrderingAjax = async (req, res, next) => {
         await service.changeFieldById(id, 'ordering', ordering);
         res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering });
     }
-};
+});
 const changeUrlAjax = async (req, res, next) => {
     const { id, url } = req.params;
 
-    // handle change status
-
     await service.changeFieldById(id, 'url', url);
+
     res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
 };
+
+const changeIsSpecialAjax = async (req, res, next) => {
+    const { id, is_special } = req.params;
+
+    await service.changeFieldById(id, 'is_special', is_special);
+
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, is_special });
+};
+
+const getListCategoriesAjax = catchAsync(async (req, res) => {
+    const { category_id } = req.params;
+    const categories = await getListCategories(category_id);
+    res.send({ success: true, categories });
+});
+
 module.exports = {
     renderList,
     renderAddPage,
@@ -251,8 +303,10 @@ module.exports = {
     deleteOne,
     renderEditPage,
     editOne,
-    changeStatus,
+    // changeStatus,
     changeStatusAjax,
-    changeOrderingAjax,
     changeUrlAjax,
+    changeOrderingAjax,
+    changeIsSpecialAjax,
+    getListCategoriesAjax,
 };

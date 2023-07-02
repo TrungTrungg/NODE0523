@@ -23,14 +23,24 @@
                 authorXHtml = ''
                 isSpecialXHtml = ''
                 break;
-            case 'category':
+            case 'category/main':
+                authorXHtml=''
+                isSpecialXHtml=''
                 imageXHtml = ''
                 descriptionXHtml = ''
                 isSpecialXHtml = ''
                 authorXHtml = ''
                 categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
                 break;
-            case 'series':
+            case 'category/article':
+                authorXHtml=''
+                isSpecialXHtml=''
+                imageXHtml = ''
+                descriptionXHtml = ''
+                isSpecialXHtml = ''
+                authorXHtml = ''
+                break;
+            case 'category/product':
                 imageXHtml = ''
                 descriptionXHtml = ''
                 isSpecialXHtml = ''
@@ -38,9 +48,18 @@
                 categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_parent, true, '') + 
                                 showSelectBox(collection, 'Category-Sub', 'category_id', '', category_parent, false, 'list-categories')
                 break;
+            case 'brand':
+                urlXHtml = ''
+                descriptionXHtml = ''
+                authorXHtml = ''
+                break;
+            case 'product':
+                urlXHtml = ''
+                authorXHtml = ''
+                break;
             case 'article':
+                urlXHtml = ''
                 categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
-
                 break;
             default:
                 break;

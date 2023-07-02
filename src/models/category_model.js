@@ -7,6 +7,7 @@ const categorySchema = new mongoose.Schema(
         ordering: { type: Number },
         slug: { type: String },
         url: { type: String },
+        isMenu: { type: Boolean, default: false },
         category_id: { type: String },
     },
     { timestamps: true },

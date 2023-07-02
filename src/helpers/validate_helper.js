@@ -2,8 +2,10 @@ const {
     itemValidator,
     categoryValidator,
     articleValidator,
+    brandValidator,
+    productValidator,
     seriesValidator,
-    subcribeValidator,
+    subscribeValidator,
 } = require('@validators');
 
 const itemFormValidate = [itemValidator.nameCheck, itemValidator.orderingCheck, itemValidator.statusCheck];
@@ -13,6 +15,13 @@ const categoryFormValidate = [
     categoryValidator.orderingCheck,
     categoryValidator.statusCheck,
     categoryValidator.urlCheck,
+];
+
+const brandFormValidate = [
+    brandValidator.nameCheck,
+    brandValidator.orderingCheck,
+    brandValidator.statusCheck,
+    brandValidator.specialCheck,
 ];
 
 const articleFormValidate = [
@@ -25,7 +34,16 @@ const articleFormValidate = [
     articleValidator.urlCheck,
     articleValidator.categoryCheck,
 ];
-
+const productFormValidate = [
+    productValidator.nameCheck,
+    productValidator.orderingCheck,
+    productValidator.statusCheck,
+    productValidator.descriptionCheck,
+    productValidator.authorCheck,
+    productValidator.specialCheck,
+    productValidator.urlCheck,
+    productValidator.categoryCheck,
+];
 const seriesFormValidate = [
     seriesValidator.nameCheck,
     seriesValidator.orderingCheck,
@@ -34,12 +52,14 @@ const seriesFormValidate = [
     seriesValidator.categoryCheck,
 ];
 
-const subcribeFormValidate = [subcribeValidator.mailCheck];
+const subscribeFormValidate = [subscribeValidator.mailCheck];
 
 module.exports = {
     itemFormValidate,
     categoryFormValidate,
+    brandFormValidate,
     articleFormValidate,
+    productFormValidate,
     seriesFormValidate,
-    subcribeFormValidate,
+    subscribeFormValidate,
 };

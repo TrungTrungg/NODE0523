@@ -3,11 +3,11 @@ const unidecode = require('unidecode');
 
 const { seriesService: service, categoryService } = require('@services');
 const { filterOptions, notify, seriesCollection: collection } = require('@utils');
-const { handlePagination, getListCategories } = require('@helpers');
+const { handlePagination, getListCategories, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
-const renderList = async (req, res, next) => {
+const renderList = catchAsync(async (req, res, next) => {
     const { status } = req.params;
     const { search, page, category } = req.query;
 
@@ -84,10 +84,10 @@ const renderList = async (req, res, next) => {
         messages,
     };
     res.render(`backend/pages/${collection}`, options);
-};
+});
 
 // render add item page
-const renderAddPage = async (req, res, next) => {
+const renderAddPage = catchAsync(async (req, res, next) => {
     // Get list categories
     const categories = await getListCategories();
 
@@ -105,10 +105,10 @@ const renderAddPage = async (req, res, next) => {
         categories,
     };
     res.render(`backend/pages/${collection}/${collection}_add`, options);
-};
+});
 
 // add item
-const addOne = async (req, res, next) => {
+const addOne = catchAsync(async (req, res, next) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
@@ -124,18 +124,18 @@ const addOne = async (req, res, next) => {
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
-};
+});
 
 // delete one item
-const deleteOne = async (req, res, next) => {
+const deleteOne = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
-};
+});
 
 // render Edit item page
-const renderEditPage = async (req, res, next) => {
+const renderEditPage = catchAsync(async (req, res, next) => {
     // Lấy items cần sửa đổi
     const { id } = req.params;
     const { name, status, ordering, url, category_id } = await service.getOneById(id);
@@ -169,10 +169,10 @@ const renderEditPage = async (req, res, next) => {
         messages,
     };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
-};
+});
 
 // Edit item
-const editOne = async (req, res, next) => {
+const editOne = catchAsync(async (req, res, next) => {
     const { id } = req.body;
     const errors = resultsValidator(req);
     if (errors.length > 0) {
@@ -189,10 +189,10 @@ const editOne = async (req, res, next) => {
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }
-};
+});
 
 // Change status of item
-const changeStatus = async (req, res, next) => {
+const changeStatus = catchAsync(async (req, res, next) => {
     const { id, status } = req.params;
     const { page, search } = req.query;
 
@@ -208,9 +208,9 @@ const changeStatus = async (req, res, next) => {
     await service.changeStatusById(id, newStatus.toLowerCase());
     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
     res.redirect(`/admin/${collection}${query}`);
-};
+});
 
-const changeStatusAjax = async (req, res, next) => {
+const changeStatusAjax = catchAsync(async (req, res, next) => {
     const { id, status } = req.params;
     const { search } = req.query;
     let keyword = '';
@@ -241,9 +241,9 @@ const changeStatusAjax = async (req, res, next) => {
         status: newStatus.toLowerCase(),
         filter: { allStatus, activeStatus, inactiveStatus },
     });
-};
+});
 
-const changeOrderingAjax = async (req, res, next) => {
+const changeOrderingAjax = catchAsync(async (req, res, next) => {
     const { id, ordering } = req.params;
     if (isNaN(ordering)) {
         res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
@@ -254,15 +254,15 @@ const changeOrderingAjax = async (req, res, next) => {
         await service.changeOrderingById(id, newOrdering);
         res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering: newOrdering });
     }
-};
+});
 
-const changeUrlAjax = async (req, res, next) => {
+const changeUrlAjax = catchAsync(async (req, res, next) => {
     const { id, url } = req.params;
 
     await service.changeUrlById(id, url);
 
     res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
-};
+});
 
 const getListCategoriesAjax = async (req, res) => {
     const { category_id } = req.params;

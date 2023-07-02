@@ -7,7 +7,8 @@ const blogRouter = require('./blog_router');
 
 router.use('/', async (req, res, next) => {
     const { header, footer } = await settingService.getSetting();
-    const mainCategories = await categoryService.getMainCategory();
+    const [{ id }] = await categoryService.getShopCategoriesID();
+    const mainCategories = await categoryService.getMainCategory(id);
     const subCategories = await categoryService.getSubCategory();
     const listSeries = await seriesService.getAllWithoutConditions();
     const menuItems = [...mainCategories, ...subCategories, ...listSeries];

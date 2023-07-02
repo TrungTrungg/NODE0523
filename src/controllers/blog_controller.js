@@ -1,7 +1,7 @@
 const { articleService, categoryService } = require('@services');
-const { handlePagination } = require('@helpers');
+const { handlePagination, catchAsync } = require('@helpers');
 
-const renderBlog = async (req, res) => {
+const renderBlog = catchAsync(async (req, res) => {
     // Lấy dữ liệu từ path
     const { category_id } = req.params;
     const { page } = req.query;
@@ -19,7 +19,7 @@ const renderBlog = async (req, res) => {
 
     const options = { articles, popularArticles, currentArticles, blogCategory, pagination, category_id };
     res.render('frontend/pages/blog', options);
-};
+});
 
 module.exports = {
     renderBlog,

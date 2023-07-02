@@ -1,6 +1,7 @@
 const { articleService, settingService } = require('@services');
+const { catchAsync } = require('@helpers');
 
-const renderHome = async (req, res) => {
+const renderHome = catchAsync(async (req, res) => {
     const {
         info: infoSetting,
         purchase: purchaseSetting,
@@ -13,7 +14,7 @@ const renderHome = async (req, res) => {
     };
     const options = { articles, infoSetting, purchaseSetting, discountSetting, messages };
     res.render('frontend/pages/home', options);
-};
+});
 
 module.exports = {
     renderHome,

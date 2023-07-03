@@ -21,7 +21,7 @@ tr td {
     position: absolute;
     background-color: #fff;
     color: #fff;
-    left: -107.5%;
+    left: 100%;
     top: -8px;
     list-style: none;
     border: 1px solid rgba(0,0,0,.15);
@@ -33,4 +33,9 @@ tr td {
 .custom-dropdown-parent:hover>.custom-dropdown {
     display: block;
 
+}
+.preview-image {
+  width: 200px;
+  height: auto;
+  margin: 5px;
 }

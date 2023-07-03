@@ -2,16 +2,16 @@ const { matchedData } = require('express-validator');
 const fs = require('fs');
 const unidecode = require('unidecode');
 
-const { productService: service, categoryService } = require('@services');
+const { productService: service, categoryService, brandService } = require('@services');
 const { filterOptions, notify, productCollection: collection } = require('@utils');
-const { handlePagination, getListCategories, catchAsync } = require('@helpers');
+const { handlePagination, getListCategories, getListBrands, catchAsync } = require('@helpers');
 
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
 const renderList = catchAsync(async (req, res) => {
     const { status } = req.params;
-    const { search, page, category } = req.query;
+    const { search, page, category, brand } = req.query;
 
     // Xử lý status
     let currentStatus = status;
@@ -26,17 +26,23 @@ const renderList = catchAsync(async (req, res) => {
     let category_id = '';
     if (category) category_id = category;
 
+    let brand_id = '';
+    if (brand) brand_id = brand;
+
     // Xử lý page
     let currentPage = 1;
     if (page) currentPage = parseInt(page);
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: filterOptions.all, qty: await service.countByStatus('', keyword, category_id) },
-        { name: filterOptions.active, qty: await service.countByStatus(filterOptions.active, keyword, category_id) },
+        { name: filterOptions.all, qty: await service.countByStatus('', keyword, category_id, brand_id) },
+        {
+            name: filterOptions.active,
+            qty: await service.countByStatus(filterOptions.active, keyword, category_id, brand_id),
+        },
         {
             name: filterOptions.inactive,
-            qty: await service.countByStatus(filterOptions.inactive, keyword, category_id),
+            qty: await service.countByStatus(filterOptions.inactive, keyword, category_id, brand_id),
         },
     ];
 
@@ -47,20 +53,19 @@ const renderList = catchAsync(async (req, res) => {
     };
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
-    const totalItems = await service.countByStatus(currentStatus, keyword, category_id);
+    const totalItems = await service.countByStatus(currentStatus, keyword, category_id, brand_id);
     const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
-    const items = await service.getAll(currentStatus, keyword, category_id, pagination);
+    const items = await service.getAll(currentStatus, keyword, category_id, brand_id, pagination);
 
+    // get id shop category
+    const [{ id: shop_id }] = await categoryService.getShopCategoriesID();
+
+    const categories = await categoryService.getSubCategory();
+
+    const brands = await getListBrands();
     // categories
-    const categories = await categoryService.getBlogCategory();
-    let cateName = '';
-    if (category_id) {
-        let category = await categoryService.getCategory(category_id);
-        const { name } = category;
-        cateName = name;
-    }
 
     // message
     const messages = {
@@ -76,8 +81,9 @@ const renderList = catchAsync(async (req, res) => {
         currentStatus,
         pagination,
         keyword,
+        shop_id,
         categories,
-        cateName,
+        brands,
         messages,
     };
     res.render(`backend/pages/${collection}`, options);
@@ -85,7 +91,11 @@ const renderList = catchAsync(async (req, res) => {
 
 // render add item page
 const renderAddPage = catchAsync(async (req, res) => {
-    const categories = await categoryService.getBlogCategory();
+    const [{ id: shop_id }] = await categoryService.getShopCategoriesID();
+
+    const categories = await getListCategories(shop_id);
+
+    const brands = await getListBrands();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -93,7 +103,9 @@ const renderAddPage = catchAsync(async (req, res) => {
     const options = {
         page: 'Add',
         collection,
+        shop_id,
         categories,
+        brands,
         messages,
     };
     res.render(`backend/pages/${collection}/${collection}_add`, options);
@@ -106,25 +118,63 @@ const addOne = catchAsync(async (req, res) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/add`);
     } else {
-        let imageName = '';
-        if (req.file) imageName = req.file.filename;
-        const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
-        const slug = name
+        let image = '';
+        let gallery_image = [];
+
+        if (req.files) {
+            for (let i = 0; i < req.files.length; i++) {
+                if (req.files[i].fieldname === 'image') {
+                    image = req.files[i].filename;
+                }
+                if (req.files[i].fieldname === 'gallery_image') {
+                    gallery_image.push(req.files[i].filename);
+                }
+            }
+        }
+        // const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
+        const {
+            name,
+            status,
+            ordering,
+            is_special,
+            price,
+            quantity,
+            sold,
+            sale,
+            description,
+            size,
+            ram,
+            cpu,
+            ssd,
+            vga,
+            category_id,
+            brand_id,
+        } = req.body;
+        const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
         await service.create(
             name,
+            slug,
             status.toLowerCase(),
             ordering,
-            slug,
-            author,
-            description,
-            url,
             is_special,
+            price,
+            quantity,
+            sold,
+            sale,
+            description,
+            size,
+            ram,
+            cpu,
+            ssd,
+            vga,
             category_id,
-            imageName,
+            brand_id,
+            image,
+            gallery_image,
         );
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
@@ -143,9 +193,28 @@ const deleteOne = catchAsync(async (req, res) => {
 // render Edit item page
 const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const { name, status, ordering, category_id, author, description, image, url, is_special } =
-        await service.getOneById(id);
-    const categories = await categoryService.getBlogCategory();
+    const {
+        name,
+        status,
+        ordering,
+        is_special,
+        price,
+        quantity,
+        sold,
+        sale,
+        description,
+        specification,
+        category_id,
+        brand_id,
+        image,
+        gallery_image,
+    } = await service.getOneById(id);
+    const { size, ram, cpu, ssd, vga } = specification;
+    const [{ id: shop_id }] = await categoryService.getShopCategoriesID();
+
+    const categories = await getListCategories(shop_id);
+
+    const brands = await getListBrands();
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -157,13 +226,23 @@ const renderEditPage = catchAsync(async (req, res) => {
         name,
         status,
         ordering,
-        category_id,
-        author,
-        description,
-        image,
-        categories,
-        url,
         is_special,
+        price,
+        quantity,
+        sold,
+        sale,
+        description,
+        size,
+        ram,
+        cpu,
+        ssd,
+        vga,
+        category_id,
+        brand_id,
+        image,
+        gallery_image,
+        categories,
+        brands,
     };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
 });
@@ -176,19 +255,40 @@ const editOne = catchAsync(async (req, res) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        let imageName = '';
-        if (req.file) {
-            imageName = req.file.filename;
-            const { image } = await service.getOneById(id);
-            const imagePath = `public\\backend\\uploads\\${image}`;
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
+        let image = '';
+        let gallery_image = [];
+
+        if (req.files) {
+            for (let i = 0; i < req.files.length; i++) {
+                if (req.files[i].fieldname === 'image') {
+                    image = req.files[i].filename;
+                }
+                if (req.files[i].fieldname === 'gallery_image') {
+                    gallery_image.push(req.files[i].filename);
+                }
             }
         }
         // Lấy data sau khi validate
-        const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
+        const {
+            name,
+            status,
+            ordering,
+            is_special,
+            price,
+            quantity,
+            sold,
+            sale,
+            description,
+            size,
+            ram,
+            cpu,
+            ssd,
+            vga,
+            category_id,
+            brand_id,
+        } = matchedData(req);
         // slug
-        const slug = name
+        const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
@@ -197,14 +297,24 @@ const editOne = catchAsync(async (req, res) => {
         await service.updateOneById(
             id,
             name,
+            slug,
             status.toLowerCase(),
             ordering,
-            author,
-            description,
-            url,
             is_special,
+            price,
+            quantity,
+            sold,
+            sale,
+            description,
+            size,
+            ram,
+            cpu,
+            ssd,
+            vga,
             category_id,
-            imageName,
+            brand_id,
+            image,
+            gallery_image,
         );
         // message và chuyển hướng
         req.flash('success', notify.SUCCESS_EDIT);

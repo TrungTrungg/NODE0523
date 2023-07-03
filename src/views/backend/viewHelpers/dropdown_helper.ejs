@@ -1,0 +1,38 @@
+<%
+    showDropdown = (categories, parent_id, currentStatus, keyword) => {
+       let query = ''
+       let path = ''
+       if(currentStatus) {
+       path = `/status/${currentStatus}`
+       }
+       if(keyword)
+       query = `&search=${keyword}`
+        const filteredItems = categories.filter(item => item.category_id === parent_id);
+        let menuHTML = '<ul class="dropdown-menu custom-dropdown">';
+
+          filteredItems.forEach(item => {
+          menuHTML += '<li class="custom-dropdown-parent">';
+            menuHTML += `<a href="/admin/${collection}${path}?page=1${query}&category=${item.id}" class="dropdown-item">${item.name}</a>`;
+            const children = showDropdown(menuItems, item.id);
+            if (children) {
+            menuHTML += children;
+            }
+            menuHTML += '</li>';
+          });
+
+          menuHTML += '</ul>';
+        return menuHTML;
+    }
+
+    showDrop = (categories, parent_id) => {
+      const drop = showDropdown(categories, parent_id)
+      return(`
+        <div class="dropdown col" style="margin-left: 5px;">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filter by Category
+          </button>
+          ${drop}
+</div>
+`)
+}
+%>

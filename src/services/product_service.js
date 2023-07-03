@@ -1,22 +1,51 @@
 const { productModel: model } = require('@models');
 
 // Create
-const create = async (name, status, ordering, slug, author, description, url, is_special, category_id, image) => {
+const create = async (
+    name,
+    slug,
+    status,
+    ordering,
+    is_special,
+    price,
+    quantity,
+    sold,
+    sale,
+    description,
+    size,
+    ram,
+    cpu,
+    ssd,
+    vga,
+    category_id,
+    brand_id,
+    image,
+    gallery_image,
+) => {
     const condition = {
         name,
+        slug,
         status,
         ordering,
-        slug,
-        category_id,
-        post_date,
-        author,
+        price,
+        quantity,
+        sold,
+        sale,
         description,
-        url,
+        specification: {
+            size,
+            ram,
+            cpu,
+            ssd,
+            vga,
+        },
         category_id,
+        brand_id,
     };
     if (is_special === 'yes') condition.is_special = true;
     else condition.is_special = false;
     if (image) condition.image = image;
+    if (gallery_image) condition.gallery_image = gallery_image;
     return await model.create(condition);
 };
 
@@ -26,9 +55,48 @@ const deleteOneById = async (id) => {
 };
 
 // Update
-const updateOneById = async (id, name, status, ordering, author, description, url, is_special, category_id, image) => {
-    const condition = { name, status, ordering, category_id, author, description, url };
+const updateOneById = async (
+    id,
+    name,
+    slug,
+    status,
+    ordering,
+    is_special,
+    price,
+    quantity,
+    sold,
+    sale,
+    description,
+    size,
+    ram,
+    cpu,
+    ssd,
+    vga,
+    category_id,
+    brand_id,
+    image,
+    gallery_image,
+) => {
+    const condition = {
+        name,
+        slug,
+        status,
+        ordering,
+        price,
+        quantity,
+        sold,
+        sale,
+        description,
+        size,
+        ram,
+        cpu,
+        ssd,
+        vga,
+        category_id,
+        brand_id,
+    };
     if (image) condition.image = image;
+    if (gallery_image) condition.gallery_image = gallery_image;
     if (is_special === 'yes') condition.is_special = true;
     else condition.is_special = false;
     return await model.updateOne({ _id: id }, condition);
@@ -50,11 +118,12 @@ const getOneById = async (id) => {
     return await model.findById(id);
 };
 
-const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }) => {
+const getAll = async (status, keyword, category_id, brand_id, { currentPage, itemPerPage }) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
     if (keyword) condition.name = new RegExp(keyword, 'i');
     if (category_id) condition.category_id = category_id;
+    if (brand_id) condition.brand_id = brand_id;
     return await model
         .find(condition)
         .sort({ updatedAt: -1, createdAt: -1 })
@@ -79,11 +148,12 @@ const getArticleWithCategory = async (category_id, { itemPerPage, skip }) => {
 };
 
 // Count
-const countByStatus = async (status, keyword, category_id) => {
+const countByStatus = async (status, keyword, category_id, brand_id) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
     if (keyword) condition.name = new RegExp(keyword, 'i');
     if (category_id) condition.category_id = category_id;
+    if (brand_id) condition.brand_id = brand_id;
 
     return await model.count(condition);
 };

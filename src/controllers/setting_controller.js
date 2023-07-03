@@ -108,7 +108,7 @@ const handleUpdateSetting = catchAsync(async (req, res) => {
         },
         footer: {
             logo: footerLogo,
-            subcribeDescription: formData.footerDes,
+            subscribeDescription: formData.footerDes,
             address: formData.footerAddress,
             phone: formData.footerPhone,
             fax: formData.footerFax,

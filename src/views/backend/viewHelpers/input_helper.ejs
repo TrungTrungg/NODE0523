@@ -1,9 +1,9 @@
 <%
-    showInput = (type, label, name, value) => {
+    showInput = (type, label, name, value, disabled) => {
         return(`
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="itemName">${label}</label>
-                <input name="${name}" value="${value ? value : ''}" type="${type}" class="form-control" id="itemName" placeholder="Enter ${label}" />
+                <input name="${name}" value="${value ? value : ''}" type="${type}" class="form-control" id="itemName" placeholder="Enter ${label}" ${disabled} />
             </div>
         `)
     }

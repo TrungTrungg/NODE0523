@@ -39,9 +39,7 @@ const productFormValidate = [
     productValidator.orderingCheck,
     productValidator.statusCheck,
     productValidator.descriptionCheck,
-    productValidator.authorCheck,
     productValidator.specialCheck,
-    productValidator.urlCheck,
     productValidator.categoryCheck,
 ];
 const seriesFormValidate = [

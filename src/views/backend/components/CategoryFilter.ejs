@@ -11,8 +11,14 @@
         let url = ''
         if(categories) {
                 options = categories.map((category) => {
+                    query = ''
+                    if(category.category_id) {
+                        query += `&category=${category.value}`
+                    }else {
+                        query += `&brand=${category.value}`
+                    }
                     if(isParent) url = `javascript:handleFilterOption('${collection}','${category.value}','${category.name}','${path}', '${query}')`
-                    else url = `/admin/${collection}${path}?page=1${query}&category=${category.value}`
+                    else url = `/admin/${collection}${path}?page=1${query}`
                 return(`
                     <li class="custom-dropdown-parent"><a 
                         class="dropdown-item"  

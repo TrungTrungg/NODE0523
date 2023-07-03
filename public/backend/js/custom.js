@@ -143,6 +143,26 @@ const handleShowImage = () => {
     }
 };
 
+const handleShowImageG = () => {
+    const inputDOM = $('#add-image-g');
+
+    const files = inputDOM.prop('files');
+    console.log(files);
+    if (files) {
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            const imageDOM = $(`#show-image-g-${i}`);
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const imageSrc = event.target.result;
+                imageDOM.prop('src', imageSrc);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+};
+
 const handleShowImageDis = () => {
     const inputDOM = $('#add-image-dis');
     const imageDOM = $('#show-image-dis');

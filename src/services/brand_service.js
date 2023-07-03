@@ -57,6 +57,10 @@ const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }
         .limit(itemPerPage);
 };
 
+const getBrandCateogries = async () => {
+    return await model.find();
+};
+
 const getArticleSpecial = async (category_id) => {
     const conditions = { is_special: true };
     if (category_id) conditions.category_id = category_id;
@@ -92,6 +96,7 @@ module.exports = {
     deleteOneById,
     getOneById,
     getAll,
+    getBrandCateogries,
     getArticleSpecial,
     getArticleCurrent,
     getArticleWithCategory,

@@ -3,25 +3,43 @@
 <% include ./selectBox_helper %>
 <% include ./radio_helper %>
 <% include ./textarea_helper %>
+<% include ./dropdown_helper %>
 
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
 
-    showForm = (collection, categories, method, action, enctype, id, name, ordering, status, url, category_parent, image, description, author,is_special) => {
+    showForm = (collection, categories,brands, method, action, enctype, id, name, ordering, status, url, category_parent, image, description, author,is_special, price, quantity, sold, sale, size, ram, cpu, ssd, vga, brand_id, gallery_image) => {
+        console.log(gallery_image);
         let nameXHtml = showInput('text', 'Name', 'name', name)
         let authorXHtml = showInput('text', 'Author', 'author', author)
         let urlXHtml = showInput('text', 'Url', 'url', url)
         let orderingXHtml = showInput('number', 'Ordering', 'ordering', ordering)
+        let priceXHtml = ''
+        let quantityXHtml = ''
+        let soldXHtml = '' 
+        let saleXHtml = ''
+
+        let sizeXHtml = ''
+        let ramXHtml = ''
+        let cpuXHtml = ''
+        let ssdXHtml = ''
+        let vgaXHtml = ''
+        let galleryImageXHtml = ''
+        
+
         let descriptionXHtml = showTextarea('Description', 'description', description)
-        let imageXHtml = showUploadImage(image)
+        let imageXHtml = showUploadImage(image, 'Image', 'image', false)
         let isSpecialXHtml = showRadio(is_special)
         let categoryXHtml = ''
+        let dropdownXHtml = ''
         let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
+        let label = ''
         switch (collection) {
             case 'item':
                 descriptionXHtml = ''
                 authorXHtml = ''
                 isSpecialXHtml = ''
+                
                 break;
             case 'category/main':
                 authorXHtml=''
@@ -30,6 +48,7 @@
                 descriptionXHtml = ''
                 isSpecialXHtml = ''
                 authorXHtml = ''
+                
                 categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
                 break;
             case 'category/article':
@@ -39,12 +58,14 @@
                 descriptionXHtml = ''
                 isSpecialXHtml = ''
                 authorXHtml = ''
+                
                 break;
             case 'category/product':
                 imageXHtml = ''
                 descriptionXHtml = ''
                 isSpecialXHtml = ''
                 authorXHtml = ''
+                
                 categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_parent, true, '') + 
                                 showSelectBox(collection, 'Category-Sub', 'category_id', '', category_parent, false, 'list-categories')
                 break;
@@ -52,13 +73,29 @@
                 urlXHtml = ''
                 descriptionXHtml = ''
                 authorXHtml = ''
+               
                 break;
             case 'product':
                 urlXHtml = ''
                 authorXHtml = ''
+                label = `<label><h3 class="font-weight-bold">Specification</h3></label>`
+                 priceXHtml = showInput('number', 'Price', 'price', price)
+                 quantityXHtml = showInput('number', 'Quantity', 'quantity', quantity)
+                 soldXHtml = showInput('number', 'Sold', 'sold', sold, 'disabled')
+                 saleXHtml = showInput('number', 'Sale', 'sale', sale)
+
+                 sizeXHtml = showInput('text', 'Size', 'size', size)
+                 ramXHtml = showInput('text', 'RAM', 'ram', ram)
+                 cpuXHtml = showInput('text', 'CPU', 'cpu', cpu)
+                 ssdXHtml = showInput('text', 'SSD', 'ssd', ssd)
+                 vgaXHtml = showInput('text', 'VGA', 'vga', vga)
+                galleryImageXHtml = showUploadImage(gallery_image, 'Gallery Image', 'gallery_image', true, collection)
+                categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_parent, true, '') +
+                showSelectBox(collection, 'Category-Sub', 'category_id', '', category_parent, false, 'list-categories') + showSelectBox(collection, 'Brand', 'brand_id', brands, brand_id, false, '')
                 break;
             case 'article':
                 urlXHtml = ''
+                
                 categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
                 break;
             default:
@@ -76,11 +113,30 @@
                         <div class="form-group row">
                             ${statusXHtml}
                         </div>
+                         <div class="form-group text-center" >
+                           ${label}
+                         <div class="form-group row text-left">
+                           ${sizeXHtml}
+                           ${ramXHtml}
+                           ${ssdXHtml}
+                           </div>
+                         <div class="form-group row text-left">
+                           ${cpuXHtml}
+                           ${vgaXHtml}
+                         </div>
+                         </div>
+                        <div class="form-group row ">
+                            ${priceXHtml}
+                            ${quantityXHtml}
+                            ${soldXHtml}
+                            ${saleXHtml}
+                        </div>
                         <div class="form-group row">
                             ${categoryXHtml}
                         </div>
                         ${descriptionXHtml}
                         ${imageXHtml}
+                        ${galleryImageXHtml}
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-secondary">Submit</button>

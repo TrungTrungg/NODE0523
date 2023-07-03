@@ -86,6 +86,10 @@ const getBlogCategory = async () => {
     return categories;
 };
 
+const getShopCategory = async (id) => {
+    return await model.find({ category_id: id });
+};
+
 const getArticleCategoriesID = async () => {
     return await model.find({ name: 'Tin tức' });
 };
@@ -118,4 +122,5 @@ module.exports = {
     countByStatus,
     changeFieldById,
     getBlogCategory,
+    getShopCategory,
 };

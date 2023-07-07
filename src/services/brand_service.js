@@ -45,10 +45,14 @@ const getOneById = async (id) => {
     return await model.findById(id);
 };
 
+const getAllBrands = async (limit) => {
+    return await model.find().limit(limit);
+};
+
 const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
     if (category_id) condition.category_id = category_id;
     return await model
         .find(condition)
@@ -61,27 +65,11 @@ const getBrandCateogries = async () => {
     return await model.find();
 };
 
-const getArticleSpecial = async (category_id) => {
-    const conditions = { is_special: true };
-    if (category_id) conditions.category_id = category_id;
-    return await model.find(conditions).sort({ ordering: 1 }).limit(3);
-};
-
-const getArticleCurrent = async (category_id) => {
-    const conditions = {};
-    if (category_id) conditions.category_id = category_id;
-    return await model.find(conditions).sort({ createdAt: -1 }).limit(3);
-};
-
-const getArticleWithCategory = async (category_id, { itemPerPage, skip }) => {
-    return await model.find({ category_id }).sort({ createdAt: -1 }).skip(skip).limit(itemPerPage);
-};
-
 // Count
 const countByStatus = async (status, keyword, category_id) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
     if (category_id) condition.category_id = category_id;
 
     return await model.count(condition);
@@ -96,10 +84,9 @@ module.exports = {
     deleteOneById,
     getOneById,
     getAll,
+    getAllBrands,
     getBrandCateogries,
-    getArticleSpecial,
-    getArticleCurrent,
-    getArticleWithCategory,
+
     updateOneById,
     changeFieldById,
     countByStatus,

@@ -8,19 +8,24 @@ const specificSchema = new mongoose.Schema({
     cpu: { type: String },
 });
 
+const specialShowhome = new mongoose.Schema({
+    special: { type: Boolean, default: false },
+    showHome: { type: Boolean, default: false },
+});
+
 const productSchema = new mongoose.Schema(
     {
         name: { type: String },
         status: { type: String },
         ordering: { type: Number },
         slug: { type: String },
-        is_special: { type: String },
+        specialShowhome: { type: specialShowhome },
         image: { type: String },
         gallery_image: { type: [String] },
         price: { type: Number },
         quantity: { type: Number },
         sold: { type: Number },
-        sale: { type: Number },
+        sale: { type: Number, default: 0 },
         description: { type: String },
         specification: { type: specificSchema },
         category_id: { type: String },

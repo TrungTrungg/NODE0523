@@ -1,0 +1,48 @@
+<div class="col-12 mt-5">
+
+  <div class="tabs clearfix mb-0" id="tab-1">
+
+    <ul class="tab-nav clearfix">
+      <li><a href="#tabs-1"><i class="icon-align-justify2"></i><span class="d-none d-md-inline-block"> Mô tả sản phẩm</span></a></li>
+      <li><a href="#tabs-2"><i class="icon-info-sign"></i><span class="d-none d-md-inline-block">Thông số kĩ thuật</span></a></li>
+    </ul>
+
+    <div class="tab-container">
+
+      <div class="tab-content clearfix" id="tabs-1">
+        <p><%= product.description%></p>
+      </div>
+      <div class="tab-content clearfix" id="tabs-2">
+
+        <table class="table table-striped table-bordered">
+          <tbody>
+            <tr>
+              <td>Kích thước</td>
+              <td><%= product.specification.size%></td>
+            </tr>
+            <tr>
+              <td>RAM</td>
+              <td><%= product.specification.ram%></td>
+            </tr>
+            <tr>
+              <td>Đồ họa</td>
+              <td><%= product.specification.vga%></td>
+            </tr>
+            <tr>
+              <td>Dung lượng</td>
+              <td><%= product.specification.ssd%></td>
+            </tr>
+            <tr>
+              <td>Chip</td>
+              <td><%= product.specification.cpu%></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

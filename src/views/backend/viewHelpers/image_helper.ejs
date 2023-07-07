@@ -16,11 +16,13 @@
         idInput = 'add-image-g'
         idImg = 'show-image-g'
         fn = 'onchange="javascript:handleShowImageG()"'
+        if(image) {
          showImage = image.map((imagee, index) => {
             return(`
                 <img class="img-fluid img-thumbnail img-lg w-50 h-auto" src="/uploads/${collection}/${imagee}" alt="" id="${idImg}-${index}">
             `)
         }).join('')
+    }
     }
         return(`
             <div class="form-group">

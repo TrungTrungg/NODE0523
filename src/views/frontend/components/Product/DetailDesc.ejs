@@ -1,0 +1,91 @@
+<div class="col-md-5 product-desc">
+
+  <div class="d-flex align-items-center justify-content-between">
+
+    <!-- Product Single - Price
+										============================================= -->
+    <div class="product-price">
+      <% if(product.sale > 0) { %>
+      <del><%= product.price %> VNĐ</del> <ins><%= product.price - product.price * product.sale / 100  %> VNĐ</ins>
+      <% } else { %>
+      <ins><%= product.price %> VNĐ</ins>
+      <% } %>
+    </div><!-- Product Single - Price End -->
+
+    <!-- Product Single - Rating
+										============================================= -->
+    <div class="product-rating">
+      <i class="icon-star3"></i>
+      <i class="icon-star3"></i>
+      <i class="icon-star3"></i>
+      <i class="icon-star-half-full"></i>
+      <i class="icon-star-empty"></i>
+    </div><!-- Product Single - Rating End -->
+
+  </div>
+
+  <div class="line"></div>
+
+  <!-- Product Single - Quantity & Cart Button
+									============================================= -->
+  <form class="cart mb-0 d-flex justify-content-between align-items-center" method="post" enctype='multipart/form-data'>
+    <div class="quantity clearfix">
+      <input type="button" value="-" class="minus">
+      <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" />
+      <input type="button" value="+" class="plus">
+    </div>
+    <button type="submit" class="add-to-cart button m-0">Thêm vào giỏ hàng</button>
+  </form><!-- Product Single - Quantity & Cart Button End -->
+
+  <div class="line"></div>
+
+  <!-- Product Single - Short Description
+									============================================= -->
+  <p><%= product.description %></p>
+  <ul class="iconlist">
+    <li><i class="icon-caret-right"></i> Nhiều kích thước</li>
+    <li><i class="icon-caret-right"></i> 30 ngày hoàn trả</li>
+  </ul><!-- Product Single - Short Description End -->
+
+  <!-- Product Single - Meta
+									============================================= -->
+  <div class="card product-meta">
+    <div class="card-body">
+      <span class="posted_in">Danh mục: <a href="/shop/category/<%=product.category_id%>" rel="tag"><%= category.name %></a>.</span>
+      <span class="tagged_as">Tags: </span>
+    </div>
+  </div><!-- Product Single - Meta End -->
+
+  <!-- Product Single - Share
+									============================================= -->
+  <div class="si-share border-0 d-flex justify-content-between align-items-center mt-4">
+    <span>Share:</span>
+    <div>
+      <a href="#" class="social-icon si-borderless si-facebook">
+        <i class="icon-facebook"></i>
+        <i class="icon-facebook"></i>
+      </a>
+      <a href="#" class="social-icon si-borderless si-twitter">
+        <i class="icon-twitter"></i>
+        <i class="icon-twitter"></i>
+      </a>
+      <a href="#" class="social-icon si-borderless si-pinterest">
+        <i class="icon-pinterest"></i>
+        <i class="icon-pinterest"></i>
+      </a>
+      <a href="#" class="social-icon si-borderless si-gplus">
+        <i class="icon-gplus"></i>
+        <i class="icon-gplus"></i>
+      </a>
+      <a href="#" class="social-icon si-borderless si-rss">
+        <i class="icon-rss"></i>
+        <i class="icon-rss"></i>
+      </a>
+      <a href="#" class="social-icon si-borderless si-email3">
+        <i class="icon-email3"></i>
+        <i class="icon-email3"></i>
+      </a>
+    </div>
+  </div><!-- Product Single - Share End -->
+
+</div>

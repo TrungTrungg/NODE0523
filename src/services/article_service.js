@@ -53,7 +53,7 @@ const getOneById = async (id) => {
 const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
     if (category_id) condition.category_id = category_id;
     return await model
         .find(condition)
@@ -82,7 +82,7 @@ const getArticleWithCategory = async (category_id, { itemPerPage, skip }) => {
 const countByStatus = async (status, keyword, category_id) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
     if (category_id) condition.category_id = category_id;
 
     return await model.count(condition);

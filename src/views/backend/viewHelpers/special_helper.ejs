@@ -1,19 +1,20 @@
 <%
-    handleSpecial = (collection, id, label, isSpecial) => {
+    handleSpecial = (collection, id, label, isSpecial, name) => {
+        let js = `onchange="javascript:handleChangeIsSpecial('${collection}','${id}','${isSpecial}','${name}')"`
+        if(name === 'show') 
+        js = `onchange="javascript:handleChangeIsShowhome('${collection}','${id}','${isSpecial}','${name}')"`
         return(`
-            <td>
                 <div class="custom-control custom-switch">
                     <input 
-                        onchange="javascript:handleChangeIsSpecial('${collection}','${id}','${isSpecial}')"
+                        ${js}
                         type="checkbox" 
                         class="custom-control-input" 
-                        id="special-${id}" 
-                        name="is_special"
+                        id="${name}-${id}"
+                        name="${name}"
                         ${isSpecial ? 'checked' : ''}
                         >
-                    <label class="custom-control-label" for="special-${id}">${label}</label>
+                    <label class="custom-control-label" for="${name}-${id}">${label}</label>
                 </div>
-            </td>
         `)
     }
 %>

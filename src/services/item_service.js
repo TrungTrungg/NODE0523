@@ -23,7 +23,7 @@ const updateOneById = async (id, name, status, ordering, slug, image) => {
 const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
     return await model
         .find(condition)
         .sort({ updatedAt: -1, createdAt: -1 })
@@ -34,7 +34,7 @@ const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
 const countByStatus = async (status, keyword) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
     return await model.count(condition);
 };
 

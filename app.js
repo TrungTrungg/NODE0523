@@ -3,7 +3,7 @@ require('module-alias/register');
 const createError = require('http-errors');
 const express = require('express');
 const nodemailer = require('nodemailer');
-
+const bcrypt = require('bcrypt');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');

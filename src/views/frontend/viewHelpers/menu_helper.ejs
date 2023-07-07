@@ -1,31 +1,19 @@
 <%
-    showMegaMenu = (mainCategories, subCategories, listSeries) => {
+    showMegaMenu = (mainCategories, subCategories, shop_id) => {
         let subMenu = ''
-        let subSeries = ''
-        let isChild = false
+        let url = ''
         const menu = mainCategories.map((main) => {
+            if(main.url) url = `href="${main.url}"`
             let subMenuLi = subCategories.map((sub) => {
-                let subSeriesLi = listSeries.map((series) => {
-                    if(series.category_id === sub.id) {
-                        return(`
-                        <li class="menu-item">
-                            <a class="menu-link" href="${series.url}">
-                                <div>${series.name}</div>
-                            </a>
-                        </li>
-                        `)
-                    }  
-                    return ''
-                }).join('')
-                if(subSeriesLi) subSeries = `<ul class="sub-menu-container">${subSeriesLi}</ul>`
-                else subSeries = ''
                 if(sub.category_id === main.id) {
+                    if(main.category_id === shop_id) {
+                        url = `/shop/category/${sub.id}`
+                    }else url = `/blog/${sub.id}`
                     return(`
                     <li class="menu-item">
-                        <a class="menu-link" href="${sub.url}/${sub.id}">
+                        <a class="menu-link" href="${url}">
                             <div>${sub.name}</div>
                         </a>
-                        ${subSeries}
                     </li>
                     `)
                 } 
@@ -35,7 +23,7 @@
             else subMenu = ''
             return(`
                 <li class="menu-item">
-                    <a class="menu-link" href="${main.url ? main.url : ''}">
+                    <a class="menu-link" ${url}>
                         <div>${main.name}</div>
                     </a>
                     ${subMenu}

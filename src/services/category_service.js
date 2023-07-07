@@ -2,8 +2,9 @@ const { categoryModel: model } = require('@models');
 
 // Create
 const create = async (name, status, ordering, slug, url, category_id) => {
-    const condition = { name, status, ordering, slug, url, category_id };
-    return await model.create(condition);
+    const conditions = { name, status, ordering, slug, url, category_id };
+    if (category_id) conditions.category_id = category_id;
+    return await model.create(conditions);
 };
 
 // Delete
@@ -13,8 +14,10 @@ const deleteOneById = async (id) => {
 
 // Update
 const updateOneById = async (id, name, status, ordering, slug, url, category_id) => {
-    const condition = { name, status, ordering, slug, url, category_id };
-    return await model.updateOne({ _id: id }, condition);
+    const conditions = { name, status, ordering, slug, url };
+    if (category_id) conditions.category_id = category_id;
+
+    return await model.updateOne({ _id: id }, conditions);
 };
 
 const changeFieldById = async (id, field, value) => {
@@ -32,43 +35,65 @@ const getOneById = async (id) => {
     return await model.findById(id);
 };
 
-const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }) => {
-    let condition = {};
-    if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
-    if (category_id) condition.category_id = category_id;
+const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }, listCategoryId) => {
+    let conditions = {};
+    let currPage = 0;
+    let itemPPage = 0;
+    if (status) conditions.status = status.toLowerCase();
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
+    if (listCategoryId) conditions.category_id = listCategoryId;
+    if (currentPage) currPage = currentPage;
+    if (itemPerPage) itemPPage = itemPerPage;
+    if (category_id) conditions.category_id = category_id;
     return await model
-        .find(condition)
+        .find(conditions)
         .sort({ updatedAt: -1, createdAt: -1 })
-        .skip(itemPerPage * (currentPage - 1))
-        .limit(itemPerPage);
+        .skip(itemPPage * (currPage - 1))
+        .limit(itemPPage);
 };
 
 const getArticleCategories = async (status, keyword, { currentPage, itemPerPage }) => {
     const [{ id }] = await model.find({ name: 'Tin tức' });
-    let condition = { category_id: id };
-    if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    let conditions = { category_id: id };
+    if (status) conditions.status = status.toLowerCase();
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
     return await model
-        .find(condition)
+        .find(conditions)
         .sort({ updatedAt: -1, createdAt: -1 })
         .skip(itemPerPage * (currentPage - 1))
         .limit(itemPerPage);
 };
 
 const getNameId = async (id) => {
-    let condition = { $exists: true, $eq: '' };
-    if (id) condition = id;
-    return await model.find({ category_id: condition }).select('id name category_id');
+    let conditions = { $exists: true, $eq: '' };
+    if (id) conditions = id;
+    return await model.find({ category_id: conditions }).select('id name category_id');
 };
 
 const getSubCategory = async () => {
-    let condition = { $exists: true, $ne: '' };
-    return await model.find({ category_id: condition });
+    let conditions = { $exists: true, $ne: '' };
+    return await model.find({ category_id: conditions });
 };
 
-const getMainCategory = async (id) => {
+const getMenuCategory = async (id) => {
     return await model.find({ isMenu: true }).sort({ ordering: 1 });
+};
+
+const getMainCategories = async (status, keyword, { currentPage, itemPerPage }, category_id) => {
+    let conditions = {};
+    let currPage = 0;
+    let itemPPage = 0;
+    if (status) conditions.status = status.toLowerCase();
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
+    if (currentPage) currPage = currentPage;
+    if (itemPerPage) itemPPage = itemPerPage;
+    if (category_id) conditions.category_id = category_id;
+    else conditions.category_id = { $exists: true, $eq: '' };
+    return await model
+        .find(conditions)
+        .sort({ updatedAt: -1, createdAt: -1 })
+        .skip(itemPPage * (currPage - 1))
+        .limit(itemPPage);
 };
 
 const getCategory = async (id) => {
@@ -76,11 +101,11 @@ const getCategory = async (id) => {
 };
 
 const getBlogCategory = async () => {
-    const [{ id }] = await model.find({ name: 'Tin tức' });
+    const { id } = await model.findOne({ name: 'Tin tức' });
     const BlogChildCategory = await model.find({ category_id: id });
     const categories = BlogChildCategory.map((result) => {
-        const { _id, name } = result;
-        return { value: _id, name };
+        const { id, name, category_id } = result;
+        return { value: id, name, category_id };
     });
 
     return categories;
@@ -91,19 +116,20 @@ const getShopCategory = async (id) => {
 };
 
 const getArticleCategoriesID = async () => {
-    return await model.find({ name: 'Tin tức' });
+    return await model.findOne({ name: 'Tin tức' });
 };
 
 const getShopCategoriesID = async () => {
-    return await model.find({ name: 'Shop' });
+    return await model.findOne({ name: 'Shop' });
 };
 // Count
-const countByStatus = async (status, keyword, category_id) => {
-    let condition = {};
-    if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
-    if (category_id) condition.category_id = category_id;
-    return await model.count(condition);
+const countByStatus = async (status, keyword, category_id, listCategoryId) => {
+    let conditions = {};
+    if (status) conditions.status = status.toLowerCase();
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
+    if (listCategoryId) conditions.category_id = listCategoryId;
+    if (category_id) conditions.category_id = category_id;
+    return await model.count(conditions);
 };
 
 module.exports = {
@@ -114,7 +140,8 @@ module.exports = {
     getArticleCategories,
     getNameId,
     getSubCategory,
-    getMainCategory,
+    getMenuCategory,
+    getMainCategories,
     getCategory,
     getArticleCategoriesID,
     getShopCategoriesID,

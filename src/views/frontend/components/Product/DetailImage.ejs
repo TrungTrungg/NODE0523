@@ -1,0 +1,19 @@
+  <% include ../../viewHelpers/product_helper %>
+  <div class="col-md-5">
+
+    <!-- Product Single - Gallery
+									============================================= -->
+    <div class="product-image">
+      <div class="fslider" data-pagi="false" data-arrows="false" data-thumbs="true">
+        <div class="flexslider">
+          <div class="slider-wrap" data-lightbox="gallery">
+            <%- showProductImage(product)%>
+          </div>
+        </div>
+      </div>
+      <% if(product.sale > 0) { %>
+      <div class="sale-flash badge bg-danger p-2">Sale!</div>
+      <% } %>
+    </div><!-- Product Single - Gallery End -->
+
+  </div>

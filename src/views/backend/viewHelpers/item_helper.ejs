@@ -13,14 +13,15 @@
         if(keyword) 
             query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
+            let showHomeXHtml = ''
             let checkboxXHtml = handleCheckbox(item.id, item.email)
             let imageXHtml = handleImage(item.image,collection)
             let emailXHtml    = handleName(item.email, keyword)
             let nameXHtml     = handleName(item.name, keyword)
             let authorXHtml   = handleAuthor(item.author)
             let statusXHtml   = handleStatus(collection, item.status, item.id, query)
-            let specialXHtml = handleSpecial(collection, item.id, 'Special', item.is_special)
-            let menuXHtml     =    handleSpecial(collection, item.id, '', item.isMenu)
+            let specialXHtml = handleSpecial(collection, item.id, 'Special', item.is_special, 'special')
+            let menuXHtml     =    handleSpecial(collection, item.id, '', item.isMenu, 'menu')
             let urlXHtml      = handleUrl(collection, item.url, item.id)
             let orderingXHtml = handleOrdering(collection, item.ordering, item.id)
             let editXHml = `<a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>`
@@ -60,6 +61,8 @@
                     emailXHtml = ''
                     break;
                 case 'product':
+                    specialXHtml = handleSpecial(collection, item.id, 'Special', item.specialShowhome.special, 'special')
+                    showHomeXHtml = handleSpecial(collection, item.id, 'Show', item.specialShowhome.showHome, 'show')
                     urlXHtml = ''
                     authorXHtml = ''
                     menuXHtml = ''
@@ -92,7 +95,10 @@
                                 ${emailXHtml}
                                 ${authorXHtml}
                                 ${statusXHtml}
+                            <td>
                                 ${specialXHtml}
+                                ${showHomeXHtml}
+                            </td>
                                 ${menuXHtml}
                                 ${urlXHtml}
                                 ${orderingXHtml}

@@ -8,8 +8,7 @@
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
 
-    showForm = (collection, categories,brands, method, action, enctype, id, name, ordering, status, url, category_parent, image, description, author,is_special, price, quantity, sold, sale, size, ram, cpu, ssd, vga, brand_id, gallery_image) => {
-        console.log(gallery_image);
+    showForm = (collection, categories,brands, method, action, enctype, id, name, ordering, status, url, category_parent, image, description, author,is_special, price, quantity, sold, sale, size, ram, cpu, ssd, vga, brand_id,special, showHome, gallery_image) => {
         let nameXHtml = showInput('text', 'Name', 'name', name)
         let authorXHtml = showInput('text', 'Author', 'author', author)
         let urlXHtml = showInput('text', 'Url', 'url', url)
@@ -29,7 +28,8 @@
 
         let descriptionXHtml = showTextarea('Description', 'description', description)
         let imageXHtml = showUploadImage(image, 'Image', 'image', false)
-        let isSpecialXHtml = showRadio(is_special)
+        let isSpecialXHtml = showRadio(is_special, 'Is special', 'is_special')
+        let showHomeXHtml = ''
         let categoryXHtml = ''
         let dropdownXHtml = ''
         let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
@@ -48,8 +48,6 @@
                 descriptionXHtml = ''
                 isSpecialXHtml = ''
                 authorXHtml = ''
-                
-                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
                 break;
             case 'category/article':
                 authorXHtml=''
@@ -78,6 +76,9 @@
             case 'product':
                 urlXHtml = ''
                 authorXHtml = ''
+                isSpecialXHtml = showRadio(special, 'Is special', 'special')
+                showHomeXHtml = showRadio(showHome, 'Is show home', 'showHome')
+
                 label = `<label><h3 class="font-weight-bold">Specification</h3></label>`
                  priceXHtml = showInput('number', 'Price', 'price', price)
                  quantityXHtml = showInput('number', 'Quantity', 'quantity', quantity)
@@ -95,7 +96,6 @@
                 break;
             case 'article':
                 urlXHtml = ''
-                
                 categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
                 break;
             default:
@@ -109,7 +109,10 @@
                         ${authorXHtml}
                         ${orderingXHtml}
                         ${urlXHtml}
+                        <div class="form-group row">
                         ${isSpecialXHtml}
+                        ${showHomeXHtml}
+                        </div>
                         <div class="form-group row">
                             ${statusXHtml}
                         </div>

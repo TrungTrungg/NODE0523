@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
@@ -23,6 +24,7 @@
     "nodemailer": "^6.9.3",
     "nodemon": "^2.0.22",
     "rss-parser": "^3.13.0",
+    "sha1": "^1.1.1",
     "unicode": "^14.0.0",
     "unidecode": "^0.1.8"
   },

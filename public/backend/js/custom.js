@@ -177,6 +177,7 @@ const handleShowImageDis = () => {
         reader.readAsDataURL(file);
     }
 };
+
 const handleShowImageFoo = () => {
     const inputDOM = $('#add-image-foo');
     const imageDOM = $('#show-image-foo');
@@ -191,6 +192,7 @@ const handleShowImageFoo = () => {
         reader.readAsDataURL(file);
     }
 };
+
 const handleFilterOption = (collection, category_id, category_name, path, query) => {
     const optionDOM = $('#list-categories');
     const buttDOM = $('#menu-dropdown');
@@ -242,8 +244,8 @@ const handleSelectOption = (collection, category_id) => {
     });
 };
 
-const handleChangeIsSpecial = (collection, id, isSpecial) => {
-    const inputDOM = $(`#special-${id}`);
+const handleChangeIsSpecial = (collection, id, isSpecial, name) => {
+    const inputDOM = $(`#${name}-${id}`);
     const newValue = inputDOM.prop('checked');
     const is_special = `${collection}/changeIsSpecialAjax/${id}/${newValue}`;
     $.ajax({
@@ -255,6 +257,31 @@ const handleChangeIsSpecial = (collection, id, isSpecial) => {
                 let toastrMessage = data.message;
 
                 inputDOM.val(data.is_special);
+
+                toastr.success(toastrMessage, 'SUCCESS', {
+                    newestOnTop: true,
+                    closeButton: false,
+                    progressBar: true,
+                    preventDuplicates: false,
+                    showMethod: 'slideDown',
+                    timeOut: 10000,
+                });
+            }
+        },
+    });
+};
+const handleChangeIsShowhome = (collection, id, isSpecial, name) => {
+    const inputDOM = $(`#${name}-${id}`);
+    const newValue = inputDOM.prop('checked');
+    $.ajax({
+        type: 'GET',
+        url: new URL(`http://localhost:3000/admin/${collection}/changeIsShowhomeAjax/${id}/${newValue}`),
+        dataType: 'json',
+        success: (data) => {
+            if (data.success) {
+                let toastrMessage = data.message;
+
+                inputDOM.val(data.is_showhome);
 
                 toastr.success(toastrMessage, 'SUCCESS', {
                     newestOnTop: true,

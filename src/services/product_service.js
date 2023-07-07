@@ -6,7 +6,8 @@ const create = async (
     slug,
     status,
     ordering,
-    is_special,
+    special,
+    showHome,
     price,
     quantity,
     sold,
@@ -25,6 +26,10 @@ const create = async (
     const condition = {
         name,
         slug,
+        specialShowhome: {
+            special,
+            showHome,
+        },
         status,
         ordering,
         price,
@@ -42,8 +47,8 @@ const create = async (
         category_id,
         brand_id,
     };
-    if (is_special === 'yes') condition.is_special = true;
-    else condition.is_special = false;
+    // if (is_special === 'yes') condition.is_special.special = true;
+    // else condition.is_special.special = false;
     if (image) condition.image = image;
     if (gallery_image) condition.gallery_image = gallery_image;
     return await model.create(condition);
@@ -61,7 +66,8 @@ const updateOneById = async (
     slug,
     status,
     ordering,
-    is_special,
+    special,
+    showHome,
     price,
     quantity,
     sold,
@@ -81,6 +87,7 @@ const updateOneById = async (
         name,
         slug,
         status,
+        specialShowhome: { special, showHome },
         ordering,
         price,
         quantity,
@@ -97,8 +104,8 @@ const updateOneById = async (
     };
     if (image) condition.image = image;
     if (gallery_image) condition.gallery_image = gallery_image;
-    if (is_special === 'yes') condition.is_special = true;
-    else condition.is_special = false;
+    // if (is_special === 'yes') condition.is_special = true;
+    // else condition.is_special = false;
     return await model.updateOne({ _id: id }, condition);
 };
 
@@ -108,7 +115,8 @@ const changeFieldById = async (id, field, value) => {
     if (field === 'status') conditions.status = value;
     if (field === 'ordering') conditions.ordering = value;
     if (field === 'url') conditions.url = value;
-    if (field === 'is_special') conditions.is_special = value;
+    if (field === 'special') conditions.specialShowhome = { special: value };
+    if (field === 'showHome') conditions.specialShowhome = { showHome: value };
 
     return await model.updateOne({ _id: id }, conditions);
 };
@@ -118,48 +126,93 @@ const getOneById = async (id) => {
     return await model.findById(id);
 };
 
-const getAll = async (status, keyword, category_id, brand_id, { currentPage, itemPerPage }) => {
-    let condition = {};
-    if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
-    if (category_id) condition.category_id = category_id;
-    if (brand_id) condition.brand_id = brand_id;
+const getAll = async (status, keyword, category_id, brand_id, { currentPage, itemPerPage }, price, sort, sale) => {
+    let conditions = {};
+    let sortField = { updatedAt: -1, createdAt: -1 };
+    if (price) {
+        const minPrice = price.split(',')[0];
+        const maxPrice = price.split(',')[1];
+        if (minPrice === 'lower') {
+            conditions.price = { $lt: maxPrice };
+        } else if (minPrice === 'higher') {
+            conditions.price = { $gt: maxPrice };
+        } else conditions.price = { $gte: minPrice, $lte: maxPrice };
+    }
+    if (sort) {
+        if (sort === 'asc') sortField = { name: 1 };
+        else sortField = { name: -1 };
+    }
+    if (sale) {
+        const minSale = sale.split(',')[0];
+        const maxSale = sale.split(',')[1];
+        if (minSale === 'lower') {
+            conditions.sale = { $lt: maxSale };
+        } else if (minSale === 'higher') {
+            conditions.sale = { $gt: maxSale };
+        } else conditions.sale = { $gte: minSale, $lte: maxSale };
+    }
+    if (status) conditions.status = status.toLowerCase();
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
+    if (category_id) conditions.category_id = category_id;
+    if (brand_id) conditions.brand_id = brand_id;
     return await model
-        .find(condition)
-        .sort({ updatedAt: -1, createdAt: -1 })
+        .find(conditions)
+        .sort(sortField)
         .skip(itemPerPage * (currentPage - 1))
         .limit(itemPerPage);
 };
 
-const getArticleSpecial = async (category_id) => {
-    const conditions = { is_special: true };
-    if (category_id) conditions.category_id = category_id;
-    return await model.find(conditions).sort({ ordering: 1 }).limit(3);
-};
-
-const getArticleCurrent = async (category_id) => {
+const getByCondition = async (category_id, params, limit, id) => {
     const conditions = {};
+    if (id) conditions._id = { $nin: id };
     if (category_id) conditions.category_id = category_id;
-    return await model.find(conditions).sort({ createdAt: -1 }).limit(3);
-};
+    if (params) {
+        if (params === 'popular') {
+            conditions['specialShowhome.showHome'] = true;
+        } else if (params === 'special') {
+            conditions['specialShowhome.special'] = true;
+        }
+    }
 
-const getArticleWithCategory = async (category_id, { itemPerPage, skip }) => {
-    return await model.find({ category_id }).sort({ createdAt: -1 }).skip(skip).limit(itemPerPage);
+    return await model.find(conditions).sort({ createdAt: 1 }).limit(limit);
 };
 
 // Count
 const countByStatus = async (status, keyword, category_id, brand_id) => {
     let condition = {};
     if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'i');
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
     if (category_id) condition.category_id = category_id;
     if (brand_id) condition.brand_id = brand_id;
 
     return await model.count(condition);
 };
 
-const countArticleByCategory = async (category_id) => {
-    return await model.count({ category_id });
+const countByCategory = async (category_id, keyword, brand_id, price, sale) => {
+    let conditions = {};
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
+    if (category_id) conditions.category_id = category_id;
+    if (brand_id) conditions.brand_id = brand_id;
+    if (price) {
+        const minPrice = price.split(',')[0];
+        const maxPrice = price.split(',')[1];
+        if (minPrice === 'lower') {
+            conditions.price = { $lt: maxPrice };
+        } else if (minPrice === 'higher') {
+            conditions.price = { $gt: maxPrice };
+        } else conditions.price = { $gte: minPrice, $lte: maxPrice };
+    }
+    if (sale) {
+        const minSale = sale.split(',')[0];
+        const maxSale = sale.split(',')[1];
+        if (minSale === 'lower') {
+            conditions.sale = { $lt: maxSale };
+        } else if (minSale === 'higher') {
+            conditions.sale = { $gt: maxSale };
+        } else conditions.sale = { $gte: minSale, $lte: maxSale };
+    }
+
+    return await model.count(conditions);
 };
 
 module.exports = {
@@ -167,11 +220,9 @@ module.exports = {
     deleteOneById,
     getOneById,
     getAll,
-    getArticleSpecial,
-    getArticleCurrent,
-    getArticleWithCategory,
+    getByCondition,
     updateOneById,
     changeFieldById,
     countByStatus,
-    countArticleByCategory,
+    countByCategory,
 };

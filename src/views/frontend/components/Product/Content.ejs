@@ -1,0 +1,26 @@
+<% include ../Pagination %>
+<section id="content">
+  <div class="content-wrap">
+    <div class="container clearfix">
+
+      <div class="row gutter-40 col-mb-80">
+
+        <!-- Post Content============================================= -->
+        <% include ./Item %>
+        <!-- .postcontent end -->
+
+        <!-- Sidebar============================================= -->
+        <% include ./Sidebar %>
+        <!-- .sidebar end -->
+
+        <!-- pageination -->
+        <div class="postcontent col-lg-9 order-lg-last">
+          <ul class="pagination justify-content-end">
+            <%-showPagination(collection, category_id, keyword, pagination, price, sort, sale) %>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

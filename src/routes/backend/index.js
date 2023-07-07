@@ -6,9 +6,9 @@ const itemRouter = require('./item_router');
 const categoryRouter = require('./category');
 const brandRouter = require('./brand_router');
 const productRouter = require('./product_router');
-const seriesRouter = require('./series_router');
 const articleRouter = require('./article_router');
 const subscribeRouter = require('./subscribe_router');
+const userRouter = require('./user_router');
 
 const settingRouter = require('./setting_router');
 
@@ -22,9 +22,9 @@ router.use('/item', itemRouter);
 router.use('/category', categoryRouter);
 router.use('/brand', brandRouter);
 router.use('/product', productRouter);
-router.use('/series', seriesRouter);
 router.use('/article', articleRouter);
 router.use('/subscribe', subscribeRouter);
+router.use('/user', userRouter);
 
 router.use('/setting', settingRouter);
 

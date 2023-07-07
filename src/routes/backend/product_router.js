@@ -36,6 +36,8 @@ router.get('/changeUrlAjax/:id/:url', controller.changeUrlAjax);
 
 router.get('/changeIsSpecialAjax/:id/:is_special', controller.changeIsSpecialAjax);
 
+router.get('/changeIsShowhomeAjax/:id/:is_showhome', controller.changeIsShowhomeAjax);
+
 router.get('/getListCategoriesAjax/:category_id', controller.getListCategoriesAjax);
 
 module.exports = router;

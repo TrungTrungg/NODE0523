@@ -1,15 +1,14 @@
 <%
     showSelectBox = (collection, label, formName, list, condition, isParent, eleId) => {
         let options = ''
-
         if(list) {
             options = list.map((item) => {
-            let value = item.value
+            let value = item.value.toString()
             let onclick = ''
             if(isParent) onclick = `onclick="javascript:handleSelectOption('${collection}', '${value}')"`
             return(`
                 <option 
-                    ${value === condition ? 'selected="selected"' : ''}
+                    selected='${value === condition ? true: false}'
                     ${onclick}
                     id="option-${value}"
                     value="${value}" 

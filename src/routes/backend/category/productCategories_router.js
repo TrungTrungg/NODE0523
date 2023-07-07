@@ -12,7 +12,7 @@ router.get('(/status/:status)?', controller.renderList);
 router.get('/add', controller.renderAddPage);
 
 // Thêm 1 Item
-router.post('/', validator.seriesFormValidate, controller.addOne);
+router.post('/', validator.categoryFormValidate, controller.addOne);
 
 // Xóa 1 Item
 router.get('/delete/:id', controller.deleteOne);
@@ -21,7 +21,7 @@ router.get('/delete/:id', controller.deleteOne);
 router.get('/edit/:id', controller.renderEditPage);
 
 // Sửa 1 Item
-router.post('/edit', validator.seriesFormValidate, controller.editOne);
+router.post('/edit', validator.categoryFormValidate, controller.editOne);
 
 // Sửa status của 1 Item
 // router.get('(/:id/:status)?', controller.changeStatus);
@@ -31,8 +31,8 @@ router.get('/changeStatusAjax/:id/:status', controller.changeStatusAjax);
 // Sửa ordering của 1 Item
 router.get('/changeOrderingAjax/:id/:ordering', controller.changeOrderingAjax);
 
-router.get('/getListCategoriesAjax/:category_id', controller.getListCategoriesAjax);
-
 router.get('/changeUrlAjax/:id/:url', controller.changeUrlAjax);
+
+router.get('/changeIsSpecialAjax/:id/:is_special', controller.changeIsSpecialAjax);
 
 module.exports = router;

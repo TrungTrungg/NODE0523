@@ -6,9 +6,8 @@ const {
     productCategoriesCollection,
 } = require('@utils/category_util');
 const { brandValidator, brandCollection } = require('@utils/brand_util');
-const { productValidator, productCollection } = require('@utils/product_util');
+const { productValidator, productCollection, productPrice } = require('@utils/product_util');
 const { articleValidator, articleCollection } = require('@utils/article_util');
-const { seriesValidator, seriesCollection } = require('@utils/series_util');
 const { filterOptions } = require('@utils/status_util');
 const notify = require('@utils/notify_util');
 
@@ -23,10 +22,12 @@ module.exports = {
     brandCollection,
     productValidator,
     productCollection,
+    productPrice,
     articleCollection,
     articleValidator,
-    seriesValidator,
-    seriesCollection,
+
+    blogCollection: 'blog',
+    shopCollection: 'shop',
     filterOptions,
     notify,
 };

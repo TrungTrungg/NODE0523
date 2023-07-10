@@ -1,0 +1,14 @@
+<%
+    showSlider = (sliders) => {
+        return sliders.map((slider) => {
+            return(`
+            <li data-index="rs-181" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="/uploads/slider/${slider.image}" data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="${slider.description}" >
+              <!-- MAIN IMAGE -->
+              <img src="/uploads/slider/${slider.image}" alt="Image" data-bgposition="center center" data-kenburns="on" data-duration="5000" data-ease="Power4.easeOut" data-scalestart="150" data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-blurstart="30" data-blurend="0" data-offsetstart="0 0" data-offsetend="0 0" data-bgparallax="off" class="rev-slidebg" data-no-retina>
+             
+            </li>
+            `)
+        }).join('')
+        
+    }
+%>

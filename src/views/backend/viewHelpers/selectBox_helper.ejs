@@ -8,7 +8,7 @@
             if(isParent) onclick = `onclick="javascript:handleSelectOption('${collection}', '${value}')"`
             return(`
                 <option 
-                    selected='${value === condition ? true: false}'
+                    ${value === condition ? 'selected="selected"': ''}
                     ${onclick}
                     id="option-${value}"
                     value="${value}" 

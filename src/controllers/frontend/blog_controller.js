@@ -10,13 +10,14 @@ const renderBlog = catchAsync(async (req, res) => {
     // Xử lý Page
     let currentPage = 1;
     if (page) currentPage = parseInt(page);
-
     const totalItems = await articleService.countArticleByCategory(category_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 4));
-    const blogCategory = await categoryService.getBlogCategory();
-    const articles = await articleService.getArticleWithCategory(category_id, pagination);
-    const popularArticles = await articleService.getArticleSpecial(category_id);
-    const currentArticles = await articleService.getArticleCurrent(category_id);
+    const pagination = handlePagination(totalItems, currentPage, (itemsPerPage = 4));
+    const [blogCategory, articles, popularArticles, currentArticles] = await Promise.all([
+        categoryService.getBlogCategory(),
+        articleService.getArticleWithCategory(category_id, pagination),
+        articleService.getArticleSpecial(category_id),
+        articleService.getArticleCurrent(),
+    ]);
 
     const options = {
         page: 'Trang tin tức',
@@ -32,6 +33,31 @@ const renderBlog = catchAsync(async (req, res) => {
     res.render('frontend/pages/blog', options);
 });
 
+const renderDetailBlog = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const article = await articleService.getOneById(id);
+    const [blogCategory, articles, popularArticles, currentArticles, relatedArticles] = await Promise.all([
+        categoryService.getBlogCategory(),
+        articleService.getArticleWithCategory(article.category_id, { itemPerPage: 12, skip: 0 }),
+        articleService.getArticleSpecial(article.category_id),
+        articleService.getArticleCurrent(),
+        articleService.getArticleRelated(article.category_id),
+    ]);
+    console.log(articles);
+    const options = {
+        page: 'Trang tin tức',
+        pageDesc: 'Những tin mới nhất',
+        collection,
+        article,
+        articles,
+        popularArticles,
+        currentArticles,
+        relatedArticles,
+        blogCategory,
+    };
+    res.render('frontend/pages/blog/detail', options);
+});
 module.exports = {
     renderBlog,
+    renderDetailBlog,
 };

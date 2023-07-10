@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const { matchedData } = require('express-validator');
 
-const { subscriberService: service } = require('@services');
+const { subscribeService: service } = require('@services');
 const { filterOptions, notify } = require('@utils');
 const { handlePagination, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');

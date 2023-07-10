@@ -5,19 +5,19 @@
 
     <div class="row col-mb-50">
       <div class="col-md-6 d-none d-md-flex align-self-end">
-        <img src="/uploads/setting/<%= discountSetting.image%>" alt="Image" class="mb-0">
+        <img src="/uploads/setting/<%= settings.discount.image%>" alt="Image" class="mb-0">
       </div>
 
       <div class="col-md-6 mb-5 subscribe-widget">
         <div class="heading-block">
           <h3>
-            <strong><%= discountSetting.name %></strong>
+            <strong><%= settings.discount.name %></strong>
           </h3>
         </div>
 
-        <p><%= discountSetting.description %></p>
+        <p><%= settings.discount.description %></p>
 
-        <%- showInputSubscribe(discountSetting) %>
+        <%- showInputSubscribe(settings.discount) %>
 
       </div>
     </div>

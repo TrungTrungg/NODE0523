@@ -98,6 +98,13 @@
                 urlXHtml = ''
                 categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
                 break;
+            case 'slider':
+                nameXHtml = ''
+                urlXHtml = ''
+                isSpecialXHtml=''
+                authorXHtml = ''
+                descriptionXHtml = showTextarea('Text', 'description', description)
+            break;
             default:
                 break;
         }
@@ -107,13 +114,13 @@
                     <input type="hidden" name="id" value="${id ? id : ''}">
                         ${nameXHtml}
                         ${authorXHtml}
-                        ${orderingXHtml}
                         ${urlXHtml}
                         <div class="form-group row">
-                        ${isSpecialXHtml}
-                        ${showHomeXHtml}
+                            ${isSpecialXHtml}
+                            ${showHomeXHtml}
                         </div>
                         <div class="form-group row">
+                                ${orderingXHtml}
                             ${statusXHtml}
                         </div>
                          <div class="form-group text-center" >

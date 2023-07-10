@@ -68,10 +68,15 @@ const getArticleSpecial = async (category_id) => {
     return await model.find(conditions).sort({ ordering: 1 }).limit(3);
 };
 
-const getArticleCurrent = async (category_id) => {
+const getArticleCurrent = async () => {
+    const conditions = {};
+    return await model.find(conditions).sort({ createdAt: -1 }).limit(3);
+};
+
+const getArticleRelated = async (category_id) => {
     const conditions = {};
     if (category_id) conditions.category_id = category_id;
-    return await model.find(conditions).sort({ createdAt: -1 }).limit(3);
+    return await model.find(conditions).limit(3);
 };
 
 const getArticleWithCategory = async (category_id, { itemPerPage, skip }) => {
@@ -99,6 +104,7 @@ module.exports = {
     getAll,
     getArticleSpecial,
     getArticleCurrent,
+    getArticleRelated,
     getArticleWithCategory,
     updateOneById,
     changeFieldById,

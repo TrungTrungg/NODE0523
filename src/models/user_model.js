@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema(
     {
-        name: String,
         username: String,
-        password: String,
         email: String,
+        name: String,
+        password: String,
     },
     { timestamps: true },
 );

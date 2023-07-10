@@ -14,14 +14,15 @@
             query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
             let showHomeXHtml = ''
+            let phoneXHtml = ''
             let checkboxXHtml = handleCheckbox(item.id, item.email)
             let imageXHtml = handleImage(item.image,collection)
             let emailXHtml    = handleName(item.email, keyword)
             let nameXHtml     = handleName(item.name, keyword)
             let authorXHtml   = handleAuthor(item.author)
             let statusXHtml   = handleStatus(collection, item.status, item.id, query)
-            let specialXHtml = handleSpecial(collection, item.id, 'Special', item.is_special, 'special')
-            let menuXHtml     =    handleSpecial(collection, item.id, '', item.isMenu, 'menu')
+            let specialXHtml = '</td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
+            let menuXHtml   = '<td>' + handleSpecial(collection, item.id, '', item.isMenu, 'menu') +'</td>'
             let urlXHtml      = handleUrl(collection, item.url, item.id)
             let orderingXHtml = handleOrdering(collection, item.ordering, item.id)
             let editXHml = `<a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>`
@@ -61,8 +62,8 @@
                     emailXHtml = ''
                     break;
                 case 'product':
-                    specialXHtml = handleSpecial(collection, item.id, 'Special', item.specialShowhome.special, 'special')
-                    showHomeXHtml = handleSpecial(collection, item.id, 'Show', item.specialShowhome.showHome, 'show')
+                    specialXHtml ='<td>' + handleSpecial(collection, item.id, 'Special', item.specialShowhome.special, 'special')
+                    showHomeXHtml = handleSpecial(collection, item.id, 'Show', item.specialShowhome.showHome, 'show') + '</td>'
                     urlXHtml = ''
                     authorXHtml = ''
                     menuXHtml = ''
@@ -82,6 +83,26 @@
                     orderingXHtml = '' 
                     menuXHtml = ''
                     editXHml = ''
+                    break;
+                case 'slider':
+                    emailXHtml = ''
+                    nameXHtml = ''
+                    authorXHtml = ''
+                    specialXHtml = ''
+                    menuXHtml = ''
+                    urlXHtml = ''
+                    break;
+                case 'contact':
+                    statusXHtml = ''
+                    imageXHtml = ''
+                    authorXHtml = ''
+                    specialXHtml = ''
+                    urlXHtml = ''
+                    orderingXHtml = ''
+                    menuXHtml = ''
+                    editXHml = ''
+                    phoneXHtml = handleName(item.phone)
+                    break;
                 default:
                     break;
             }
@@ -92,13 +113,12 @@
                             <td>${index+=1}</td>
                                 ${imageXHtml}
                                 ${nameXHtml}
+                                ${phoneXHtml}
                                 ${emailXHtml}
                                 ${authorXHtml}
                                 ${statusXHtml}
-                            <td>
                                 ${specialXHtml}
                                 ${showHomeXHtml}
-                            </td>
                                 ${menuXHtml}
                                 ${urlXHtml}
                                 ${orderingXHtml}

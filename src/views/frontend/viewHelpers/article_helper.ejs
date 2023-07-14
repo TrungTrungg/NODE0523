@@ -1,24 +1,28 @@
 <%
     showArticle = (articles) => {
         let listArticles = articles.map((article, index) => {
+            let description = article.description
+            let maxLength =530
             let reverseImg = ''
             let reverseContent = 'ps-md-4'
             if(index % 2 != 0) {
                 reverseImg = 'order-md-last'
                 reverseContent = 'pe-md-4'
             }
+            if(article.description.length > maxLength) description = article.description.slice(0, maxLength) + '...'
             return(`
             <div class="entry col-12">
                 <div class="grid-inner row g-0">
                     <div class="col-md-4 ${reverseImg}">
                         <div class="entry-image">
-                            <a href="/frontend/images/blog/full/17.jpg" data-lightbox="image"><img src="/backend/uploads/${article.image}" alt="Standard Post with Image"></a>
+                            <a href="/blog/article/${article.id}" data-lightbox="image"
+                            ><img src="/uploads/article/${article.image}" alt="Standard Post with Image"></a>
                         </div>
                     </div>
                     <div class="col-md-8 ${reverseContent}">
                         <div class="entry-title title-sm">
                             <h2>
-                                <a href="blog-single.html">${article.name}</a>
+                                <a href="/blog/article/${article.id}">${article.name}</a>
                             </h2>
                         </div>
                         <div class="entry-meta">
@@ -43,8 +47,8 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="entry-content">
-                            <p>${article.description}</p>
+                        <div class="entry-content" >
+                            <p style="margin-bottom: 0 !important">${description}</p>
                             <a href="/blog/article/${article.id}" class="more-link">Xem thêm</a>
                         </div>
                     </div>
@@ -69,7 +73,7 @@
                         <div class="col-auto">
                             <div class="entry-image">
                                 <a>
-                                    <img class="rounded-circle" src="/backend/uploads/${article.image}" alt="Image">
+                                    <img class="rounded-circle" src="/uploads/article${article.image}" alt="Image">
                                 </a>
                             </div>
                         </div>
@@ -105,7 +109,7 @@
                   <div class="grid-inner row align-items-center gutter-20">
                     <div class="col-4">
                       <div class="entry-image">
-                        <a href="#"><img src="/uploads/article/${article.image}" alt="Blog Single"></a>
+                        <a href="/blog/article/${article.id}"><img src="/uploads/article/${article.image}" alt="Blog Single"></a>
                       </div>
                     </div>
                     <div class="col-8">

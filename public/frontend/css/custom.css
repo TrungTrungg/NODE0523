@@ -5,4 +5,20 @@
 	Overwriting Default Theme Styles for Better Handling Updates
 -----------------------------------------------------------------*/
 
+#tab-3 {
+	margin-top: 40px !important;
+}
 
+.entry-content p {
+	margin-bottom: 0px !important;
+}
+#posts .entry {
+		margin-bottom: 0px !important;
+}
+.w-info {
+	margin-top: 40px !important;
+}
+
+.checkout-form {
+	padding-bottom: 0 !important ;
+}

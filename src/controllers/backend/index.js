@@ -7,6 +7,8 @@ const productCategoriesController = require('@controllers/backend/category/produ
 
 const brandController = require('@controllers/backend/brand_controller');
 const productController = require('@controllers/backend/product_controller');
+const orderController = require('@controllers/backend/order_controller');
+const couponController = require('@controllers/backend/coupon_controller');
 
 const articleController = require('@controllers/backend/article_controller');
 const subscribeController = require('@controllers/backend/subscribe_controller');
@@ -27,4 +29,6 @@ module.exports = {
     sliderController,
     contactController,
     settingController,
+    orderController,
+    couponController,
 };

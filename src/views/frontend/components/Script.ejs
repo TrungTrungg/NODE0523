@@ -13,7 +13,6 @@
 
 <!-- SLIDER REVOLUTION ADDONS  -->
 <script src="/frontend/js/revolution.addon.beforeafter.min.js"></script>
-<script src="/frontend/js/revolution.addon.particles.min.js"></script>
 
 <script src="/frontend/js/revolution.extension.video.min.js"></script>
 <script src="/frontend/js/revolution.extension.slideanims.min.js"></script>
@@ -24,6 +23,14 @@
 <script src="/frontend/js/revolution.extension.migration.min.js"></script>
 <script src="/frontend/js/revolution.extension.parallax.min.js"></script>
 <script src="/frontend/js/revolution.extension.carousel.min.js"></script>
+<!-- modal -->
+<script src="/both/js/sweetalert2.min.js"></script>
+<script src="/both/js/toastr.min.js"></script>
+
+<script src="/frontend/js/cart.js"></script>
+<script src="/frontend/js/checkout.js"></script>
+<script src="/frontend/js/custom.js"></script>
+
 <script>
   var revapi77,
     tpj = jQuery;
@@ -201,9 +208,6 @@
         jQuery('.rev_slider .tp-caption.tp-blendvideo[data-blendmode]').remove();
       }
     }
-
-    RsParticlesAddOn(revapi77);
-
     RevSliderBeforeAfter(tpj, revapi77, {
       arrowStyles: {
         leftIcon: "icon-caret-left",

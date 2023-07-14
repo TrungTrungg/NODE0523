@@ -1,4 +1,5 @@
 require('module-alias/register');
+require('dotenv').config();
 
 const createError = require('http-errors');
 const express = require('express');
@@ -18,7 +19,9 @@ const router = require('@routes');
 
 const app = express();
 // connect mongodb
-const mongoDBUrl = 'mongodb+srv://xuantrung:xuantrung@cluster0.wppcclt.mongodb.net/';
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const mongoDBUrl = `mongodb+srv://${dbUser}:${dbPassword}@cluster0.wppcclt.mongodb.net/`;
 
 mongoose
     .connect(mongoDBUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -53,7 +56,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(bodyParser.urlencoded({ extended: true }));
 // get url
 app.use((req, res, next) => {
     app.locals.currentUrl = req.path;

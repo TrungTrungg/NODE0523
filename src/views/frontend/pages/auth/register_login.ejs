@@ -1,0 +1,22 @@
+<!-- Page Title ============================================= -->
+<% include ../../components/PageTitle %>
+<!-- #page-title end -->
+<section id="content">
+  <div class="content-wrap">
+    <div class="container clearfix">
+
+      <div class="tabs mx-auto mb-0 clearfix" id="tab-login-register" style="max-width: 500px;">
+
+        <ul class="tab-nav tab-nav2 center clearfix">
+          <li class="inline-block"><a href="#login">Đăng nhập</a></li>
+          <li class="inline-block"><a href="#register">Đăng ký</a></li>
+        </ul>
+
+        <div class="tab-container">
+          <% include ../../components/Auth/Login %>
+          <% include ../../components/Auth/Register %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

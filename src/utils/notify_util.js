@@ -12,4 +12,11 @@ module.exports = {
     SUCCESS_DELETE: `Successfully delete item`,
     SUCCESS_CHANGE_STATUS: `successful status change`,
     SUCCESS_CHANGE_ORDERING: `successful ordering change`,
+
+    // user
+    ERROR_USER_LOGIN: `Tài khoản hoặc mật khẩu không đúng!`,
+    ERROR_USER_EMAIL: `Email không đúng!`,
+    ERROR_USER_PHONE: `Số điện thoại không đúng!`,
+    ERROR_USER_ADDRESS: `Số điện thoại không đúng!`,
+    ERROR_USER_NAME: `Số điện thoại không đúng!`,
 };

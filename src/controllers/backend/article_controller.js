@@ -107,6 +107,7 @@ const addOne = catchAsync(async (req, res) => {
     } else {
         let imageName = '';
         if (req.file) imageName = req.file.filename;
+        const { content } = req.body;
         const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
         const categories = await categoryService.getBlogCategory(articleCategoryId);
 
@@ -122,6 +123,7 @@ const addOne = catchAsync(async (req, res) => {
             slug,
             author,
             description,
+            content,
             url,
             is_special,
             categories,
@@ -145,7 +147,7 @@ const deleteOne = catchAsync(async (req, res) => {
 // render Edit item page
 const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const { name, status, ordering, category_id, author, description, image, url, is_special } =
+    const { name, status, ordering, category_id, author, description, content, image, url, is_special } =
         await service.getOneById(id);
     const { id: articleCategoryId } = await categoryService.getArticleCategoriesID();
     const categories = await categoryService.getBlogCategory(articleCategoryId);
@@ -163,6 +165,7 @@ const renderEditPage = catchAsync(async (req, res) => {
         category_id,
         author,
         description,
+        content,
         image,
         categories,
         url,
@@ -173,7 +176,7 @@ const renderEditPage = catchAsync(async (req, res) => {
 
 // Edit item
 const editOne = catchAsync(async (req, res) => {
-    const { id } = req.body;
+    const { id, content } = req.body;
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
@@ -189,7 +192,7 @@ const editOne = catchAsync(async (req, res) => {
             }
         }
         // Lấy data sau khi validate
-        const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
+        const { name, status, ordering, category_id, author, description, is_special } = matchedData(req);
         // slug
         const slug = name
             .toLowerCase()
@@ -201,10 +204,11 @@ const editOne = catchAsync(async (req, res) => {
             id,
             name,
             status.toLowerCase(),
+            slug,
             ordering,
             author,
             description,
-            url,
+            content,
             is_special,
             category_id,
             imageName,

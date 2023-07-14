@@ -10,9 +10,19 @@ const {
     sliderController,
     contactController,
     settingController,
+    orderController,
+    couponController,
 } = require('@controllers/backend');
 
-const { homeController, blogController, shopController, frontContactController } = require('@controllers/frontend');
+const {
+    homeController,
+    blogController,
+    shopController,
+    frontContactController,
+    authController,
+    cartController,
+    checkoutController,
+} = require('@controllers/frontend');
 module.exports = {
     itemController,
     mainCategoriesController,
@@ -25,9 +35,14 @@ module.exports = {
     subscribeController,
     contactController,
     settingController,
+    orderController,
+    couponController,
 
     homeController,
     blogController,
     shopController,
     frontContactController,
+    authController,
+    cartController,
+    checkoutController,
 };

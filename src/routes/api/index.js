@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { userModel } = require('@models');
+const { userService } = require('@services');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -11,18 +11,17 @@ router.use('/', (req, res, next) => {
 
 router.post('/register', async (req, res, next) => {
     const { username, password } = req.body;
-    const user = await userModel.create({ username, password });
+    const user = await userService.create({ username, password });
     res.send({ username: user.username, password: user.password, message: 'Success!!!' });
 });
 
 router.post('/login', async (req, res, next) => {
-    const { username, password } = req.body;
-    const user = await userModel.findOne({ username });
-
-    const token = jwt.sign({ username }, 'secret', { expiresIn: '1800s' });
-
+    const { email, password } = req.body;
+    const user = await userService.getOne(email);
     const match = await bcrypt.compare(password, user.password);
-    if (match) res.send({ username, token });
+    const token = jwt.sign({ email }, 'secret', { expiresIn: '1800s' });
+    res.setHeader('Authorization', `Bearer ${token}`);
+    if (match) res.send({ email, token });
     else res.send({ message: 'Failed!!!' });
 });
 

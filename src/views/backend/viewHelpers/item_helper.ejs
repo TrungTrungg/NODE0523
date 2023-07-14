@@ -21,7 +21,7 @@
             let nameXHtml     = handleName(item.name, keyword)
             let authorXHtml   = handleAuthor(item.author)
             let statusXHtml   = handleStatus(collection, item.status, item.id, query)
-            let specialXHtml = '</td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
+            let specialXHtml = '<td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
             let menuXHtml   = '<td>' + handleSpecial(collection, item.id, '', item.isMenu, 'menu') +'</td>'
             let urlXHtml      = handleUrl(collection, item.url, item.id)
             let orderingXHtml = handleOrdering(collection, item.ordering, item.id)

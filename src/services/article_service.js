@@ -1,7 +1,19 @@
 const { articleModel: model } = require('@models');
 
 // Create
-const create = async (name, status, ordering, slug, author, description, url, is_special, category_id, image) => {
+const create = async (
+    name,
+    status,
+    ordering,
+    slug,
+    author,
+    description,
+    content,
+    url,
+    is_special,
+    category_id,
+    image,
+) => {
     const condition = {
         name,
         status,
@@ -11,11 +23,10 @@ const create = async (name, status, ordering, slug, author, description, url, is
         post_date,
         author,
         description,
+        content,
         url,
         category_id,
     };
-    if (is_special === 'yes') condition.is_special = true;
-    else condition.is_special = false;
     if (image) condition.image = image;
     return await model.create(condition);
 };
@@ -26,11 +37,21 @@ const deleteOneById = async (id) => {
 };
 
 // Update
-const updateOneById = async (id, name, status, ordering, author, description, url, is_special, category_id, image) => {
-    const condition = { name, status, ordering, category_id, author, description, url };
+const updateOneById = async (
+    id,
+    name,
+    status,
+    slug,
+    ordering,
+    author,
+    description,
+    content,
+    is_special,
+    category_id,
+    image,
+) => {
+    const condition = { name, status, slug, ordering, author, description, content, is_special, category_id };
     if (image) condition.image = image;
-    if (is_special === 'yes') condition.is_special = true;
-    else condition.is_special = false;
     return await model.updateOne({ _id: id }, condition);
 };
 

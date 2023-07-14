@@ -10,7 +10,7 @@
 
 <%
     showPagination = (collection, category_id, keyword, {min, max, currentPage, totalPages}, price, sort, sale) => {
-       
+        if(totalPages <= 1) return
         let query = ''
         let path = ''
         if(category_id) {

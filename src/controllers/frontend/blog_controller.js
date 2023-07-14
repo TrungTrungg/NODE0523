@@ -43,7 +43,6 @@ const renderDetailBlog = catchAsync(async (req, res) => {
         articleService.getArticleCurrent(),
         articleService.getArticleRelated(article.category_id),
     ]);
-    console.log(articles);
     const options = {
         page: 'Trang tin tức',
         pageDesc: 'Những tin mới nhất',

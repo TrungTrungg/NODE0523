@@ -7,6 +7,8 @@ const sliderModel = require('@models/slider_model');
 const subscribeModel = require('@models/subscribe_model');
 const contactModel = require('@models/contact_model');
 const userModel = require('@models/user_model');
+const orderModel = require('@models/order_model');
+const couponModel = require('@models/coupon_model');
 
 const settingModel = require('@models/setting_model');
 
@@ -21,4 +23,6 @@ module.exports = {
     contactModel,
     userModel,
     settingModel,
+    orderModel,
+    couponModel,
 };

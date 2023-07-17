@@ -162,6 +162,10 @@ const getAll = async (status, keyword, category_id, brand_id, { currentPage, ite
         .limit(itemPerPage);
 };
 
+const getProducts = async (Ids) => {
+    return await model.find({ _id: Ids });
+};
+
 const getByCondition = async (category_id, params, limit, id) => {
     const conditions = {};
     if (id) conditions._id = { $nin: id };
@@ -220,6 +224,7 @@ module.exports = {
     deleteOneById,
     getOneById,
     getAll,
+    getProducts,
     getByCondition,
     updateOneById,
     changeFieldById,

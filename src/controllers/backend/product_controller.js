@@ -60,7 +60,7 @@ const renderList = catchAsync(async (req, res) => {
     const items = await service.getAll(currentStatus, keyword, category_id, brand_id, pagination);
 
     // get id shop category
-    const { id: shop_id } = await categoryService.getShopCategoriesID();
+    const { id: shop_id } = await categoryService.getIdByName('Shop');
 
     const categories = await categoryService.getSubCategory();
 
@@ -91,7 +91,7 @@ const renderList = catchAsync(async (req, res) => {
 
 // render add item page
 const renderAddPage = catchAsync(async (req, res) => {
-    const { id: shop_id } = await categoryService.getShopCategoriesID();
+    const { id: shop_id } = await categoryService.getIdByName('Shop');
 
     const categories = await getListCategories(shop_id);
 
@@ -195,28 +195,12 @@ const deleteOne = catchAsync(async (req, res) => {
 // render Edit item page
 const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const {
-        name,
-        status,
-        ordering,
-        specialShowhome,
-        price,
-        quantity,
-        sold,
-        sale,
-        description,
-        specification,
-        category_id,
-        brand_id,
-        image,
-        gallery_image,
-    } = await service.getOneById(id);
-    const { size, ram, cpu, ssd, vga } = specification;
-    const { special, showHome } = specialShowhome;
-    const { id: shop_id } = await categoryService.getShopCategoriesID();
+    const productt = await service.getOneById(id);
+    const { id: shop_id } = await categoryService.getIdByName('Shop');
     const categories = await getListCategories(shop_id);
 
     const brands = await getListBrands();
+    const product = { ...productt._doc, categories, brands };
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -224,28 +208,8 @@ const renderEditPage = catchAsync(async (req, res) => {
     const options = {
         page: 'Item',
         collection,
-        id,
-        name,
-        status,
-        ordering,
-        special,
-        showHome,
-        price,
-        quantity,
-        sold,
-        sale,
-        description,
-        size,
-        ram,
-        cpu,
-        ssd,
-        vga,
-        category_id,
-        brand_id,
-        image,
-        gallery_image,
-        categories,
-        brands,
+        product,
+        messages,
     };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
 });
@@ -253,7 +217,6 @@ const renderEditPage = catchAsync(async (req, res) => {
 // Edit item
 const editOne = catchAsync(async (req, res) => {
     const { id, special, showHome } = req.body;
-    console.log(req.body);
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);

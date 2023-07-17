@@ -59,24 +59,49 @@
             child: [
                 {
                     url: '/admin/article',
-                    icon: 'fas fa-newspaper',
+                    icon: 'far fa-circle',
                     name: `Articles`
                 },
                 {
                     url: '/admin/product',
-                    icon: 'fab fa-product-hunt',
+                    icon: 'far fa-circle',
                     name: `Products`
                 },
                 {
                     url: '/admin/brand',
-                    icon: 'fas fa-copyright',
+                    icon: 'far fa-circle',
                     name: `Brands`
                 },
                 {
-                    url: '/admin/silder',
-                    icon: 'fas fa-copyright',
+                    url: '/admin/slider',
+                    icon: 'far fa-circle',
                     name: `Sliders`
                 },
+            ]
+        },
+        {
+            isParent: true,
+            url: '#',
+            icon: 'fas fa-th-list',
+            name: 'Shopping',
+            iconDropdown: 'fas fa-angle-left',
+            child: [
+                {
+                    url: '/admin/order',
+                    icon: 'far fa-circle',
+                    name: `Orders`
+                },
+                {
+                    url: '/admin/coupon',
+                    icon: 'far fa-circle',
+                    name: `Coupons`
+                },
+                {
+                    url: '/admin/delivery',
+                    icon: 'far fa-circle',
+                    name: `Delivery`
+                },
+               
             ]
         },
         {
@@ -110,17 +135,17 @@
             let parentActive = ''
             let childActive = ''
             
-            if(sidebar.url === currentUrl) parentActive = 'active'
+            // if(sidebar.url === currentUrl) parentActive = 'active'
             if(sidebar.isParent) {
                 dropdownList = sidebar.child.map((dataChild) => {
 
-                    if(currentUrl.includes(dataChild.url)) {
-                        parentActive = 'active'
-                        menuOpen = 'menu-open'
-                        childActive = 'active'
-                    }else {
-                        childActive = ''
-                    }
+                    // if(currentUrl.includes(dataChild.url)) {
+                    //     parentActive = 'active'
+                    //     menuOpen = 'menu-open'
+                    //     childActive = 'active'
+                    // }else {
+                    //     childActive = ''
+                    // }
                    
 
                     return (`

@@ -3,18 +3,18 @@ const unidecode = require('unidecode');
 
 const { categoryService: service } = require('@services');
 const { filterOptions, notify, articleCategoriesCollection: collection } = require('@utils');
-const { handlePagination, getListCategories, catchAsync } = require('@helpers');
+const { handlePagination, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
 const renderList = catchAsync(async (req, res, next) => {
     // Lấy dữ liệu từ url: params, query
     const { status } = req.params;
-    const { search, page, category } = req.query;
+    const { search, page } = req.query;
 
     // Xử lý status
     let currentStatus = status;
-    if (currentStatus !== undefined) {
+    if (status) {
         currentStatus = status === filterOptions.all ? undefined : status;
     }
 
@@ -23,7 +23,7 @@ const renderList = catchAsync(async (req, res, next) => {
     if (search) keyword = !search.trim() ? '' : search.trim();
 
     // get article's categories ID
-    const { id: category_id } = await service.getArticleCategoriesID();
+    const { id: article_id } = await service.getIdByName('Tin tức');
 
     // Xử lý page
     let currentPage = 1;
@@ -31,11 +31,14 @@ const renderList = catchAsync(async (req, res, next) => {
 
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: filterOptions.all, qty: await service.countByStatus('', keyword, category_id) },
-        { name: filterOptions.active, qty: await service.countByStatus(filterOptions.active, keyword, category_id) },
+        { name: filterOptions.all, qty: await service.countByStatus('', keyword, 'article', article_id) },
+        {
+            name: filterOptions.active,
+            qty: await service.countByStatus(filterOptions.active, keyword, 'article', article_id),
+        },
         {
             name: filterOptions.inactive,
-            qty: await service.countByStatus(filterOptions.inactive, keyword, category_id),
+            qty: await service.countByStatus(filterOptions.inactive, keyword, 'article', article_id),
         },
     ];
 
@@ -47,11 +50,11 @@ const renderList = catchAsync(async (req, res, next) => {
     };
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
-    const totalItems = await service.countByStatus(currentStatus, keyword, category_id);
+    const totalItems = await service.countByStatus(currentStatus, keyword, 'article', article_id);
     const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
-    const items = await service.getAll(currentStatus, keyword, category_id, pagination);
+    const items = await service.getAll(currentStatus, keyword, article_id, pagination);
 
     // Message
     const messages = {
@@ -97,14 +100,14 @@ const addOne = catchAsync(async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/add`);
     } else {
-        const [{ id: category_id }] = await service.getArticleCategoriesID();
+        const { id: article_id } = await service.getIdByName('Tin tức');
         const { name, status, ordering, url } = matchedData(req);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.create(name, status.toLowerCase(), ordering, slug, url, category_id);
+        await service.create(name, slug, status.toLowerCase(), ordering, url, article_id);
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
@@ -122,7 +125,8 @@ const deleteOne = catchAsync(async (req, res, next) => {
 const renderEditPage = catchAsync(async (req, res, next) => {
     // Lấy items cần sửa đổi
     const { id } = req.params;
-    const { name, status, ordering, url } = await service.getOneById(id);
+    const articleCategory = await service.getOneById(id);
+    const { name, status, ordering, url } = articleCategory;
 
     // message
     const messages = {
@@ -130,7 +134,7 @@ const renderEditPage = catchAsync(async (req, res, next) => {
         error: req.flash('error'),
     };
 
-    const options = { page: 'Edit', collection, id, name, status, ordering, url, messages };
+    const options = { page: 'Edit', collection, id, name, status, ordering, url, messages, articleCategory };
     res.render(`backend/pages/articleCategories/articleCategories_edit`, options);
 });
 
@@ -142,14 +146,14 @@ const editOne = catchAsync(async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        const [{ id: category_id }] = await service.getArticleCategoriesID();
+        const { id: article_id } = await service.getIdByName('Tin tức');
         const { name, status, ordering, url } = matchedData(req);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, url, category_id);
+        await service.updateOneById(id, name, slug, status.toLowerCase(), ordering, url, article_id);
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }
@@ -226,6 +230,7 @@ const changeUrlAjax = catchAsync(async (req, res, next) => {
     await service.changeFieldById(id, 'url', url);
     res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
 });
+
 module.exports = {
     renderList,
     renderAddPage,

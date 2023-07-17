@@ -1,0 +1,17 @@
+<%
+    showTotalPrice = (order,delivery, coupon ) => {
+        let total = 0
+        order.product.map((item) => {
+            return total = total + (parseInt(item.price) * parseInt(item.quantity))
+        })
+        total += parseInt(delivery.shipping_fee)
+        if(coupon) {
+            if(coupon.type === 'fixed')
+            total -= parseInt(coupon.value)
+            else {
+                total = total - total * parseInt(coupon.value) /100
+            }
+        }
+        return total
+    }   
+%>

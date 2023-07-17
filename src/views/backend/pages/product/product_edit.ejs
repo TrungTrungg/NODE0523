@@ -8,7 +8,7 @@
         <div class="card-header">
           <h3 class="card-title">Form</h3>
         </div>
-        <%- showForm(collection, categories, brands, 'POST', `/admin/${collection}/edit`, 'multipart/form-data', id, name, ordering, status, '', category_id, image, description,'', '', '', price, quantity, sold, sale, size, ram, cpu, ssd, vga, brand_id,special, showHome, gallery_image) %>
+        <%- showForm(collection,  'POST', `/admin/${collection}/edit`, 'multipart/form-data', product.id,  'coupon', 'mainCategory','articleCategory', 'productCategory', 'brand', product ) %>
       </div>
     </div>
   </div>

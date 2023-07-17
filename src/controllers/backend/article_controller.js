@@ -52,8 +52,9 @@ const renderList = catchAsync(async (req, res) => {
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
 
+    const { id: article_id } = await categoryService.getIdByName('Tin tức');
     // categories
-    const categories = await categoryService.getBlogCategory();
+    const categories = await categoryService.getCategoriesById(article_id);
     let cateName = '';
     if (category_id) {
         let category = await categoryService.getCategory(category_id);
@@ -147,10 +148,10 @@ const deleteOne = catchAsync(async (req, res) => {
 // render Edit item page
 const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const { name, status, ordering, category_id, author, description, content, image, url, is_special } =
-        await service.getOneById(id);
-    const { id: articleCategoryId } = await categoryService.getArticleCategoriesID();
-    const categories = await categoryService.getBlogCategory(articleCategoryId);
+    const articlee = await service.getOneById(id);
+    const { id: articleCategoryId } = await categoryService.getIdByName('Tin tức');
+    const categories = await categoryService.getCategoriesById(articleCategoryId);
+    const article = { ...articlee._doc, categories };
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -158,18 +159,8 @@ const renderEditPage = catchAsync(async (req, res) => {
     const options = {
         page: 'Item',
         collection,
-        id,
-        name,
-        status,
-        ordering,
-        category_id,
-        author,
-        description,
-        content,
-        image,
-        categories,
-        url,
-        is_special,
+        article,
+        messages,
     };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);
 });

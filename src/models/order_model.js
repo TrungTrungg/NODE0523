@@ -7,8 +7,8 @@ const productOrderSchema = new mongoose.Schema({
 });
 
 const userOrderSchema = new mongoose.Schema({
-    user_id: { type: String },
-    address: { type: Number },
+    email: { type: String },
+    address: { type: String },
     phone: { type: Number },
 });
 
@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema(
             type: String,
         },
         product: {
-            type: productOrderSchema,
+            type: [productOrderSchema],
         },
         user: {
             type: userOrderSchema,
@@ -29,13 +29,10 @@ const orderSchema = new mongoose.Schema(
         total: {
             type: String,
         },
-        delivery_fee: {
-            type: String,
-        },
         coupon_id: {
             type: String,
         },
-        shipping_location: {
+        delivery_id: {
             type: String,
         },
         message: {

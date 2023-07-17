@@ -1,0 +1,81 @@
+<!-- Content Header (Page header) -->
+<% include ../../viewHelpers/product_helper %>
+<% include ../../viewHelpers/totalPrice_helper %>
+<% include ../../components/PageHeader %>
+<section class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card card-dark">
+        <div class="card-header">
+          <h3 class="card-title">Detail</h3>
+        </div>
+        <div class="card-body">
+
+          <table>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Field</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>User_code</td>
+                  <td><%= order.user_code %></td>
+                </tr>
+                <tr>
+                  <td>User</td>
+                  <td><%= userInfo.last_name  %> <%=  userInfo.first_name %></td>
+                </tr>
+                <tr>
+                  <td>User email</td>
+                  <td><%= order.user.email  %></td>
+                </tr>
+                <tr>
+                  <td>User address</td>
+                  <td><%= order.user.address  %></td>
+                </tr>
+                <tr>
+                  <td>User phone</td>
+                  <td><%= order.user.phone  %></td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-bold">Product</td>
+                </tr>
+                <%- showProductOrder(products, order.product) %>
+                <tr>
+                  <td>Total price</td>
+                  <td><%= order.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ</td>
+                </tr>
+
+                <tr>
+                  <td>Coupon</td>
+                  <% if(typeof coupon !== 'undefined' && coupon.type === 'percent') {%>
+                  <td><%= coupon.value  %>%</td>
+                  <% } %>
+                  <% if(typeof coupon !== 'undefined' && coupon.type === 'fixed') {%>
+                  <td><%= coupon.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ</td>
+                  <% } %>
+
+                </tr>
+                <tr>
+                  <td>Shipping fee</td>
+                  <td><%= delivery.shipping_fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ </td>
+                </tr>
+                <tr>
+                  <td>Final Price</td>
+                  <td><%- (showTotalPrice(order, delivery, coupon)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ</td>
+                </tr>
+
+              </tbody>
+              <tr>
+            </table>
+        </div>
+        <div class="card-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

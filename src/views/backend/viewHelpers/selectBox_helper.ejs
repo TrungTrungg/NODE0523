@@ -3,12 +3,12 @@
         let options = ''
         if(list) {
             options = list.map((item) => {
-            let value = item.value.toString()
+            let value = item.value
             let onclick = ''
             if(isParent) onclick = `onclick="javascript:handleSelectOption('${collection}', '${value}')"`
             return(`
                 <option 
-                    ${value === condition ? 'selected="selected"': ''}
+                    ${value.toString() === condition.toString() ? 'selected="selected"': ''}
                     ${onclick}
                     id="option-${value}"
                     value="${value}" 

@@ -10,7 +10,8 @@ const { productValidator, productCollection, productPrice } = require('@utils/pr
 const { articleValidator, articleCollection } = require('@utils/article_util');
 const { sliderValidator, sliderCollection } = require('@utils/slider_util');
 const { userValidator, userCollection } = require('@utils/user_util');
-const { filterOptions } = require('@utils/status_util');
+const { orderCollection } = require('@utils/order_util');
+const { filterOptions, orderStatusOptions } = require('@utils/status_util');
 const notify = require('@utils/notify_util');
 
 module.exports = {
@@ -30,11 +31,18 @@ module.exports = {
     sliderValidator,
     sliderCollection,
     contactCollection: 'contact',
+    couponCollection: 'coupon',
+    deliveryCollection: 'delivery',
+    orderCollection,
+
     userValidator,
     userCollection,
     blogCollection: 'blog',
     shopCollection: 'shop',
     cartCollection: 'cart',
+    checkoutCollection: 'checkout',
+
     filterOptions,
+    orderStatusOptions,
     notify,
 };

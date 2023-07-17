@@ -1,0 +1,9 @@
+<%
+    showSelectBox = (arr) => {
+        return arr.map((item) => {
+            return(`
+                <option value="${item.value}">${item.name}</option>
+            `)
+        })
+    }
+%>

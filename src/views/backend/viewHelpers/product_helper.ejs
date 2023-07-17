@@ -1,0 +1,20 @@
+<%
+    showProductOrder  = (products, productOrder) => {
+        let tdHtml = ''
+        return products.map((product) => {
+             productOrder.map((prodOrder) => {
+                if(prodOrder.product_id === product.id) {
+                tdHtml = `<td> quantity: ${prodOrder.quantity} | price: ${(prodOrder.price * prodOrder.quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ</td>`
+                }
+             }).join('')
+            return(`
+            <tr>
+                <td><img class="img-thumbnail img-md" src="/uploads/product/${product.image}" /> ${product.name}</td>
+                ${tdHtml}
+            </tr>
+            `)
+        }).join('')
+
+       
+    }
+%>

@@ -1,3 +1,5 @@
+<% include ../../viewHelpers/selectBox_helper %>
+
 <div class="col-lg-6 checkout-form">
   <h3>Thông tin khách hàng</h3>
   <div id="billing-form" name="billing-form" class="row mb-0">
@@ -37,7 +39,10 @@
     <div class="w-100"></div>
     <div class="col-12 form-group">
       <label for="shipping-form-city">Khu vực</label>
-      <input type="text" id="shipping-form-city" name="location" value="" class="sm-form-control" />
+      <select class="sm-form-control" id="select" name='location' onchange="javascript:handleSelectLocation()">
+        <option value="">Chọn khu vực</option>
+        <%- showSelectBox(locations) %>
+      </select>
     </div>
 
   </div>
@@ -47,4 +52,7 @@
     <label for="shipping-form-message">Ghi chú <small>*</small></label>
     <textarea class="sm-form-control" id="shipping-form-message" name="message" rows="6" cols="30"></textarea>
   </div>
+  <input type="hidden" name="products" id="productInput" />
+  <input type="hidden" name="coupon" id="couponInput" />
+  <input type="hidden" name="delivery" id="deliveryInput" />
 </div>

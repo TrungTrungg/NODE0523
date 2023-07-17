@@ -2,8 +2,8 @@
     showInput = (type, label, name, value, disabled) => {
         return(`
             <div class="form-group col">
-                <label for="itemName">${label}</label>
-                <input name="${name}" value="${value ? value : ''}" type="${type}" class="form-control" id="itemName" placeholder="Enter ${label}" ${disabled} />
+                <label for="item${name}">${label}</label>
+                <input name="${name}" value="${value ? value : ''}" type="${type}" class="form-control" id="item${name}" placeholder="Enter ${label}" ${disabled} />
             </div>
         `)
     }

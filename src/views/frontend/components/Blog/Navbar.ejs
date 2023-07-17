@@ -1,13 +1,13 @@
 <div class="widget widget_links">
-    <h4>Danh mục bài viết</h4>
-    <ul>
-        <% showCategory = (blogCategory) => {
+  <h4>Danh mục bài viết</h4>
+  <ul>
+    <% showCategory = (blogCategory) => {
             return blogCategory.map((category) => {
                 return(`
-                    <li><a href="/blog/${category.value}">${category.name}</a></li>
+                    <li><a href="/blog/${category.id}">${category.name}</a></li>
                 `)
             }).join('')
         } %>
-        <%- showCategory(blogCategory)  %>
-    </ul>
+    <%- showCategory(blogCategory)  %>
+  </ul>
 </div>

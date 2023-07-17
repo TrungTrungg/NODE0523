@@ -118,7 +118,7 @@ const deleteOne = catchAsync(async (req, res) => {
 // render Edit item page
 const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const { status, ordering, description, image } = await service.getOneById(id);
+    const slider = await service.getOneById(id);
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -126,11 +126,7 @@ const renderEditPage = catchAsync(async (req, res) => {
     const options = {
         page: 'Item',
         collection,
-        id,
-        status,
-        ordering,
-        description,
-        image,
+        slider,
         messages,
     };
     res.render(`backend/pages/${collection}/${collection}_edit`, options);

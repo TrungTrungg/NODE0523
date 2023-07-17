@@ -295,3 +295,59 @@ const handleChangeIsShowhome = (collection, id, isSpecial, name) => {
         },
     });
 };
+
+const handleRandomCode = () => {
+    const inputDOM = $('#itemcode');
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+    }
+
+    inputDOM.val(result);
+};
+
+const handleSelectStatus = (id) => {
+    const selectDOM = $('#status-select');
+    const filterAllDOM = $(`#status-all`);
+    const filterDoneDOM = $(`#status-đã thanh toán`);
+    const filterNotDOM = $(`#status-chưa thanh toán`);
+    const filterCancelDOM = $(`#status-bị hủy`);
+    $.ajax({
+        type: 'POST',
+        url: '/admin/order/changeStatusAjax',
+        data: { status: selectDOM.val(), id },
+        dataType: 'json',
+        success: (data) => {
+            if (data.success) {
+                let toastrMessage = data.message;
+                filterAllDOM.text(`${data.filter.allStatus.name} (${data.filter.allStatus.count})`);
+                filterDoneDOM.text(`${data.filter.doneStatus.name} (${data.filter.doneStatus.count})`);
+                filterNotDOM.text(`${data.filter.notStatus.name} (${data.filter.notStatus.count})`);
+                filterCancelDOM.text(`${data.filter.cancleStatus.name} (${data.filter.cancleStatus.count})`);
+                toastr.success(toastrMessage, 'SUCCESS', {
+                    newestOnTop: true,
+                    closeButton: false,
+                    progressBar: true,
+                    preventDuplicates: false,
+                    showMethod: 'slideDown',
+                    timeOut: 10000,
+                });
+            }
+
+            if (data.error) {
+                console.log(data.message);
+                let toastrMessage = data.message;
+                toastr.error(toastrMessage, 'ERROR', {
+                    newestOnTop: true,
+                    closeButton: false,
+                    progressBar: true,
+                    preventDuplicates: false,
+                    showMethod: 'slideDown',
+                    timeOut: 30000,
+                });
+            }
+        },
+    });
+};

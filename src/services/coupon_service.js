@@ -1,17 +1,17 @@
-const { brandModel: model } = require('@models');
+const { couponModel: model } = require('@models');
 
 // Create
-const create = async (name, status, ordering, slug, is_special, image) => {
-    const condition = {
-        name,
-        status,
-        ordering,
-        slug,
+const create = async (code, type, value, started_at, expired_at, quantity, condition) => {
+    const conditions = {
+        code,
+        type,
+        value,
+        started_at,
+        expired_at,
+        quantity,
+        condition,
     };
-    if (is_special === 'yes') condition.is_special = true;
-    else condition.is_special = false;
-    if (image) condition.image = image;
-    return await model.create(condition);
+    return await model.create(conditions);
 };
 
 // Delete
@@ -20,12 +20,9 @@ const deleteOneById = async (id) => {
 };
 
 // Update
-const updateOneById = async (id, name, slug, status, ordering, is_special, image) => {
-    const condition = { name, slug, status, ordering };
-    if (image) condition.image = image;
-    if (is_special === 'yes') condition.is_special = true;
-    else condition.is_special = false;
-    return await model.updateOne({ _id: id }, condition);
+const updateOneById = async (id, code, type, value, started_at, expired_at, quantity, condition) => {
+    const conditions = { code, type, value, started_at, expired_at, quantity, condition };
+    return await model.updateOne({ _id: id }, conditions);
 };
 
 const changeFieldById = async (id, field, value) => {
@@ -45,50 +42,35 @@ const getOneById = async (id) => {
     return await model.findById(id);
 };
 
-const getAllBrands = async (limit) => {
-    return await model.find().limit(limit);
+const getOneByCode = async (code) => {
+    return await model.findOne({ code });
 };
 
-const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }) => {
-    let condition = {};
-    if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'gi');
-    if (category_id) condition.category_id = category_id;
+const getAll = async (keyword, { currentPage, itemPerPage }) => {
+    let conditions = {};
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
     return await model
-        .find(condition)
+        .find(conditions)
         .sort({ updatedAt: -1, createdAt: -1 })
         .skip(itemPerPage * (currentPage - 1))
         .limit(itemPerPage);
 };
 
-const getBrandCateogries = async () => {
-    return await model.find();
-};
-
 // Count
-const countByStatus = async (status, keyword, category_id) => {
-    let condition = {};
-    if (status) condition.status = status.toLowerCase();
-    if (keyword) condition.name = new RegExp(keyword, 'gi');
-    if (category_id) condition.category_id = category_id;
-
-    return await model.count(condition);
-};
-
-const countArticleByCategory = async (category_id) => {
-    return await model.count({ category_id });
+const countByStatus = async (keyword) => {
+    let conditions = {};
+    if (keyword) conditions.name = new RegExp(keyword, 'gi');
+    return await model.count(conditions);
 };
 
 module.exports = {
     create,
     deleteOneById,
     getOneById,
+    getOneByCode,
     getAll,
-    getAllBrands,
-    getBrandCateogries,
 
     updateOneById,
     changeFieldById,
     countByStatus,
-    countArticleByCategory,
 };

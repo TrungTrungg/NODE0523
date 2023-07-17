@@ -1,12 +1,12 @@
+<% include ../../viewHelpers/selectBox_helper %>
 <div class="row col-mb-30">
   <div class="col-lg-6">
     <h4>Địa điểm giao hàng</h4>
     <form class="row">
       <div class="col-12 form-group">
-        <select class="sm-form-control">
-          <option value="AX">&#197;land Islands</option>
-          <option value="AF">Afghanistan</option>
-          <option value="AL">Albania</option>
+        <select class="sm-form-control" id="select" onchange="javascript:handleSelectLocation()">
+          <option value="">Chọn khu vực</option>
+          <%- showSelectBox(locations) %>
         </select>
       </div>
       <div class="col-12 form-group">
@@ -27,7 +27,7 @@
             </td>
 
             <td class="cart-product-name">
-              <span class="amount" id="cart-total">0</span>
+              <span class="amount" id="cart-total">0 Đ</span>
             </td>
           </tr>
           <tr class="cart_item">
@@ -36,7 +36,16 @@
             </td>
 
             <td class="cart-product-name">
-              <span class="amount">Miễn phí vận chuyển</span>
+              <span class="amount" id="shipping">Chọn khu vực vận chuyển</span>
+            </td>
+          </tr>
+          <tr class="cart_item">
+            <td class="cart-product-name">
+              <strong>Mã giảm giá</strong>
+            </td>
+
+            <td class="cart-product-name">
+              <span class="amount" id="discount">0 Đ</span>
             </td>
           </tr>
           <tr class="cart_item">
@@ -45,7 +54,7 @@
             </td>
 
             <td class="cart-product-name">
-              <span class="amount color lead"><strong id="total">$106.94</strong></span>
+              <span class="amount color lead"><strong id="total">0 Đ</strong></span>
             </td>
           </tr>
         </tbody>

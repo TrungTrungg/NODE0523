@@ -6,7 +6,7 @@ const fetchDataMiddleware = catchAsync(async (req, res, next) => {
         settingService.getSetting(),
         categoryService.getMenuCategory(),
         categoryService.getSubCategory(),
-        categoryService.getShopCategoriesID(),
+        categoryService.getIdByName('Shop'),
         articleService.getArticleCurrent(),
     ]);
     const messages = {

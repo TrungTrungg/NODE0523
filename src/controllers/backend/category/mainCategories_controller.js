@@ -3,18 +3,18 @@ const unidecode = require('unidecode');
 
 const { categoryService: service } = require('@services');
 const { filterOptions, notify, mainCategoriesCollection: collection } = require('@utils');
-const { handlePagination, getListCategories, catchAsync } = require('@helpers');
+const { handlePagination, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
 const renderList = catchAsync(async (req, res, next) => {
     // Lấy dữ liệu từ url: params, query
     const { status } = req.params;
-    const { search, page, category } = req.query;
+    const { search, page } = req.query;
 
     // Xử lý status
-    let currentStatus = status;
-    if (currentStatus !== undefined) {
+    let currentStatus = '';
+    if (status) {
         currentStatus = status === filterOptions.all ? undefined : status;
     }
 
@@ -22,20 +22,23 @@ const renderList = catchAsync(async (req, res, next) => {
     let keyword = '';
     if (search) keyword = !search.trim() ? '' : search.trim();
 
-    let category_id = '';
-    if (category) category_id = category;
-
     // Xử lý page
     let currentPage = 1;
     if (page) currentPage = parseInt(page);
 
+    // shop id
+    const { id: shop_id } = await service.getIdByName('Shop');
+
     // Tạo dữ liệu cho filter
     const filter = [
-        { name: filterOptions.all, qty: await service.countByStatus('', keyword, category_id) },
-        { name: filterOptions.active, qty: await service.countByStatus(filterOptions.active, keyword, category_id) },
+        { name: filterOptions.all, qty: await service.countByStatus('', keyword, 'main', shop_id) },
+        {
+            name: filterOptions.active,
+            qty: await service.countByStatus(filterOptions.active, keyword, 'main', shop_id),
+        },
         {
             name: filterOptions.inactive,
-            qty: await service.countByStatus(filterOptions.inactive, keyword, category_id),
+            qty: await service.countByStatus(filterOptions.inactive, keyword, 'main', shop_id),
         },
     ];
 
@@ -47,14 +50,12 @@ const renderList = catchAsync(async (req, res, next) => {
     };
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
-    const totalItems = await service.countByStatus(currentStatus, keyword, category_id);
+    const totalItems = await service.countByStatus(currentStatus, keyword, 'main', shop_id);
     const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
-    const mainCategories = await service.getMainCategories(currentStatus, keyword, pagination);
-    const { id: shop_id } = await service.getShopCategoriesID();
-    const shopChildCategories = await service.getShopCategory(shop_id);
-    const items = [...mainCategories, ...shopChildCategories];
+    const items = await service.getMainCategories(currentStatus, keyword, pagination, shop_id);
+
     // Message
     const messages = {
         success: req.flash('success'),
@@ -83,7 +84,6 @@ const renderAddPage = catchAsync(async (req, res, next) => {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-
     // Options
     const options = {
         page: 'Add',
@@ -100,13 +100,13 @@ const addOne = catchAsync(async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/add`);
     } else {
-        const { name, status, ordering, url } = matchedData(req);
+        const { name, url, status, ordering } = matchedData(req);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.create(name, status.toLowerCase(), ordering, slug, url);
+        await service.create(name, slug, status.toLowerCase(), ordering, url);
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
@@ -124,7 +124,7 @@ const deleteOne = catchAsync(async (req, res, next) => {
 const renderEditPage = catchAsync(async (req, res, next) => {
     // Lấy items cần sửa đổi
     const { id } = req.params;
-    const { name, status, ordering, url } = await service.getOneById(id);
+    const mainCategory = await service.getOneById(id);
 
     // message
     const messages = {
@@ -132,13 +132,14 @@ const renderEditPage = catchAsync(async (req, res, next) => {
         error: req.flash('error'),
     };
 
-    const options = { page: 'Edit', collection, id, name, status, ordering, url, messages };
+    const options = { page: 'Edit', collection, mainCategory };
     res.render(`backend/pages/category/category_edit`, options);
 });
 
 // Edit item
 const editOne = catchAsync(async (req, res, next) => {
     const { id } = req.body;
+    console.log(id);
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
@@ -150,30 +151,13 @@ const editOne = catchAsync(async (req, res, next) => {
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, url);
+        await service.updateOneById(id, name, slug, status.toLowerCase(), ordering, url);
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }
 });
 
 // Change status of item
-const changeStatus = catchAsync(async (req, res, next) => {
-    const { id, status } = req.params;
-    const { page, search } = req.query;
-
-    // handle query
-    let query = `?page=1`;
-    if (search) query += `&search=${search}`;
-
-    // handle change status
-    let newStatus = status;
-    if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
-    else newStatus = filterOptions.active;
-
-    await service.changeStatusById(id, newStatus.toLowerCase());
-    req.flash('success', notify.SUCCESS_CHANGE_STATUS);
-    res.redirect(`/admin/${collection}${query}`);
-});
 
 const changeStatusAjax = catchAsync(async (req, res, next) => {
     const { id, status } = req.params;
@@ -212,6 +196,8 @@ const changeOrderingAjax = catchAsync(async (req, res, next) => {
     const { id, ordering } = req.params;
     if (isNaN(ordering)) {
         res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
+    } else if (parseInt(ordering) <= 0) {
+        res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
     } else {
         // handle change status
         await service.changeFieldById(id, 'ordering', ordering);
@@ -242,7 +228,6 @@ module.exports = {
     deleteOne,
     renderEditPage,
     editOne,
-    changeStatus,
     changeStatusAjax,
     changeOrderingAjax,
     changeIsSpecialAjax,

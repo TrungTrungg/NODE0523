@@ -23,8 +23,7 @@ const deleteOneById = async (id) => {
 const updateOneById = async (id, name, slug, status, ordering, is_special, image) => {
     const condition = { name, slug, status, ordering };
     if (image) condition.image = image;
-    if (is_special === 'yes') condition.is_special = true;
-    else condition.is_special = false;
+    if (is_special) condition.is_special = is_special;
     return await model.updateOne({ _id: id }, condition);
 };
 

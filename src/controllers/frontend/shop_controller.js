@@ -40,7 +40,7 @@ const renderShop = catchAsync(async (req, res) => {
         service.getByCondition(category_id, 'special', 3),
     ]);
     // get shop categories
-    const { id: shop_id } = await categoryService.getShopCategoriesID();
+    const { id: shop_id } = await categoryService.getIdByName('Shop');
     const mainCategories = await categoryService.getShopCategory(shop_id);
     const listCategoryId = mainCategories.map((child) => child.id);
     const shopChildCategories = await categoryService.getAll('', '', '', {}, listCategoryId);

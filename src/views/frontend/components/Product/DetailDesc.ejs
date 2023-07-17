@@ -6,9 +6,9 @@
 										============================================= -->
     <div class="product-price">
       <% if(product.sale > 0) { %>
-      <del><%= product.price %> VNĐ</del> <ins><%= product.price - product.price * product.sale / 100  %> VNĐ</ins>
+      <del><%= (product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') %> VNĐ</del> <ins><%= (product.price - product.price * product.sale/ 100 ).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ</ins>
       <% } else { %>
-      <ins><%= product.price %> VNĐ</ins>
+      <ins><%= (product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') %> VNĐ</ins>
       <% } %>
     </div><!-- Product Single - Price End -->
 
@@ -28,14 +28,14 @@
 
   <!-- Product Single - Quantity & Cart Button
 									============================================= -->
-  <form class="cart mb-0 d-flex justify-content-between align-items-center" method="post" enctype='multipart/form-data'>
+  <div class="cart mb-0 d-flex justify-content-between align-items-center" method="post" enctype='multipart/form-data'>
     <div class="quantity clearfix">
       <input type="button" value="-" class="minus">
-      <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" />
+      <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" id="input-<%=product.id%>" />
       <input type="button" value="+" class="plus">
     </div>
-    <button type="submit" class="add-to-cart button m-0">Thêm vào giỏ hàng</button>
-  </form><!-- Product Single - Quantity & Cart Button End -->
+    <button onclick="javascript:handleClickAtToCart('<%= product.id %>')" type="button" class="add-to-cart button m-0">Thêm vào giỏ hàng</button>
+  </div><!-- Product Single - Quantity & Cart Button End -->
 
   <div class="line"></div>
 

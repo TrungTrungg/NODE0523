@@ -5,6 +5,7 @@ const brandValidator = require('@validators/brand_validator');
 const productValidator = require('@validators/product_validator');
 const subscribeValidator = require('@validators/subscribe_validator');
 const userValidator = require('@validators/user_validator');
+const orderValidator = require('@validators/order_validator');
 const { resultsValidator } = require('@validators/resultsValidator');
 
 module.exports = {
@@ -15,5 +16,6 @@ module.exports = {
     productValidator,
     subscribeValidator,
     userValidator,
+    orderValidator,
     resultsValidator,
 };

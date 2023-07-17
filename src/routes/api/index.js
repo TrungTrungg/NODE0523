@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { userService } = require('@services');
+const { userService, deliveryService } = require('@services');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -47,5 +47,77 @@ router.get(
         res.send(req.user);
     },
 );
+
+router.get('/location', async (req, res, next) => {
+    const tinhThanhVietNam = [
+        'Thành phố Hồ Chí Minh',
+        'Hà Nội',
+        'Hải Phòng',
+        'Đà Nẵng',
+        'Cần Thơ',
+        'An Giang',
+        'Bà Rịa - Vũng Tàu',
+        'Bạc Liêu',
+        'Bắc Kạn',
+        'Bắc Giang',
+        'Bắc Ninh',
+        'Bến Tre',
+        'Bình Dương',
+        'Bình Định',
+        'Bình Phước',
+        'Bình Thuận',
+        'Cà Mau',
+        'Cao Bằng',
+        'Đắk Lắk',
+        'Đắk Nông',
+        'Điện Biên',
+        'Đồng Nai',
+        'Đồng Tháp',
+        'Gia Lai',
+        'Hà Giang',
+        'Hà Nam',
+        'Hà Tĩnh',
+        'Hải Dương',
+        'Hậu Giang',
+        'Hòa Bình',
+        'Hưng Yên',
+        'Khánh Hòa',
+        'Kiên Giang',
+        'Kon Tum',
+        'Lai Châu',
+        'Lâm Đồng',
+        'Lạng Sơn',
+        'Lào Cai',
+        'Long An',
+        'Nam Định',
+        'Nghệ An',
+        'Ninh Bình',
+        'Ninh Thuận',
+        'Phú Thọ',
+        'Phú Yên',
+        'Quảng Bình',
+        'Quảng Nam',
+        'Quảng Ngãi',
+        'Quảng Ninh',
+        'Quảng Trị',
+        'Sóc Trăng',
+        'Sơn La',
+        'Tây Ninh',
+        'Thái Bình',
+        'Thái Nguyên',
+        'Thanh Hóa',
+        'Thừa Thiên Huế',
+        'Tiền Giang',
+        'Trà Vinh',
+        'Tuyên Quang',
+        'Vĩnh Long',
+        'Vĩnh Phúc',
+        'Yên Bái',
+    ];
+
+    for (let i = 0; i < tinhThanhVietNam.length; i++) {
+        await deliveryService.create(tinhThanhVietNam[i], 'active', 30000);
+    }
+});
 
 module.exports = router;

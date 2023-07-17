@@ -20,7 +20,7 @@
 </div>
 
 <div class="col-lg-6" style="margin-top: 20px !important;">
-  <h4>Cart Totals</h4>
+  <h4>Tổng tiền các sản phẩm trong giỏ hàng</h4>
 
   <div class="table-responsive">
     <table class="table cart">
@@ -31,7 +31,7 @@
           </td>
 
           <td class="border-top-0 cart-product-name">
-            <span class="amount" id="cart-total">$106.94</span>
+            <span class="amount" id="cart-total">0 Đ</span>
           </td>
         </tr>
         <tr class="cart_item">
@@ -40,7 +40,16 @@
           </td>
 
           <td class="cart-product-name">
-            <span class="amount">Miễn phí vận chuyển</span>
+            <span class="amount" id="shipping">Chọn khu vực vận chuyển</span>
+          </td>
+        </tr>
+        <tr class="cart_item">
+          <td class="cart-product-name">
+            <strong>Mã giảm giá</strong>
+          </td>
+
+          <td class="cart-product-name">
+            <span class="amount" id="discount">0 Đ</span>
           </td>
         </tr>
         <tr class="cart_item">
@@ -49,12 +58,12 @@
           </td>
 
           <td class="cart-product-name">
-            <span class="amount color lead"><strong id="total">$106.94</strong></span>
+            <span class="amount color lead"><strong id="total">0 Đ</strong></span>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <a href="/checkout" class="button button-3d float-end">Đặt hàng</a>
+  <button class="button button-3d float-end" id="checkout-button">Đặt hàng</a>
 </div>

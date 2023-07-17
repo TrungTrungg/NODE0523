@@ -14,6 +14,7 @@ const articleController = require('@controllers/backend/article_controller');
 const subscribeController = require('@controllers/backend/subscribe_controller');
 const sliderController = require('@controllers/backend/slider_controller');
 const contactController = require('@controllers/backend/contact_controller');
+const deliveryController = require('@controllers/backend/delivery_controller');
 
 const settingController = require('@controllers/backend/setting_controller');
 
@@ -31,4 +32,5 @@ module.exports = {
     settingController,
     orderController,
     couponController,
+    deliveryController,
 };

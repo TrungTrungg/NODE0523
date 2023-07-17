@@ -28,16 +28,6 @@ const renderList = catchAsync(async (req, res, next) => {
     let currentPage = 1;
     if (page) currentPage = parseInt(page);
 
-    // Tạo dữ liệu cho filter
-    const filter = [
-        { name: filterOptions.all, qty: await service.countByStatus('', keyword, category_id) },
-        { name: filterOptions.active, qty: await service.countByStatus(filterOptions.active, keyword, category_id) },
-        {
-            name: filterOptions.inactive,
-            qty: await service.countByStatus(filterOptions.inactive, keyword, category_id),
-        },
-    ];
-
     // So sánh với param để active trang thái filter
     const statusFilterOptions = {
         all: filterOptions.all,
@@ -45,14 +35,14 @@ const renderList = catchAsync(async (req, res, next) => {
         inactive: filterOptions.inactive,
     };
     // get shop category id
-    const { id: shop_id } = await service.getShopCategoriesID();
+    const { id: shop_id } = await service.getIdByName('Shop');
     // Lấy danh sách danh mục
     const categories = await getListCategories(shop_id);
 
     const shopChildCategories = await service.getShopCategory(shop_id);
     let listCategoryId = shopChildCategories.map((child) => child.id);
     // Pagination, Params: currentPage, itemsPerPage, pageRange
-    const totalItems = await service.countByStatus(currentStatus, keyword, category_id, listCategoryId);
+    const totalItems = await service.countByStatus(currentStatus, keyword, 'product', category_id, listCategoryId);
     const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination, listCategoryId);
@@ -64,7 +54,21 @@ const renderList = catchAsync(async (req, res, next) => {
         const { name } = category;
         cateName = name;
     }
-
+    // Tạo dữ liệu cho filter
+    const filter = [
+        {
+            name: filterOptions.all,
+            qty: await service.countByStatus('', keyword, 'product', category_id, listCategoryId),
+        },
+        {
+            name: filterOptions.active,
+            qty: await service.countByStatus(filterOptions.active, keyword, 'product', category_id, listCategoryId),
+        },
+        {
+            name: filterOptions.inactive,
+            qty: await service.countByStatus(filterOptions.inactive, keyword, 'product', category_id, listCategoryId),
+        },
+    ];
     // Message
     const messages = {
         success: req.flash('success'),
@@ -141,14 +145,17 @@ const deleteOne = catchAsync(async (req, res, next) => {
 const renderEditPage = catchAsync(async (req, res, next) => {
     // Lấy items cần sửa đổi
     const { id } = req.params;
-    const { name, status, ordering, url, category_id } = await service.getOneById(id);
-
+    const productCategoryy = await service.getOneById(id);
     // category
-    const { id: category_child, name: cateName, category_id: category_parent } = await service.getCategory(category_id);
-
+    const {
+        id: category_child,
+        name: cateName,
+        category_id: category_parent,
+    } = await service.getCategory(productCategoryy.category_id);
     // categories
     const categories = await getListCategories();
 
+    const productCategory = { ...productCategoryy._doc, category_child, cateName, category_parent, categories };
     // message
     const messages = {
         success: req.flash('success'),
@@ -159,12 +166,8 @@ const renderEditPage = catchAsync(async (req, res, next) => {
         page: 'Edit',
         collection,
         id,
-        name,
-        status,
-        ordering,
-        url,
         category_parent,
-        categories,
+        productCategory,
         messages,
     };
     res.render(`backend/pages/productCategories/productCategories_edit`, options);

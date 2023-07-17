@@ -4,7 +4,7 @@
   <div class="content-wrap" style="padding-top: 40px !important;">
     <div class="container clearfix" id="cart-section">
       <% include ./Redirect %>
-      <form class="row col-mb-50 gutter-50" action="" method="POST">
+      <form class="row col-mb-50 gutter-50" action="/checkout/createOrder" method="POST" id="form-checkout">
         <% include ./Form %>
         <div class="w-100"></div>
         <% include ./CartInfo %>

@@ -1,0 +1,16 @@
+<%
+    showISelectBox = (arr, id) => {
+        const options = arr.map((item) => {
+            return(`
+                <option value='${item.value}'>${item.name}</option>
+            `)
+        })
+        return(`
+        <td>
+            <select onchange="javascript:handleSelectStatus('${id}')" class="custom-select form-control-border border-width-2" id="status-select">
+              ${options}
+            </select>
+            </td>
+        `)
+    }
+%>

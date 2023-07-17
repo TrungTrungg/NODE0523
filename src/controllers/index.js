@@ -12,6 +12,7 @@ const {
     settingController,
     orderController,
     couponController,
+    deliveryController,
 } = require('@controllers/backend');
 
 const {
@@ -37,6 +38,7 @@ module.exports = {
     settingController,
     orderController,
     couponController,
+    deliveryController,
 
     homeController,
     blogController,

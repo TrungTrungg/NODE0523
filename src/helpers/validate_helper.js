@@ -6,6 +6,7 @@ const {
     productValidator,
     subscribeValidator,
     userValidator,
+    orderValidator,
 } = require('@validators');
 
 const itemFormValidate = [itemValidator.nameCheck, itemValidator.orderingCheck, itemValidator.statusCheck];
@@ -54,6 +55,16 @@ const userLoginFormValidate = [userValidator.emailLoginCheck, userValidator.pass
 
 const subscribeFormValidate = [subscribeValidator.mailCheck];
 
+const orderFormValidate = [
+    orderValidator.fnameCheck,
+    orderValidator.lnameCheck,
+    orderValidator.addressCheck,
+    orderValidator.emailCheck,
+    orderValidator.phoneCheck,
+    orderValidator.locationCheck,
+];
+const couponCheck = [orderValidator.couponCheck];
+
 module.exports = {
     itemFormValidate,
     categoryFormValidate,
@@ -63,4 +74,6 @@ module.exports = {
     subscribeFormValidate,
     userRegisterFormValidate,
     userLoginFormValidate,
+    orderFormValidate,
+    couponCheck,
 };

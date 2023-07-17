@@ -4,19 +4,30 @@
 <% include ./radio_helper %>
 <% include ./textarea_helper %>
 <% include ./dropdown_helper %>
-
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
+    const typeArr = [{name: 'percent', value: 'percent'},{name: 'fixed', value: 'fixed'}]
 
-    showForm = (collection, categories,brands, method, action, enctype, id, name, ordering, status, url, category_parent, image, description,content, author,is_special, price, quantity, sold, sale, size, ram, cpu, ssd, vga, brand_id,special, showHome, gallery_image) => {
-        let nameXHtml = showInput('text', 'Name', 'name', name)
-        let authorXHtml = showInput('text', 'Author', 'author', author)
-        let urlXHtml = showInput('text', 'Url', 'url', url)
-        let orderingXHtml = showInput('number', 'Ordering', 'ordering', ordering)
+    showForm = (collection, method, action, enctype, id, coupon, mainCategory, articleCategory, productCategory,brand,product,article, slider, delivery) => {
+        // coupon
+        let codeXHtml = ''
+        let typeXHtml = ''
+        let valueXHtml = ''
+        let startDateXHtml = ''
+        let expireDateXHtml = ''
+        let couponQuantityXHtml = ''
+        let conditionXHtml = ''
+        let usedXHtml = ''
+        let buttonRepeatXHtml = ''
+
+        let nameXHtml = ''
+        let authorXHtml = ''
+        let urlXHtml = ''
+        let orderingXHtml = ''
         let priceXHtml = ''
-        let quantityXHtml = ''
         let soldXHtml = '' 
         let saleXHtml = ''
+        let quantityXHtml = ''
 
         let sizeXHtml = ''
         let ramXHtml = ''
@@ -26,105 +37,139 @@
         let galleryImageXHtml = ''
         let contentXHtml = ''
 
-        let descriptionXHtml = showTextarea('Description', 'description', description)
-        let imageXHtml = showUploadImage(image, 'Image', 'image', false)
-        let isSpecialXHtml = showRadio(is_special, 'Is special', 'is_special')
+        let descriptionXHtml = ''
+        let imageXHtml = ''
+        let isSpecialXHtml = ''
         let showHomeXHtml = ''
         let categoryXHtml = ''
         let dropdownXHtml = ''
-        let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
+        let statusXHtml = ''
         let label = ''
+
+        let locationXHtml = ''
         switch (collection) {
             case 'item':
-                descriptionXHtml = ''
-                authorXHtml = ''
-                isSpecialXHtml = ''
-                
                 break;
             case 'category/main':
-                authorXHtml=''
-                isSpecialXHtml=''
-                imageXHtml = ''
-                descriptionXHtml = ''
-                isSpecialXHtml = ''
-                authorXHtml = ''
+                // 
+                nameXHtml = showInput('text', 'Name', 'name', mainCategory?.name)
+                urlXHtml = showInput('text', 'Url', 'url', mainCategory?.url)
+                orderingXHtml = showInput('number', 'Ordering', 'ordering', mainCategory?.ordering)
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, mainCategory?.status, false, '')
                 break;
             case 'category/article':
-                authorXHtml=''
-                isSpecialXHtml=''
-                imageXHtml = ''
-                descriptionXHtml = ''
-                isSpecialXHtml = ''
-                authorXHtml = ''
-                
+                // 
+                // let nameXHtml = showInput('text', 'Name', 'name', name)
+                // let authorXHtml = showInput('text', 'Author', 'author', author)
+                // let urlXHtml = showInput('text', 'Url', 'url', url)
+                // let orderingXHtml = showInput('number', 'Ordering', 'ordering', ordering)
+                // let descriptionXHtml = showTextarea('Description', 'description', description)
+                // let imageXHtml = showUploadImage(image, 'Image', 'image', false)
+                // let isSpecialXHtml = showRadio(is_special, 'Is special', 'is_special')
+                // let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
+
+                nameXHtml = showInput('text', 'Name', 'name', articleCategory?.name)
+                urlXHtml = showInput('text', 'Url', 'url', articleCategory?.url)
+                orderingXHtml = showInput('number', 'Ordering', 'ordering', articleCategory?.ordering)
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, articleCategory?.status, false, '')
                 break;
             case 'category/product':
-                imageXHtml = ''
-                descriptionXHtml = ''
-                isSpecialXHtml = ''
-                authorXHtml = ''
-                
-                categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_parent, true, '') + 
-                                showSelectBox(collection, 'Category-Sub', 'category_id', '', category_parent, false, 'list-categories')
+                categoryXHtml = showSelectBox(collection, 'Category', '', productCategory?.categories, productCategory?.category_parent, true, '') +
+                                showSelectBox(collection, 'Category-Sub', 'category_id', '', productCategory?.category_parent, false, 'list-categories')
+                nameXHtml = showInput('text', 'Name', 'name', productCategory?.name)
+                urlXHtml = showInput('text', 'Url', 'url', productCategory?.url)
+                orderingXHtml = showInput('number', 'Ordering', 'ordering', productCategory?.ordering)
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, productCategory?.status, false, '')
+            
                 break;
             case 'brand':
-                urlXHtml = ''
-                descriptionXHtml = ''
-                authorXHtml = ''
-               
+                nameXHtml = showInput('text', 'Name', 'name', brand.name)
+                orderingXHtml = showInput('number', 'Ordering', 'ordering', brand.ordering)
+                imageXHtml = showUploadImage(brand.image, 'Image', 'image', false)
+                isSpecialXHtml = showRadio(brand.is_special, 'Is special', 'is_special')
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, brand.status, false, '')
                 break;
             case 'product':
-                urlXHtml = ''
-                authorXHtml = ''
-                isSpecialXHtml = showRadio(special, 'Is special', 'special')
-                showHomeXHtml = showRadio(showHome, 'Is show home', 'showHome')
+                isSpecialXHtml = showRadio(product?.specialShowhome.special, 'Is special', 'special')
+                showHomeXHtml = showRadio(product?.specialShowhome.showHome, 'Is show home', 'showHome')
 
                 label = `<label><h3 class="font-weight-bold">Specification</h3></label>`
-                 priceXHtml = showInput('number', 'Price', 'price', price)
-                 quantityXHtml = showInput('number', 'Quantity', 'quantity', quantity)
-                 soldXHtml = showInput('number', 'Sold', 'sold', sold, 'disabled')
-                 saleXHtml = showInput('number', 'Sale', 'sale', sale)
+                priceXHtml = showInput('number', 'Price', 'price', product?.price)
+                quantityXHtml = showInput('number', 'Quantity', 'quantity', product?.quantity)
+                soldXHtml = showInput('number', 'Sold', 'sold', product?.sold, 'disabled')
+                saleXHtml = showInput('number', 'Sale', 'sale', product?.sale)
 
-                 sizeXHtml = showInput('text', 'Size', 'size', size)
-                 ramXHtml = showInput('text', 'RAM', 'ram', ram)
-                 cpuXHtml = showInput('text', 'CPU', 'cpu', cpu)
-                 ssdXHtml = showInput('text', 'SSD', 'ssd', ssd)
-                 vgaXHtml = showInput('text', 'VGA', 'vga', vga)
-                galleryImageXHtml = showUploadImage(gallery_image, 'Gallery Image', 'gallery_image', true, collection)
-                categoryXHtml = showSelectBox(collection, 'Category', '', categories, category_parent, true, '') +
-                showSelectBox(collection, 'Category-Sub', 'category_id', '', category_parent, false, 'list-categories') + showSelectBox(collection, 'Brand', 'brand_id', brands, brand_id, false, '')
+                sizeXHtml = showInput('text', 'Size', 'size', product?.specification.size)
+                ramXHtml = showInput('text', 'RAM', 'ram', product?.specification.ram)
+                cpuXHtml = showInput('text', 'CPU', 'cpu', product?.specification.cpu)
+                ssdXHtml = showInput('text', 'SSD', 'ssd', product?.specification.ssd)
+                vgaXHtml = showInput('text', 'VGA', 'vga', product?.specification.vga)
+                galleryImageXHtml = showUploadImage(product?.gallery_image, 'Gallery Image', 'gallery_image', true, collection)
+                categoryXHtml = showSelectBox(collection, 'Category', '', product?.categories, product?.category_id, true, '') +
+                showSelectBox(collection, 'Category-Sub', 'category_id', '', product?.category_id, false, 'list-categories') + showSelectBox(collection, 'Brand', 'brand_id', product?.brands, product?.brand_id, false, '')
+
+                 nameXHtml = showInput('text', 'Name', 'name', product?.name)
+                 orderingXHtml = showInput('number', 'Ordering', 'ordering', product?.ordering)
+                 descriptionXHtml = showTextarea('Description', 'description', product?.description)
+                 imageXHtml = showUploadImage(product?.image, 'Image', 'image', false)
+                 statusXHtml = showSelectBox('', 'Status', 'status', statusArr, product?.status, false, '')
                 break;
             case 'article':
-                urlXHtml = ''
-                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', categories, category_parent, false, '')
-                contentXHtml = showTextarea('Content', 'content', content)
+                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', article?.categories, article?.category_id, false, '')
+                contentXHtml = showTextarea('Content', 'content', article?.content)
+                nameXHtml = showInput('text', 'Name', 'name', article?.name)
+                authorXHtml = showInput('text', 'Author', 'author', article?.author)
+                orderingXHtml = showInput('number', 'Ordering', 'ordering', article?.ordering)
+                descriptionXHtml = showTextarea('Description', 'description', article?.description)
+                imageXHtml = showUploadImage(article?.image, 'Image', 'image', false)
+                isSpecialXHtml = showRadio(article?.is_special, 'Is special', 'is_special')
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, article?.status, false, '')
                 break;
             case 'slider':
-                nameXHtml = ''
-                urlXHtml = ''
-                isSpecialXHtml=''
-                authorXHtml = ''
-                descriptionXHtml = showTextarea('Text', 'description', description)
-            break;
+                descriptionXHtml = showTextarea('Text', 'description', slider?.description)
+
+                orderingXHtml = showInput('number', 'Ordering', 'ordering', slider?.ordering)
+                imageXHtml = showUploadImage(slider?.image, 'Image', 'image', false)
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, slider?.status, false, '')
+                break;
+            case 'coupon':
+                 codeXHtml = showInput('text', 'Code', 'code', coupon?.code)
+                 typeXHtml = showSelectBox('', 'Type', 'type', typeArr, coupon?.type, false, '')
+
+                 valueXHtml = showInput('text', 'Value', 'value', coupon?.value)
+                 startDateXHtml = showInput('date', 'Start at', 'started_at', coupon?.started_at)
+                 expireDateXHtml = showInput('date', 'Expire at', 'expired_at', coupon?.expired_at)
+                 couponQuantityXHtml = showInput('number', 'Quantity', 'quantity', coupon?.quantity)
+
+                 conditionXHtml = showInput('text', 'Condition', 'condition', coupon?.condition)
+                 usedXHtml = showInput('text', 'Used', 'used', coupon?.used,'disabled')
+                 buttonRepeatXHtml = '<button type="button" onclick="javascript:handleRandomCode()" class="btn btn-secondary" style="width: 40px; height: 40px"><i class="fas fa-repeat-alt"></i></button>'
+                break;
+            case 'delivery':
+                locationXHtml = showSelectBox('', 'Location', 'location', delivery?.locations, delivery?._id, false, '')
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, delivery?.status, false, '')
+                priceXHtml = showInput('number', 'Shipping fee', 'shipping_fee', delivery?.shipping_fee)
             default:
                 break;
         }
         return(`
             <form method="${method}" action="${action}" enctype="${enctype}">
                 <div class="card-body">
-                    <input type="hidden" name="id" value="${id ? id : ''}">
+                    <input type="hidden" name="id" value="${id ? id.toString() : ''}">
                         ${nameXHtml}
                         ${authorXHtml}
                         ${urlXHtml}
-                        <div class="form-group row">
+
+                        ${locationXHtml}
+                        <div class="form-group row m-0">
                             ${isSpecialXHtml}
                             ${showHomeXHtml}
                         </div>
-                        <div class="form-group row">
-                                ${orderingXHtml}
+                        <div class="form-group row  m-0">
+                            ${orderingXHtml}
                             ${statusXHtml}
                         </div>
-                         <div class="form-group text-center" >
+                         <div class="form-group text-center  m-0">
                            ${label}
                          <div class="form-group row text-left">
                            ${sizeXHtml}
@@ -136,19 +181,48 @@
                            ${vgaXHtml}
                          </div>
                          </div>
-                        <div class="form-group row ">
+                        <div class="form-group row  m-0">
                             ${priceXHtml}
                             ${quantityXHtml}
                             ${soldXHtml}
                             ${saleXHtml}
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row  m-0">
                             ${categoryXHtml}
                         </div>
                         ${descriptionXHtml}
                         ${contentXHtml}
                         ${imageXHtml}
                         ${galleryImageXHtml}
+                        <div class="d-flex justify-content-between align-items-between">
+                            ${codeXHtml}
+                            ${buttonRepeatXHtml}
+                        </div>
+                        <div class="form-group row ">
+                          <div class="col">
+                            ${typeXHtml}
+                          </div>
+                          <div class="col">
+                            ${valueXHtml}
+                          </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="col">
+                                ${startDateXHtml}
+                            </div>
+                            <div class="col">
+                                ${expireDateXHtml}
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                          <div class="col">
+                            ${couponQuantityXHtml}
+                          </div>
+                          <div class="col">
+                            ${usedXHtml}
+                          </div>
+                        </div>
+                        ${conditionXHtml}
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-secondary">Submit</button>

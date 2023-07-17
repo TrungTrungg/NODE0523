@@ -6,103 +6,165 @@
 <% include ./special_helper %>
 <% include ./url_helper %>
 <% include ./ordering_helper %>
+<% include ./itemSelectBox_helper %>
 
 <%
-     showListItems = (collection, items, currentStatus, keyword, {currentPage}) => {
+     showListItems = (collection, items, currentStatus, keyword, {currentPage}, selectStatusOption) => {
         let query = `?page=${currentPage}`
         if(keyword) 
             query += `&search=${keyword}`
         const listItems =  items.map((item, index) => {
-            let showHomeXHtml = ''
+            let nameXHtml     = ''
+            let statusXHtml   = ''
+            let orderingXHtml = ''
+
+            let imageXHtml = ''
+            let emailXHtml  = ''
             let phoneXHtml = ''
+            let urlXHtml = ''
+
+            let codeXHtml = ''
+            let typeXHtml = ''
+            let valueXHtml = ''
+            let startedXHtml = ''
+            let expiredXHtml = ''
+            let quantityXHtml = ''
+
+            let showHomeXHtml = ''
+
+            let authorXHtml   = ''
+
+            let locationXHtml = ''
+            let shippingFeeXHtml = ''
+
+            let userCodeXHtml = ''
+            let orderStatusXHtml = ''
+
             let checkboxXHtml = handleCheckbox(item.id, item.email)
-            let imageXHtml = handleImage(item.image,collection)
-            let emailXHtml    = handleName(item.email, keyword)
-            let nameXHtml     = handleName(item.name, keyword)
-            let authorXHtml   = handleAuthor(item.author)
-            let statusXHtml   = handleStatus(collection, item.status, item.id, query)
             let specialXHtml = '<td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
-            let menuXHtml   = '<td>' + handleSpecial(collection, item.id, '', item.isMenu, 'menu') +'</td>'
-            let urlXHtml      = handleUrl(collection, item.url, item.id)
-            let orderingXHtml = handleOrdering(collection, item.ordering, item.id)
+            let menuXHtml = '<td>' + handleSpecial(collection, item.id, '', item.isMenu, 'menu') +'</td>'
             let editXHml = `<a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>`
             let deleteXHml = `<a type="button" class="btn btn-danger" onclick="javascript:handleDelete('${collection}','${item._id}')">Delete</a>`
+
+            let readXHml = ''
             switch (collection) {
                 case 'item':
-                    urlXHtml = ''
-                    authorXHtml = ''
                     specialXHtml = ''
                     menuXHtml = ''
-                    emailXHtml = ''  
                     break;
                 case 'category/main':
-                    imageXHtml = ''
-                    authorXHtml = ''
                     specialXHtml = ''
-                    emailXHtml = ''
+                   
+                    nameXHtml = handleName(item.name, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    urlXHtml = handleUrl(collection, item.url, item.id)
+                    orderingXHtml = handleOrdering(collection, item.ordering, item.id)
+                    
                     break;
                 case 'category/article':
-                    imageXHtml = ''
-                    authorXHtml = ''
                     menuXHtml = ''
                     specialXHtml = ''
-                    emailXHtml = ''
+
+                    nameXHtml = handleName(item.name, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    urlXHtml = handleUrl(collection, item.url, item.id)
+                    orderingXHtml = handleOrdering(collection, item.ordering, item.id)
+
                     break;
                 case 'category/product':
-                    imageXHtml = ''
-                    authorXHtml = ''
                     menuXHtml = ''
                     specialXHtml = ''
-                    emailXHtml = ''
+
+                    nameXHtml = handleName(item.name, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    urlXHtml = handleUrl(collection, item.url, item.id)
+                    orderingXHtml = handleOrdering(collection, item.ordering, item.id)
                     break;
                 case 'brand':
-                    urlXHtml = ''
-                    authorXHtml = ''
                     menuXHtml = ''
-                    emailXHtml = ''
+
+                    imageXHtml = handleImage(item.image,collection)
+                    nameXHtml = handleName(item.name, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    specialXHtml = '<td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
+                    orderingXHtml = handleOrdering(collection, item.ordering, item.id)
                     break;
                 case 'product':
+                    menuXHtml = ''
+
+                   
+                    imageXHtml = handleImage(item.image,collection)
+                    nameXHtml = handleName(item.name, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    orderingXHtml = handleOrdering(collection, item.ordering, item.id)
                     specialXHtml ='<td>' + handleSpecial(collection, item.id, 'Special', item.specialShowhome.special, 'special')
                     showHomeXHtml = handleSpecial(collection, item.id, 'Show', item.specialShowhome.showHome, 'show') + '</td>'
-                    urlXHtml = ''
-                    authorXHtml = ''
-                    menuXHtml = ''
-                    emailXHtml = ''
                     break;
                 case 'article':
-                    urlXHtml = ''
                     menuXHtml = ''
-                    emailXHtml = ''  
+
+                    imageXHtml = handleImage(item.image,collection)
+                    nameXHtml = handleName(item.name, keyword)
+                    authorXHtml = handleAuthor(item.author)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    specialXHtml = '<td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
+                    orderingXHtml = handleOrdering(collection, item.ordering, item.id)
+
                     break;
                 case 'subscribe':
-                    imageXHtml = ''
-                    nameXHtml = ''
-                    authorXHtml = '' 
                     specialXHtml = '' 
-                    urlXHtml = ''
-                    orderingXHtml = '' 
                     menuXHtml = ''
+                    
                     editXHml = ''
+                    emailXHtml = handleName(item.email, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
                     break;
                 case 'slider':
-                    emailXHtml = ''
-                    nameXHtml = ''
-                    authorXHtml = ''
                     specialXHtml = ''
                     menuXHtml = ''
-                    urlXHtml = ''
+
+                    imageXHtml = handleImage(item.image,collection)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    orderingXHtml = handleOrdering(collection, item.ordering, item.id)
                     break;
                 case 'contact':
-                    statusXHtml = ''
-                    imageXHtml = ''
-                    authorXHtml = ''
                     specialXHtml = ''
-                    urlXHtml = ''
-                    orderingXHtml = ''
                     menuXHtml = ''
                     editXHml = ''
-                    phoneXHtml = handleName(item.phone)
+
+                    phoneXHtml = handleName(item.phone, keyword)
+                    checkboxXHtml = handleCheckbox(item.id, item.email)
+                    emailXHtml = handleName(item.email, keyword)
+                    nameXHtml = handleName(item.name, keyword)
                     break;
+                case 'coupon':
+                    specialXHtml = ''
+                    menuXHtml = ''
+
+                    codeXHtml = handleName(item.code, keyword)
+                    typeXHtml = handleName(item.type, keyword)
+                    valueXHtml = handleName(item.value, keyword)
+                    startedXHtml = handleName(item.started_at.toISOString().slice(0, 10), keyword)
+                    expiredXHtml = handleName(item.expired_at.toISOString().slice(0, 10), keyword)
+                    quantityXHtml = handleOrdering(collection, item.quantity, item.id)
+                    break;
+                case 'delivery':
+                    specialXHtml = ''
+                    menuXHtml = ''
+                    
+                    locationXHtml = handleName(item.location, keyword)
+                    shippingFeeXHtml = handleName(item.shipping_fee, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    break;
+                case 'order':
+                    specialXHtml = ''
+                    menuXHtml = ''
+                    editXHml = ''
+
+                    userCodeXHtml = handleName(item.user_code, keyword)
+                    readXHml = `<a type="button" class="btn btn-warning" href="/admin/${collection}/detail/${item._id}">Detail</a>`
+                    orderStatusXHtml = showISelectBox(selectStatusOption, item.id)
+                break;
                 default:
                     break;
             }
@@ -111,19 +173,31 @@
                         <tr>
                             <td>${checkboxXHtml}</td>
                             <td>${index+=1}</td>
+                                ${userCodeXHtml}
+                                ${locationXHtml}
+                                ${shippingFeeXHtml}
                                 ${imageXHtml}
                                 ${nameXHtml}
                                 ${phoneXHtml}
                                 ${emailXHtml}
                                 ${authorXHtml}
                                 ${statusXHtml}
+                                ${orderStatusXHtml}
                                 ${specialXHtml}
                                 ${showHomeXHtml}
                                 ${menuXHtml}
                                 ${urlXHtml}
                                 ${orderingXHtml}
+
+                                ${codeXHtml}
+                                ${typeXHtml}
+                                ${valueXHtml}
+                                ${startedXHtml}
+                                ${expiredXHtml}
+                                ${quantityXHtml}
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                ${readXHml}
                                 ${editXHml}
                                 ${deleteXHml}
                                 </div>

@@ -10,5 +10,8 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script>
   const socket = io();
-  socket.emit('blog', 'This is message');
+  socket.emit('router', 'blog');
+  socket.on('server-message', (data) => {
+    console.log(data);
+  })
 </script>

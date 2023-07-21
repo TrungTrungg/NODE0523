@@ -5,3 +5,10 @@
     <% include ../../components/Home/Content %>
 
     <!-- #content end -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+      const socket = io();
+      socket.on('server-message', (data) => {
+        console.log(data);
+      })
+    </script>

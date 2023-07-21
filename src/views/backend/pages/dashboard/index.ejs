@@ -6,11 +6,11 @@
   const blogStatDOM = document.querySelector('#blog-stat');
 
   const socket = io();
-  socket.on('dasboard-shop', (data) => {
+  socket.on('shop', (data) => {
     shopStatDOM.value = data
   });
 
-  socket.on('dasboard-blog', (data) => {
+  socket.on('blog', (data) => {
     blogStatDOM.value = data
   });
 </script>

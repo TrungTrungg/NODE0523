@@ -11,5 +11,8 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script>
   const socket = io();
-  socket.emit('shop', 'This is message');
+  socket.emit('router', 'shop');
+  socket.on('server-message', (data) => {
+    console.log(data);
+  })
 </script>

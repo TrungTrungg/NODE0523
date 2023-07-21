@@ -1,2 +1,2 @@
 const server = require('./bin/www');
-const socket = require('./apps/socket');
+const socket = require('./socket');

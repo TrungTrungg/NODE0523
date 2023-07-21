@@ -34,14 +34,14 @@
       <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" id="input-<%=product.id%>" />
       <input type="button" value="+" class="plus">
     </div>
-    <button onclick="javascript:handleClickAtToCart('<%= product.id %>')" type="button" class="add-to-cart button m-0">Thêm vào giỏ hàng</button>
+    <button onclick="javascript:handleClickAddToCart('<%= product.id %>','<%= product.name %>','<%= product.image %>','<%= product.price %>')" type="button" class="add-to-cart button m-0">Thêm vào giỏ hàng</button>
   </div><!-- Product Single - Quantity & Cart Button End -->
 
   <div class="line"></div>
 
   <!-- Product Single - Short Description
 									============================================= -->
-  <p><%= product.description %></p>
+  <p><%- product.description.slice(0, 350) + '...' %></p>
   <ul class="iconlist">
     <li><i class="icon-caret-right"></i> Nhiều kích thước</li>
     <li><i class="icon-caret-right"></i> 30 ngày hoàn trả</li>

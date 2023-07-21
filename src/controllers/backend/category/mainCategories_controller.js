@@ -132,14 +132,13 @@ const renderEditPage = catchAsync(async (req, res, next) => {
         error: req.flash('error'),
     };
 
-    const options = { page: 'Edit', collection, mainCategory };
+    const options = { page: 'Edit', collection, messages, mainCategory };
     res.render(`backend/pages/category/category_edit`, options);
 });
 
 // Edit item
 const editOne = catchAsync(async (req, res, next) => {
     const { id } = req.body;
-    console.log(id);
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);

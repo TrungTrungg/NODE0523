@@ -1,0 +1,32 @@
+<%
+    showOrders = (orders) => {
+      let color = ''
+        return orders.map((order)=> {
+          switch (order.status) {
+            case 'chưa thanh toán':
+              color = 'warning'
+              break;
+            case 'đã thanh toán':
+              color = 'success'
+              break;
+            case 'bị hủy':
+              color = 'danger'
+              break;
+            default:
+              break;
+          }
+            return(`
+                 <tr>
+                   <td><a href="/admin/order/detail/${order.id}">${order.id}</a></td>
+                   <td>${order.user_code}</td>
+                   <td>
+                     <div class="sparkbar" data-color="#00a65a" data-height="20">${order.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ</div>
+                   </td>
+                   <td><span class="badge badge-${color}">${order.status}</span></td>
+                   
+                 </tr>
+            `)
+        }).join('')
+    }
+
+%>

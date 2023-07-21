@@ -19,6 +19,7 @@ regFormDOM.submit(function (event) {
                     showMethod: 'slideDown',
                     timeOut: 10000,
                 });
+                window.location.href = '/';
             }
 
             if (data.error) {

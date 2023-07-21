@@ -23,11 +23,9 @@ const formatPriceNumber = (number) => {
 };
 // Handdle Cart
 const cartData = localStorage.getItem('cart');
-const delivery = localStorage.getItem('delivery');
-const coupon = localStorage.getItem('coupon');
 productInputDOM.val(cartData);
-couponInputDOM.val(coupon);
-deliveryInputDOM.val(delivery);
+selectDOM.val('');
+inputDOM.val('');
 if (cartData && cartData !== '[]') {
     const jsonCartData = JSON.parse(cartData);
     let total = 0;
@@ -109,20 +107,7 @@ if (cartData && cartData !== '[]') {
         .join('');
     cartItems.html(cartTableDatas);
     cartTotal.html(formatPriceNumber(total) + 'VNĐ');
-    if (delivery) {
-        let shippingFee = JSON.parse(delivery);
-        total = parseInt(total) + parseInt(shippingFee.shippingFee);
-        shippingDOM.html(formatPriceNumber(shippingFee.shippingFee) + 'VNĐ');
-        selectDOM.val(shippingFee.id);
-    } else {
-        selectDOM.val('');
-    }
-    if (coupon) {
-        let discount = JSON.parse(coupon);
-        total = parseInt(total) - parseInt(discount.discount);
-        discountDOM.html(formatPriceNumber(discount.discount) + 'VNĐ');
-        inputDOM.val(discount.code);
-    }
+
     totalPrice.html(formatPriceNumber(total) + 'VNĐ');
     // order
     const cartXhtml = jsonCartData.map((data) => {
@@ -260,7 +245,6 @@ const handleDeleteItemCart = (id) => {
 
 // Change qty Item
 const handleChangeQuantityCart = (id) => {
-    console.log(id);
     const cartData = localStorage.getItem('cart');
     let toastrMessage = 'Cập nhập thành công';
     const qtyDOM = $(`#qty-${id}`);
@@ -277,37 +261,38 @@ const handleChangeQuantityCart = (id) => {
             showMethod: 'slideDown',
             timeOut: 10000,
         });
-    }
-    let total = 0;
-    if (cartData && cartData !== '[]') {
-        let jsonCartData = JSON.parse(cartData);
-        jsonCartData = jsonCartData.map((data) => {
-            if (data.id === id) {
-                data.quantity = qtyDOM.val();
-                data.total = parseInt(data.price) * parseInt(data.quantity);
-                totalDOM.html(formatPriceNumber(data.total) + 'VNĐ');
-                topCartQtyDOM.html('x' + data.quantity);
-                topCartPriceDOM.html(formatPriceNumber(data.total) + 'VNĐ');
-            }
-            total += parseInt(data.total);
-            return data;
-        });
-        cartTotal.html(formatPriceNumber(total) + 'VNĐ');
-        totalPrice.html(formatPriceNumber(total) + 'VNĐ');
-        let shortTotal = String(total).slice(0, 4);
-        topCheckoutPrice.text(formatPriceNumber(shortTotal) + '...VNĐ');
+    } else {
+        let total = 0;
+        if (cartData && cartData !== '[]') {
+            let jsonCartData = JSON.parse(cartData);
+            jsonCartData = jsonCartData.map((data) => {
+                if (data.id === id) {
+                    data.quantity = qtyDOM.val();
+                    data.total = parseInt(data.price) * parseInt(data.quantity);
+                    totalDOM.html(formatPriceNumber(data.total) + 'VNĐ');
+                    topCartQtyDOM.html('x' + data.quantity);
+                    topCartPriceDOM.html(formatPriceNumber(data.total) + 'VNĐ');
+                }
+                total += parseInt(data.total);
+                return data;
+            });
+            cartTotal.html(formatPriceNumber(total) + 'VNĐ');
+            totalPrice.html(formatPriceNumber(total) + 'VNĐ');
+            let shortTotal = String(total).slice(0, 4);
+            topCheckoutPrice.text(formatPriceNumber(shortTotal) + '...VNĐ');
 
-        // save to localStorage
-        localStorage.setItem('cart', JSON.stringify(jsonCartData));
-        // message
-        toastr.success(toastrMessage, 'SUCCESS', {
-            newestOnTop: true,
-            closeButton: false,
-            progressBar: true,
-            preventDuplicates: false,
-            showMethod: 'slideDown',
-            timeOut: 10000,
-        });
+            // save to localStorage
+            localStorage.setItem('cart', JSON.stringify(jsonCartData));
+            // message
+            toastr.success(toastrMessage, 'SUCCESS', {
+                newestOnTop: true,
+                closeButton: false,
+                progressBar: true,
+                preventDuplicates: false,
+                showMethod: 'slideDown',
+                timeOut: 10000,
+            });
+        }
     }
 };
 
@@ -316,6 +301,7 @@ const handleAddToCart = (id, name, image, price) => {
     const cartData = localStorage.getItem('cart');
     let total = 0;
     let toastrMessage = 'Thêm sản phẩm thành công';
+    price = parseInt(price.replace(/,/g, ''), 10);
     const product = { id, name, image, price, quantity: 1, total: price };
     let jsonCartData = [];
     let isExist = false;
@@ -374,17 +360,28 @@ const handleAddToCart = (id, name, image, price) => {
     });
 };
 
-const handleClickAtToCart = (id) => {
+const handleClickAddToCart = (id, name, image, price) => {
     const topCartQty = $(`#top-cart-${id}`);
     const topCartPrice = $(`#top-cart-price-${id}`);
     const inputDOM = $(`#input-${id}`);
     const cartData = localStorage.getItem('cart');
+    price = parseInt(price.replace(/,/g, ''), 10);
+    const product = {
+        id,
+        name,
+        image,
+        price,
+        quantity: inputDOM.val(),
+        total: parseInt(price) * parseInt(inputDOM.val()),
+    };
+    let isExist = false;
     let total = 0;
     let toastrMessage = 'Thêm sản phẩm thành công';
     if (cartData && cartData !== '[]') {
         let jsonCartData = JSON.parse(cartData);
         jsonCartData = jsonCartData.map((data) => {
             if (data.id === id) {
+                isExist = true;
                 data.quantity = inputDOM.val();
                 topCartQty.html('x' + parseInt(data.quantity));
                 data.total = parseInt(data.price) * parseInt(data.quantity);
@@ -393,9 +390,36 @@ const handleClickAtToCart = (id) => {
             total += parseInt(data.total);
             return data;
         });
-        let shortTotal = String(total).slice(0, 5);
-        topCheckoutPrice.text(formatPriceNumber(shortTotal) + '...VNĐ');
+        if (!isExist) jsonCartData.push(product);
         localStorage.setItem('cart', JSON.stringify(jsonCartData));
+        const newcartData = localStorage.getItem('cart');
+        const newjsonCartData = JSON.parse(newcartData);
+
+        topCartDOM.text(newjsonCartData.length);
+        const items = newjsonCartData
+            .map((item, index) => {
+                total += parseInt(item.total);
+                if (index > 2) return '<h6 class="text-center m-0">...</h6>';
+
+                return `
+        <div class="top-cart-item">
+        <div class="top-cart-item-image">
+          <a href="/shop/product/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
+        </div>
+        <div class="top-cart-item-desc">
+          <div class="top-cart-item-desc-title">
+            <a href="/shop/product/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+            <span class="top-cart-item-price d-block">${formatPriceNumber(item.price)} VNĐ</span>
+          </div>
+          <div class="top-cart-item-quantity">x ${item.quantity}</div>
+        </div>
+      </div>
+        `;
+            })
+            .join('');
+        let shortTotal = String(total).slice(0, 5);
+        topCartItems.html(items);
+        topCheckoutPrice.text(formatPriceNumber(shortTotal) + '...VNĐ');
 
         toastr.success(toastrMessage, 'SUCCESS', {
             newestOnTop: true,
@@ -410,19 +434,18 @@ const handleClickAtToCart = (id) => {
 
 const handleEnterCoupon = () => {
     const inputDOM = $('#coupon');
-    const cartData = localStorage.getItem('cart');
-    const delivery = localStorage.getItem('delivery');
+
     let total = 0;
     let discount = 0;
     if (cartData && cartData !== '[]') {
         let jsonCartData = JSON.parse(cartData);
-        let price = jsonCartData.map((data) => {
+        jsonCartData.map((data) => {
             return (total += parseInt(data.total));
         });
         $.ajax({
             type: 'POST',
             url: '/checkout',
-            data: { code: inputDOM.val() },
+            data: { code: inputDOM.val(), total },
             dataType: 'json',
             success: (data) => {
                 if (data.success) {
@@ -436,19 +459,22 @@ const handleEnterCoupon = () => {
                         timeOut: 10000,
                     });
                     if (data.type === 'percent') {
-                        discount = (parseInt(price) * parseInt(data.value)) / 100;
+                        discount = (parseInt(total) * parseInt(data.value)) / 100;
                     } else {
-                        discount = parseInt(price) - parseInt(data.value);
+                        discount = parseInt(data.value);
                     }
-                    price = parseInt(price) - parseInt(discount);
-                    if (delivery) {
-                        let shippingFee = JSON.parse(delivery);
-                        price = parseInt(price) + parseInt(shippingFee.shippingFee);
+                    total = parseInt(total) - parseInt(discount);
+                    if (shippingDOM.text() !== 'Chọn khu vực vận chuyển') {
+                        let shippingFee = parseFloat(
+                            shippingDOM.text().replace('+', '').replace(/,/g, '').replace(' VNĐ', ''),
+                        );
+                        total = parseInt(total) + parseInt(shippingFee);
                     }
-                    discountDOM.html(formatPriceNumber(discount) + 'VNĐ');
-                    totalPrice.html(formatPriceNumber(price) + 'VNĐ');
-                    const couponData = { id: data.id, code: data.code, discount };
-                    localStorage.setItem('coupon', JSON.stringify(couponData));
+
+                    discountDOM.html('-' + formatPriceNumber(discount) + 'VNĐ');
+                    totalPrice.html(formatPriceNumber(total) + 'VNĐ');
+                    const couponData = { id: data.id, discount };
+                    couponInputDOM.val(JSON.stringify(couponData));
                 }
 
                 if (data.error) {
@@ -479,7 +505,6 @@ const handleEnterCoupon = () => {
 const handleSelectLocation = () => {
     const selectDOM = $('#select');
     const cartData = localStorage.getItem('cart');
-    const coupon = localStorage.getItem('coupon');
     let total = 0;
     if (cartData && cartData !== '[]') {
         let jsonCartData = JSON.parse(cartData);
@@ -494,30 +519,31 @@ const handleSelectLocation = () => {
                 dataType: 'json',
                 success: (data) => {
                     if (data.success) {
-                        shippingDOM.html(formatPriceNumber(data.shipping_fee) + 'VNĐ');
-                        price = parseInt(price) + parseInt(data.shipping_fee);
-                        if (coupon) {
-                            let discount = JSON.parse(coupon);
-                            price = parseInt(price) - parseInt(discount.discount);
+                        shippingDOM.html('+' + formatPriceNumber(data.shipping_fee) + 'VNĐ');
+                        total = parseInt(total) + parseInt(data.shipping_fee);
+                        if (discountDOM.text()) {
+                            let discount = parseFloat(
+                                discountDOM.text().replace('-', '').replace(/,/g, '').replace(' VNĐ', ''),
+                            );
+                            total = parseInt(total) - parseInt(discount);
                         }
-                        totalPrice.html(formatPriceNumber(price) + 'VNĐ');
+                        totalPrice.html(formatPriceNumber(total) + 'VNĐ');
                         const deliveryData = {
                             id: data.id,
-                            shippingFee: data.shipping_fee,
-                            location: data.location,
+                            shipping_fee: data.shipping_fee,
                         };
-                        localStorage.setItem('delivery', JSON.stringify(deliveryData));
+                        deliveryInputDOM.val(JSON.stringify(deliveryData));
                     }
                 },
             });
         } else {
             shippingDOM.html('0 VNĐ');
-            if (coupon) {
-                let discount = JSON.parse(coupon);
-                total = parseInt(total) - parseInt(discount.discount);
+            if (discountDOM.text()) {
+                let discount = parseFloat(discountDOM.text().replace('-', '').replace(/,/g, '').replace(' VNĐ', ''));
+                total = parseInt(total) - parseInt(discount);
             }
             totalPrice.html(formatPriceNumber(total) + 'VNĐ');
-            localStorage.removeItem('delivery');
+            deliveryInputDOM.val('');
         }
     }
 };
@@ -526,46 +552,59 @@ const formCheckoutDOM = $('#form-checkout');
 
 formCheckoutDOM.submit(function (event) {
     event.preventDefault();
-    const formData = $(this).serialize();
-    $.ajax({
-        type: 'POST',
-        url: '/checkout/createOrder',
-        data: formData,
-        dataType: 'json',
-        success: (data) => {
-            if (data.success) {
-                let toastrMessage = data.message;
-                toastr.success(toastrMessage, 'SUCCESS', {
-                    newestOnTop: true,
-                    closeButton: false,
-                    progressBar: true,
-                    preventDuplicates: false,
-                    showMethod: 'slideDown',
-                    timeOut: 30000,
-                });
-                setTimeout((window.location.href = '/'), 3000);
-                localStorage.clear();
-            }
-            if (data.error) {
-                const errorMessage = data.message
-                    .map((error) => {
-                        return `
+    let toastrMessage = '';
+    if (Cookies.get('jwt')) {
+        const formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/checkout/createOrder',
+            data: formData,
+            dataType: 'json',
+            success: (data) => {
+                if (data.success) {
+                    toastrMessage = data.message;
+                    toastr.success(toastrMessage, 'SUCCESS', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                    setTimeout((window.location.href = '/user'), 3000);
+                    localStorage.clear();
+                }
+                if (data.error) {
+                    const errorMessage = data.message
+                        .map((error) => {
+                            return `
                         <li>
                             <b>${error.path}:</b> ${error.msg}
                         </li>    
                 `;
-                    })
-                    .join('');
-                let toastrMessage = errorMessage;
-                toastr.error(toastrMessage, 'ERROR', {
-                    newestOnTop: true,
-                    closeButton: false,
-                    progressBar: true,
-                    preventDuplicates: false,
-                    showMethod: 'slideDown',
-                    timeOut: 30000,
-                });
-            }
-        },
-    });
+                        })
+                        .join('');
+                    toastrMessage = errorMessage;
+                    toastr.error(toastrMessage, 'ERROR', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+            },
+        });
+    } else {
+        toastrMessage = 'Chưa đăng nhập';
+        toastr.error(toastrMessage, 'ERROR', {
+            newestOnTop: true,
+            closeButton: false,
+            progressBar: true,
+            preventDuplicates: false,
+            showMethod: 'slideDown',
+            timeOut: 30000,
+        });
+    }
 });

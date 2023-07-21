@@ -1,5 +1,6 @@
 // backend
 const itemController = require('@controllers/backend/item_controller');
+const dashboardController = require('@controllers/backend/dashboard_controller');
 
 const mainCategoriesController = require('@controllers/backend/category/mainCategories_controller');
 const articleCategoriesController = require('@controllers/backend/category/articleCategories_controller');
@@ -20,6 +21,7 @@ const settingController = require('@controllers/backend/setting_controller');
 
 module.exports = {
     itemController,
+    dashboardController,
     mainCategoriesController,
     articleCategoriesController,
     productCategoriesController,

@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { dashboardController: controller } = require('@controllers');
 
-router.get('/', (req, res) => {
-    res.render('backend/pages/dashboard', { page: 'Dashboard' });
-});
+router.get('/', controller.renderDashboard);
 
 module.exports = router;

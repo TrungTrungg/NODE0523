@@ -58,15 +58,6 @@
                 statusXHtml = showSelectBox('', 'Status', 'status', statusArr, mainCategory?.status, false, '')
                 break;
             case 'category/article':
-                // 
-                // let nameXHtml = showInput('text', 'Name', 'name', name)
-                // let authorXHtml = showInput('text', 'Author', 'author', author)
-                // let urlXHtml = showInput('text', 'Url', 'url', url)
-                // let orderingXHtml = showInput('number', 'Ordering', 'ordering', ordering)
-                // let descriptionXHtml = showTextarea('Description', 'description', description)
-                // let imageXHtml = showUploadImage(image, 'Image', 'image', false)
-                // let isSpecialXHtml = showRadio(is_special, 'Is special', 'is_special')
-                // let statusXHtml = showSelectBox('', 'Status', 'status', statusArr, status, false, '')
 
                 nameXHtml = showInput('text', 'Name', 'name', articleCategory?.name)
                 urlXHtml = showInput('text', 'Url', 'url', articleCategory?.url)
@@ -74,24 +65,23 @@
                 statusXHtml = showSelectBox('', 'Status', 'status', statusArr, articleCategory?.status, false, '')
                 break;
             case 'category/product':
-                categoryXHtml = showSelectBox(collection, 'Category', '', productCategory?.categories, productCategory?.category_parent, true, '') +
-                                showSelectBox(collection, 'Category-Sub', 'category_id', '', productCategory?.category_parent, false, 'list-categories')
+                categoryXHtml =  showSelectBox(collection, 'Category-Sub', 'category_id', '', productCategory?.category_id, false, 'list-categories')
                 nameXHtml = showInput('text', 'Name', 'name', productCategory?.name)
                 urlXHtml = showInput('text', 'Url', 'url', productCategory?.url)
                 orderingXHtml = showInput('number', 'Ordering', 'ordering', productCategory?.ordering)
-                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, productCategory?.status, false, '')
-            
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, articleCategory?.status, false, '')
+                categoryXHtml = showSelectBox(collection, 'Category', 'category_id', productCategory?.categories, productCategory?.category_id, false, '')
                 break;
             case 'brand':
-                nameXHtml = showInput('text', 'Name', 'name', brand.name)
-                orderingXHtml = showInput('number', 'Ordering', 'ordering', brand.ordering)
-                imageXHtml = showUploadImage(brand.image, 'Image', 'image', false)
-                isSpecialXHtml = showRadio(brand.is_special, 'Is special', 'is_special')
-                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, brand.status, false, '')
+                nameXHtml = showInput('text', 'Name', 'name', brand?.name)
+                orderingXHtml = showInput('number', 'Ordering', 'ordering', brand?.ordering)
+                imageXHtml = showUploadImage(brand?.image, 'Image', 'image', false)
+                isSpecialXHtml = showRadio(brand?.is_special, 'Is special', 'is_special')
+                statusXHtml = showSelectBox('', 'Status', 'status', statusArr, brand?.status, false, '')
                 break;
             case 'product':
-                isSpecialXHtml = showRadio(product?.specialShowhome.special, 'Is special', 'special')
-                showHomeXHtml = showRadio(product?.specialShowhome.showHome, 'Is show home', 'showHome')
+                isSpecialXHtml = showRadio(product?.specialShowhome?.special, 'Is special', 'special')
+                showHomeXHtml = showRadio(product?.specialShowhome?.showHome, 'Is show home', 'showHome')
 
                 label = `<label><h3 class="font-weight-bold">Specification</h3></label>`
                 priceXHtml = showInput('number', 'Price', 'price', product?.price)
@@ -99,11 +89,11 @@
                 soldXHtml = showInput('number', 'Sold', 'sold', product?.sold, 'disabled')
                 saleXHtml = showInput('number', 'Sale', 'sale', product?.sale)
 
-                sizeXHtml = showInput('text', 'Size', 'size', product?.specification.size)
-                ramXHtml = showInput('text', 'RAM', 'ram', product?.specification.ram)
-                cpuXHtml = showInput('text', 'CPU', 'cpu', product?.specification.cpu)
-                ssdXHtml = showInput('text', 'SSD', 'ssd', product?.specification.ssd)
-                vgaXHtml = showInput('text', 'VGA', 'vga', product?.specification.vga)
+                sizeXHtml = showInput('text', 'Size', 'size', product?.specification?.size)
+                ramXHtml = showInput('text', 'RAM', 'ram', product?.specification?.ram)
+                cpuXHtml = showInput('text', 'CPU', 'cpu', product?.specification?.cpu)
+                ssdXHtml = showInput('text', 'SSD', 'ssd', product?.specification?.ssd)
+                vgaXHtml = showInput('text', 'VGA', 'vga', product?.specification?.vga)
                 galleryImageXHtml = showUploadImage(product?.gallery_image, 'Gallery Image', 'gallery_image', true, collection)
                 categoryXHtml = showSelectBox(collection, 'Category', '', product?.categories, product?.category_id, true, '') +
                 showSelectBox(collection, 'Category-Sub', 'category_id', '', product?.category_id, false, 'list-categories') + showSelectBox(collection, 'Brand', 'brand_id', product?.brands, product?.brand_id, false, '')
@@ -141,8 +131,8 @@
                  expireDateXHtml = showInput('date', 'Expire at', 'expired_at', coupon?.expired_at)
                  couponQuantityXHtml = showInput('number', 'Quantity', 'quantity', coupon?.quantity)
 
-                 conditionXHtml = showInput('text', 'Condition', 'condition', coupon?.condition)
-                 usedXHtml = showInput('text', 'Used', 'used', coupon?.used,'disabled')
+                conditionXHtml = showSelectBox('', 'Condition', 'condition', coupon?.couponConditions, coupon?.condition, false, '')
+                 usedXHtml = showInput('number', 'Used', 'used', coupon?.used,'disabled')
                  buttonRepeatXHtml = '<button type="button" onclick="javascript:handleRandomCode()" class="btn btn-secondary" style="width: 40px; height: 40px"><i class="fas fa-repeat-alt"></i></button>'
                 break;
             case 'delivery':

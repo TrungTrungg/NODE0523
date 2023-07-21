@@ -96,8 +96,13 @@ const renderList = catchAsync(async (req, res, next) => {
 // render add item page
 const renderAddPage = catchAsync(async (req, res, next) => {
     // Get list categories
-    const categories = await getListCategories();
-
+    const { id: shop_id } = await service.getIdByName('Shop');
+    const categoriess = await service.getCategiresByCategoryId(shop_id);
+    const categories = categoriess.map((result) => {
+        const { id, name, category_id } = result;
+        return { value: id, name, category_id };
+    });
+    const productCategory = { categories };
     // Message - use connect-flash
     const messages = {
         success: req.flash('success'),
@@ -109,7 +114,7 @@ const renderAddPage = catchAsync(async (req, res, next) => {
         page: 'Add',
         collection,
         messages,
-        categories,
+        productCategory,
     };
     res.render(`backend/pages/productCategories/productCategories_add`, options);
 });
@@ -121,13 +126,15 @@ const addOne = catchAsync(async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/add`);
     } else {
-        const { name, status, ordering, category_id, url } = matchedData(req);
+        const { category_id } = req.body;
+        const { name, status, ordering, url } = matchedData(req);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.create(name, status.toLowerCase(), ordering, slug, url, category_id);
+        console.log(name, status, ordering, category_id, url, slug);
+        await service.create(name, slug, status.toLowerCase(), ordering, url, category_id);
         req.flash('success', notify.SUCCESS_ADD);
         res.redirect(`/admin/${collection}`);
     }
@@ -147,26 +154,25 @@ const renderEditPage = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const productCategoryy = await service.getOneById(id);
     // category
-    const {
-        id: category_child,
-        name: cateName,
-        category_id: category_parent,
-    } = await service.getCategory(productCategoryy.category_id);
+    const { name: cateName, category_id } = await service.getCategory(productCategoryy.category_id);
     // categories
-    const categories = await getListCategories();
-
-    const productCategory = { ...productCategoryy._doc, category_child, cateName, category_parent, categories };
+    const { id: shop_id } = await service.getIdByName('Shop');
+    const categoriess = await service.getCategiresByCategoryId(shop_id);
+    const categories = categoriess.map((result) => {
+        const { id, name, category_id } = result;
+        return { value: id, name, category_id };
+    });
+    // const categories = await categoryService.getSubCategory();
+    const productCategory = { ...productCategoryy._doc, cateName, category_id, categories };
     // message
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-
     const options = {
         page: 'Edit',
         collection,
         id,
-        category_parent,
         productCategory,
         messages,
     };
@@ -181,7 +187,9 @@ const editOne = catchAsync(async (req, res, next) => {
         req.flash('error', errors);
         res.redirect(`/admin/${collection}/edit/${id}`);
     } else {
-        const { name, status, ordering, category_id, url } = matchedData(req);
+        const { category_id } = req.body;
+
+        const { name, status, ordering, url } = matchedData(req);
         const slug = unidecode(name)
             .toLowerCase()
             .replace(/[^\w\s-]/gi, '')

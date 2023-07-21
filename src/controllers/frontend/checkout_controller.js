@@ -1,6 +1,6 @@
 const { matchedData } = require('express-validator');
 
-const { couponService, deliveryService, orderService } = require('@services');
+const { couponService, deliveryService, orderService, userService } = require('@services');
 const { catchAsync } = require('@helpers');
 const { checkoutCollection: collection } = require('@utils');
 const { resultsValidator } = require('@validators');
@@ -39,7 +39,8 @@ const create = catchAsync(async (req, res) => {
     if (errors.length > 0) {
         res.send({ error: true, message: errors });
     } else {
-        const { fname, lname, email, phone, address, message, products, coupon, delivery } = req.body;
+        const { user_id, fname, lname, email, phone, address, message, products, coupon, delivery } = req.body;
+        // create User Code
         let result = '';
         let characters = '0123456789';
         for (let i = 0; i < 5; i++) {
@@ -48,19 +49,22 @@ const create = catchAsync(async (req, res) => {
         }
         const user_code = `${fname.charAt(0)}${lname.charAt(0)}-${result}`;
         let productsParse = JSON.parse(products);
-        let couponParse = '';
-        let couponId = '';
-        if (coupon) {
-            couponParse = JSON.parse(coupon);
-            couponId = couponParse.id;
-        }
-        const deliveryParse = JSON.parse(delivery);
+
+        // parse data
         let total = 0;
         productsParse = productsParse.map((product) => {
             total += parseInt(product.total);
-            return { product_id: product.id, price: product.price, quantity: product.quantity };
+            return { product_id: product.id, name: product.name, price: product.price, quantity: product.quantity };
         });
+        let couponId = '';
+        if (coupon) {
+            const couponParse = JSON.parse(coupon);
+            couponId = couponParse.id;
+            await couponService.updateQuantityUsed(couponId);
+        }
+        const deliveryParse = JSON.parse(delivery);
         const user = { email, address, phone };
+        await userService.updateUserInfo(email, fname, lname, address, phone);
         await orderService.create(
             user_code,
             'chưa thanh toán',

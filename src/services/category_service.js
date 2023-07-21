@@ -2,7 +2,7 @@ const { categoryModel: model } = require('@models');
 
 // Create
 const create = async (name, slug, status, ordering, url, category_id) => {
-    const conditions = { name, status, ordering, slug, url, category_id };
+    const conditions = { name, status, ordering, slug, url };
     if (category_id) conditions.category_id = category_id;
     return await model.create(conditions);
 };

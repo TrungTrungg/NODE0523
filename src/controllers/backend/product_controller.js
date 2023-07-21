@@ -100,12 +100,15 @@ const renderAddPage = catchAsync(async (req, res) => {
         success: req.flash('success'),
         error: req.flash('error'),
     };
+    const product = {
+        categories,
+        brands,
+        shop_id,
+    };
     const options = {
         page: 'Add',
         collection,
-        shop_id,
-        categories,
-        brands,
+        product,
         messages,
     };
     res.render(`backend/pages/${collection}/${collection}_add`, options);
@@ -116,7 +119,7 @@ const addOne = catchAsync(async (req, res) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
-        res.redirect(`/admin/${collection}/add`);
+        res.redirect(`/admin/${collection}/${collection}_add`);
     } else {
         let image = '';
         let gallery_image = [];
@@ -156,6 +159,7 @@ const addOne = catchAsync(async (req, res) => {
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
+
         await service.create(
             name,
             slug,
@@ -186,7 +190,17 @@ const addOne = catchAsync(async (req, res) => {
 // delete one item
 const deleteOne = catchAsync(async (req, res) => {
     const { id } = req.params;
-
+    const product = await service.getOneById(id);
+    imagePath = `public\\uploads\\product\\${product.image}`;
+    if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+    }
+    product.gallery_image.map((gallery) => {
+        imagePath = `public\\uploads\\product\\${gallery}`;
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+        }
+    });
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
@@ -224,14 +238,24 @@ const editOne = catchAsync(async (req, res) => {
     } else {
         let image = '';
         let gallery_image = [];
-
+        const product = await service.getOneById(id);
         if (req.files) {
             for (let i = 0; i < req.files.length; i++) {
                 if (req.files[i].fieldname === 'image') {
                     image = req.files[i].filename;
+                    imagePath = `public\\uploads\\product\\${product.image}`;
+                    if (fs.existsSync(imagePath)) {
+                        fs.unlinkSync(imagePath);
+                    }
                 }
                 if (req.files[i].fieldname === 'gallery_image') {
                     gallery_image.push(req.files[i].filename);
+                    product.gallery_image.map((gallery) => {
+                        imagePath = `public\\uploads\\product\\${gallery}`;
+                        if (fs.existsSync(imagePath)) {
+                            fs.unlinkSync(imagePath);
+                        }
+                    });
                 }
             }
         }

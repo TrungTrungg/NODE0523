@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const productOrderSchema = new mongoose.Schema({
     product_id: { type: String },
+    name: { type: String },
     price: { type: Number },
     quantity: { type: Number },
 });

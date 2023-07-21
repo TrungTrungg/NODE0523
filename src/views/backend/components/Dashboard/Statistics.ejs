@@ -1,0 +1,21 @@
+<div class="row">
+  <%-
+    statisticArr.map((item) => {
+        return(`
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-${item.color}">
+            <div class="inner">
+              <h3>${item.qty}</h3>
+
+              <p>${item.name}</p>
+            </div>
+            <div class="icon">
+              <i class="ion ${item.icon}"></i>
+            </div>
+            <a href="${item.url}" class="small-box-footer">Xem thông tin<i class="fas fa-arrow-circle-right" style="margin-left: 10px !important"></i></a>
+          </div>
+        </div>
+        `)
+    }).join('')
+  %>
+</div>

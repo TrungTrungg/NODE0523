@@ -43,9 +43,21 @@ const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
     if (keyword) condition.name = new RegExp(keyword, 'gi');
     return await model
         .find(condition)
-        .sort({ updatedAt: -1, createdAt: -1 })
+        .sort({ createdAt: -1 })
         .skip(itemPerPage * (currentPage - 1))
         .limit(itemPerPage);
+};
+
+const getLatest = async (limit) => {
+    return model.find().sort({ createdAt: -1 }).limit(limit);
+};
+
+const getOrdersByUser = async (user) => {
+    const conditions = {};
+    if (user) {
+        conditions['user.email'] = user;
+    }
+    return await model.find(conditions);
 };
 
 // Count
@@ -56,13 +68,17 @@ const countByStatus = async (status, keyword) => {
 
     return await model.count(condition);
 };
-
+const countAll = async () => {
+    return await model.count();
+};
 module.exports = {
     create,
     deleteOneById,
     getOneById,
     getAll,
-
+    getLatest,
+    getOrdersByUser,
     changeFieldById,
     countByStatus,
+    countAll,
 };

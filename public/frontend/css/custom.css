@@ -22,3 +22,16 @@
 .checkout-form {
 	padding-bottom: 0 !important ;
 }
+
+#top-user a::after {
+	content: none
+}
+
+#top-user a:hover {
+	cursor: pointer;
+}
+.top-user-content {
+	opacity: 1;
+	top: calc( 20% ) !important;
+	width: 180px !important;
+}

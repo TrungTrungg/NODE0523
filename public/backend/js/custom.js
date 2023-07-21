@@ -270,6 +270,7 @@ const handleChangeIsSpecial = (collection, id, isSpecial, name) => {
         },
     });
 };
+
 const handleChangeIsShowhome = (collection, id, isSpecial, name) => {
     const inputDOM = $(`#${name}-${id}`);
     const newValue = inputDOM.prop('checked');
@@ -350,4 +351,26 @@ const handleSelectStatus = (id) => {
             }
         },
     });
+};
+
+const handleChangeInput = (name) => {
+    const inputDOM = $(`#item-${name}`);
+    const today = new Date();
+    const startDate = new Date(inputDOM.val());
+    if (startDate < today) {
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = year + '-' + month + '-' + day;
+        let toastrMessage = 'Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại';
+        toastr.error(toastrMessage, 'ERROR', {
+            newestOnTop: true,
+            closeButton: false,
+            progressBar: true,
+            preventDuplicates: true,
+            showMethod: 'slideDown',
+            timeOut: 10000,
+        });
+        inputDOM.val(formattedDate);
+    }
 };

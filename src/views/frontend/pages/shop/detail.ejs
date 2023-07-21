@@ -2,3 +2,11 @@
 <% include ../../components/PageTitle %>
 <!-- #page-title end -->
 <% include ../../components/Product/DetailContent %>
+<!-- script -->
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+  const socket = io();
+  socket.emit('shop', 'This is message');
+</script>

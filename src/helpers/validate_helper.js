@@ -43,10 +43,6 @@ const productFormValidate = [
 ];
 
 const userRegisterFormValidate = [
-    userValidator.fnameCheck,
-    userValidator.lnameCheck,
-    userValidator.addressCheck,
-    userValidator.phoneCheck,
     userValidator.emailCheck,
     userValidator.passwordCheck,
     userValidator.comfirmPasswordCheck,

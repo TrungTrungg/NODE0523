@@ -4,7 +4,7 @@
         order.product.map((item) => {
             return total = total + (parseInt(item.price) * parseInt(item.quantity))
         })
-        total += parseInt(delivery.shipping_fee)
+        if(delivery) total += parseInt(delivery.shipping_fee)
         if(coupon) {
             if(coupon.type === 'fixed')
             total -= parseInt(coupon.value)

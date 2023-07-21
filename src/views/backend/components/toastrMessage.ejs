@@ -1,6 +1,6 @@
 <% if (typeof messages !== 'undefined') { %>
 
-    <%
+<%
         if(messages.error.length > 0) {
             const errorMessage = messages.error.map((error) => {
                 return(`
@@ -10,40 +10,40 @@
                 `)
             }).join('')
     %>
-        <script>
-            $(document).ready(() => {
-                let toastrMessage = `<ul><%- errorMessage %></ul>`
-                toastr.error(toastrMessage, 'ERROR', {
-                    newestOnTop: true,
-                    closeButton: false,
-                    progressBar: true,
-                    preventDuplicates: false,
-                    showMethod: 'slideDown',
-                    timeOut: 30000
-                })
-            });
-        </script>
-    <%
+<script>
+  $(document).ready(() => {
+    let toastrMessage = `<ul><%- errorMessage %></ul>`
+    toastr.error(toastrMessage, 'ERROR', {
+      newestOnTop: true,
+      closeButton: false,
+      progressBar: true,
+      preventDuplicates: false,
+      showMethod: 'slideDown',
+      timeOut: 30000
+    })
+  });
+</script>
+<%
         }
     %>
 
-    <%
-        if(messages.success.length > 0) {
+<%
+        if(messages.success.length > 0) { 
     %>
-        <script>
-            $(document).ready(() => {
-                let toastrMessage = `<b><%- messages.success %></b>`
-                toastr.success(toastrMessage, 'SUCCESS', {
-                    newestOnTop: true,
-                    closeButton: false,
-                    progressBar: true,
-                    preventDuplicates: false,
-                    showMethod: 'slideDown',
-                    timeOut: 10000
-                })
-            });
-        </script>
-    <%  
+<script>
+  $(document).ready(() => {
+    let toastrMessage = `<b><%- messages.success %></b>`
+    toastr.success(toastrMessage, 'SUCCESS', {
+      newestOnTop: true,
+      closeButton: false,
+      progressBar: true,
+      preventDuplicates: false,
+      showMethod: 'slideDown',
+      timeOut: 10000
+    })
+  });
+</script>
+<%  
         }
     %>
 <%

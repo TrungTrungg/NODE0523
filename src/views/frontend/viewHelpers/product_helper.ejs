@@ -4,8 +4,8 @@
        return products.map((product) => {
           if(product.sale > 0) sale = '<div class="sale-flash badge bg-danger p-2 text-uppercase">Sale!</div>'
           else sale = ''
-          let price = product.price + `VNĐ`
-          let salePrice = (product.price - product.price * product.sale / 100 )
+          let price = product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `VNĐ`
+          let salePrice = (product.price - product.price * product.sale / 100 ).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
             return(`
                 <div class="product col-md-3 col-sm-6 col-12 text-center media-box fbox-bg">
                   <article class="portfolio-item">
@@ -80,7 +80,7 @@
 
     showSidebarProd = (products) => {
       return products.map((product) => {
-        let salePrice = (product.price - product.price * product.sale / 100) + ` VNĐ`
+        let salePrice = (product.price - product.price * product.sale / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ` VNĐ`
           return(`
           <div class="entry col-12">
             <div class="grid-inner row g-0">
@@ -124,8 +124,8 @@
       return products.map((product) => {
           if(product.sale > 0) sale = '<div class="sale-flash badge bg-danger p-2 text-uppercase">Sale!</div>'
           else sale = ''
-          let price = (product.price) + `VNĐ`
-          let salePrice = ((product.price - product.price * product.sale) / 100)
+          let price = (product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + `VNĐ`
+          let salePrice = ((product.price - product.price * product.sale).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') / 100)
         return(`
           <div class="oc-item">
             <div class="product">

@@ -53,15 +53,16 @@
                   <td>Coupon</td>
                   <% if(typeof coupon !== 'undefined' && coupon.type === 'percent') {%>
                   <td><%= coupon.value  %>%</td>
-                  <% } %>
-                  <% if(typeof coupon !== 'undefined' && coupon.type === 'fixed') {%>
+                  <%}else if(typeof coupon !== 'undefined' && coupon.type === 'fixed') {%>
                   <td><%= coupon.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ</td>
+                  <% }else { %>
+                  <td>0 VNĐ</td>
                   <% } %>
 
                 </tr>
                 <tr>
                   <td>Shipping fee</td>
-                  <td><%= delivery.shipping_fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ </td>
+                  <td><%= delivery?.shipping_fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')  %> VNĐ </td>
                 </tr>
                 <tr>
                   <td>Final Price</td>

@@ -1,5 +1,6 @@
 const {
     itemController,
+    dashboardController,
     mainCategoriesController,
     articleCategoriesController,
     productCategoriesController,
@@ -21,11 +22,13 @@ const {
     shopController,
     frontContactController,
     authController,
+    frontUserController,
     cartController,
     checkoutController,
 } = require('@controllers/frontend');
 module.exports = {
     itemController,
+    dashboardController,
     mainCategoriesController,
     articleCategoriesController,
     productCategoriesController,
@@ -45,6 +48,7 @@ module.exports = {
     shopController,
     frontContactController,
     authController,
+    frontUserController,
     cartController,
     checkoutController,
 };

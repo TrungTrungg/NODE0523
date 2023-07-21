@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -28,6 +28,7 @@
     "nodemon": "^2.0.22",
     "rss-parser": "^3.13.0",
     "sha1": "^1.1.1",
+    "socket.io": "^4.7.1",
     "unicode": "^14.0.0",
     "unidecode": "^0.1.8"
   },

@@ -110,7 +110,7 @@ const addOne = catchAsync(async (req, res) => {
 const deleteOne = catchAsync(async (req, res) => {
     const { id } = req.params;
     const { image } = await service.getOneById(id);
-    const imagePath = `public\\uploads\\${image}`;
+    const imagePath = `public\\uploads\\article\\${image}`;
     if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
     }
@@ -148,7 +148,7 @@ const editOne = catchAsync(async (req, res) => {
         if (req.file) {
             imageName = req.file.filename;
             const { image } = await service.getOneById(id);
-            const imagePath = `public\\uploads\\${image}`;
+            const imagePath = `public\\uploads\\article\\${image}`;
             if (fs.existsSync(imagePath)) {
                 fs.unlinkSync(imagePath);
             }

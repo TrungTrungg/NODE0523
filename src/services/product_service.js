@@ -166,6 +166,9 @@ const getProducts = async (Ids) => {
     return await model.find({ _id: Ids });
 };
 
+const getProductsName = async (Ids) => {
+    return await model.find({ _id: Ids }).select('name');
+};
 const getByCondition = async (category_id, params, limit, id) => {
     const conditions = {};
     if (id) conditions._id = { $nin: id };
@@ -219,15 +222,21 @@ const countByCategory = async (category_id, keyword, brand_id, price, sale) => {
     return await model.count(conditions);
 };
 
+const countAll = async () => {
+    return await model.count();
+};
+
 module.exports = {
     create,
     deleteOneById,
     getOneById,
     getAll,
     getProducts,
+    getProductsName,
     getByCondition,
     updateOneById,
     changeFieldById,
     countByStatus,
     countByCategory,
+    countAll,
 };

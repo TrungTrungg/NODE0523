@@ -1,10 +1,14 @@
 <%
-    showISelectBox = (arr, id) => {
+    showISelectBox = (arr, id, status) => {
+        let selected = ''
         const options = arr.map((item) => {
+            if(item.value.toLowerCase() === status.toLowerCase())
+            selected = 'selected="selected"'
+            else selected = ''
             return(`
-                <option value='${item.value}'>${item.name}</option>
+                <option ${selected} value='${item.value}'>${item.name}</option>
             `)
-        })
+        }).join('')
         return(`
         <td>
             <select onchange="javascript:handleSelectStatus('${id}')" class="custom-select form-control-border border-width-2" id="status-select">

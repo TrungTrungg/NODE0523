@@ -1,1 +1,16 @@
 <% include ../../components/PageHeader %>
+<% include ../../components/Dashboard/Content %>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+  const shopStatDOM = document.querySelector('#shop-stat');
+  const blogStatDOM = document.querySelector('#blog-stat');
+
+  const socket = io();
+  socket.on('dasboard-shop', (data) => {
+    shopStatDOM.value = data
+  });
+
+  socket.on('dasboard-blog', (data) => {
+    blogStatDOM.value = data
+  });
+</script>

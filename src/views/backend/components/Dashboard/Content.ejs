@@ -1,0 +1,62 @@
+<section class="content">
+  <div class="container-fluid">
+    <!-- Small boxes (Stat box) -->
+    <% include ./Statistics %>
+    <!-- /.row -->
+    <!-- Main row -->
+    <div class="row">
+      <!-- Left col -->
+      <section class="col-lg-7 connectedSortable">
+        <!-- Custom tabs (Charts with tabs)-->
+        <% include ./Main %>
+        <!-- /.card -->
+
+        <!-- /.card -->
+      </section>
+      <!-- /.Left col -->
+      <!-- right col (We are only adding the ID to make the widgets sortable)-->
+      <section class="col-lg-5 connectedSortable">
+
+        <!-- solid sales graph -->
+        <div class="card bg-gradient-info">
+          <div class="card-header border-0">
+            <h3 class="card-title">
+              <i class="fas fa-th mr-1"></i>
+              Truy cập
+            </h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer bg-transparent">
+            <div class="row">
+              <div class="col-6 text-center">
+                <input class="text-center" type="text" class="knob" data-readonly="true" value="0" data-width="60" data-height="60" data-fgColor="#39CCCC" id="shop-stat">
+
+                <div class="text-white">Trang sản phẩm</div>
+              </div>
+              <!-- ./col -->
+              <div class="col-6 text-center">
+                <input class="text-center" type="text" class="knob" data-readonly="true" value="0" data-width="60" data-height="60" data-fgColor="#39CCCC" id="blog-stat">
+
+                <div class="text-white">Trang tin tức</div>
+              </div>
+              <!-- ./col -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.card-footer -->
+        </div>
+        <!-- /.card -->
+      </section>
+      <!-- right col -->
+    </div>
+    <!-- /.row (main row) -->
+  </div><!-- /.container-fluid -->
+</section>

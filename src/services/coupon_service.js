@@ -25,6 +25,10 @@ const updateOneById = async (id, code, type, value, started_at, expired_at, quan
     return await model.updateOne({ _id: id }, conditions);
 };
 
+const updateQuantityUsed = async (id) => {
+    return await model.updateOne({ _id: id }, { $inc: { quantity: -1, used: 1 } });
+};
+
 const changeFieldById = async (id, field, value) => {
     const conditions = {};
 
@@ -71,6 +75,7 @@ module.exports = {
     getAll,
 
     updateOneById,
+    updateQuantityUsed,
     changeFieldById,
     countByStatus,
 };

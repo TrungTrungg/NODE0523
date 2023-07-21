@@ -144,8 +144,8 @@
                     codeXHtml = handleName(item.code, keyword)
                     typeXHtml = handleName(item.type, keyword)
                     valueXHtml = handleName(item.value, keyword)
-                    startedXHtml = handleName(item.started_at.toISOString().slice(0, 10), keyword)
-                    expiredXHtml = handleName(item.expired_at.toISOString().slice(0, 10), keyword)
+                    startedXHtml = handleName(item.started_at?.toISOString().slice(0, 10), keyword)
+                    expiredXHtml = handleName(item.expired_at?.toISOString().slice(0, 10), keyword)
                     quantityXHtml = handleOrdering(collection, item.quantity, item.id)
                     break;
                 case 'delivery':
@@ -160,10 +160,11 @@
                     specialXHtml = ''
                     menuXHtml = ''
                     editXHml = ''
+                    deleteXHml = ''
 
                     userCodeXHtml = handleName(item.user_code, keyword)
                     readXHml = `<a type="button" class="btn btn-warning" href="/admin/${collection}/detail/${item._id}">Detail</a>`
-                    orderStatusXHtml = showISelectBox(selectStatusOption, item.id)
+                    orderStatusXHtml = showISelectBox(selectStatusOption, item.id, item.status)
                 break;
                 default:
                     break;

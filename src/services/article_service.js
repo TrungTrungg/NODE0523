@@ -117,7 +117,9 @@ const countByStatus = async (status, keyword, category_id) => {
 const countArticleByCategory = async (category_id) => {
     return await model.count({ category_id });
 };
-
+const countAll = async () => {
+    return await model.count();
+};
 module.exports = {
     create,
     deleteOneById,
@@ -131,4 +133,5 @@ module.exports = {
     changeFieldById,
     countByStatus,
     countArticleByCategory,
+    countAll,
 };

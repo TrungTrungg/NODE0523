@@ -45,9 +45,9 @@ const couponCheck = body('code')
         const today = new Date();
         const coupon = await couponService.getOneByCode(req.body.code);
         if (!coupon) {
-            throw new Error('Không họp lệ!');
+            throw new Error('Không hợp lệ!');
         } else {
-            if (today > coupon.expired_at) throw new Error('Hết hạn!');
+            if (coupon.expired_at) if (today > coupon.expired_at) throw new Error('Hết hạn!');
             if (coupon.quantity <= 0) throw new Error('Không còn mã giảm này!');
             if (parseInt(coupon.condition) > parseInt(req.body.total)) throw new Error('Không đủ điều kiện!');
         }

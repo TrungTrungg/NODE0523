@@ -4,6 +4,6 @@
   </a>
   <div class="dropdown-menu top-cart-content top-user-content">
     <%- typeof user === 'undefined' ? '<a class="dropdown-item" href="/auth/register-login">Đăng ký - Đăng nhập</a>' : ''  %>
-    <%- typeof user === 'undefined' ? '' : '<a class="dropdown-item" href="/user">Thông tin cá nhân</a><a class="dropdown-item" href="/user/order">Đơn hàng của bạn</a><div class="dropdown-divider"></div><a class="dropdown-item" href="/auth/logout">Đăng xuất</a>'  %>
+    <%- typeof user === 'undefined' ? '' : '<a class="dropdown-item" href="/user">Thông tin cá nhân</a><div class="dropdown-divider"></div><a class="dropdown-item" href="/auth/logout">Đăng xuất</a>'  %>
   </div>
 </div>

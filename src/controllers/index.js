@@ -19,6 +19,7 @@ const {
 const {
     homeController,
     blogController,
+    frontSubscribeController,
     shopController,
     frontContactController,
     authController,
@@ -44,6 +45,7 @@ module.exports = {
     deliveryController,
 
     homeController,
+    frontSubscribeController,
     blogController,
     shopController,
     frontContactController,

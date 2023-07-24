@@ -4,8 +4,14 @@
 <script>
   const shopStatDOM = document.querySelector('#shop-stat');
   const blogStatDOM = document.querySelector('#blog-stat');
+  const btnShopDOM = document.querySelector('#btn-send-shop');
+  const btnBlogDOM = document.querySelector('#btn-send-blog');
+  const inputShopDOM = document.querySelector('#shop-message');
+  const inputBlogDOM = document.querySelector('#blog-message');
 
   const socket = io();
+  socket.emit('router', 'dashboard');
+
   socket.on('shop', (data) => {
     shopStatDOM.value = data
   });
@@ -13,4 +19,12 @@
   socket.on('blog', (data) => {
     blogStatDOM.value = data
   });
+
+  btnShopDOM.addEventListener('click', () => {
+    socket.emit('dashboard-shop', inputShopDOM.value)
+  })
+
+  btnBlogDOM.addEventListener('click', () => {
+    socket.emit('dashboard-blog', inputBlogDOM.value)
+  })
 </script>

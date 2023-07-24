@@ -1,4 +1,4 @@
-const handlePagination = async (totalItems, currentPage, itemPerPage, pageRange) => {
+const handlePagination = (totalItems, currentPage, itemPerPage, pageRange) => {
     const totalPages = Math.ceil(totalItems / itemPerPage);
     const middle = Math.ceil(pageRange / 2);
 

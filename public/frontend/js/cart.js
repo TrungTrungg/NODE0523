@@ -1,5 +1,3 @@
-const regFormDOM = $('#register-form');
-const loginFormDOM = $('#login-form');
 const topCartDOM = $('.top-cart-number');
 const topCartItems = $('.top-cart-items');
 const topCheckoutPrice = $('.top-checkout-price');

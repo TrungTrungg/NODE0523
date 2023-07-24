@@ -7,7 +7,7 @@ const mailCheck = body('email')
     .withMessage(notify.ERROR_NAME_EMPTY)
     .bail()
     .isEmail()
-    .withMessage(notify.ERROR_NAME_LENGTH);
+    .withMessage(notify.ERROR_USER_EMAIL_VALUE);
 
 module.exports = {
     mailCheck,

@@ -357,11 +357,7 @@ const handleChangeInput = (name) => {
     const inputDOM = $(`#item-${name}`);
     const today = new Date();
     const startDate = new Date(inputDOM.val());
-    if (startDate < today) {
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const formattedDate = year + '-' + month + '-' + day;
+    if (startDate <= today) {
         let toastrMessage = 'Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại';
         toastr.error(toastrMessage, 'ERROR', {
             newestOnTop: true,
@@ -371,6 +367,6 @@ const handleChangeInput = (name) => {
             showMethod: 'slideDown',
             timeOut: 10000,
         });
-        inputDOM.val(formattedDate);
+        inputDOM.val(today.toISOString().slice(0, 10));
     }
 };

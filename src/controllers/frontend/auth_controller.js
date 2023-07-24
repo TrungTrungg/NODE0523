@@ -48,7 +48,7 @@ const login = catchAsync(async (req, res) => {
 
 const logout = catchAsync(async (req, res) => {
     res.clearCookie('jwt');
-    res.redirect('back');
+    res.redirect('/');
 });
 
 module.exports = {

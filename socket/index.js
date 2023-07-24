@@ -1,33 +1,47 @@
 const server = require('../bin/www');
 const { Server } = require('socket.io');
 const io = new Server(server);
-const fs = require('fs');
+const { fsHelper } = require('@helpers');
 
 let userInfo = {};
-let dataFile = fs.readFileSync('./userData.txt', 'utf-8');
+let dataFile = fsHelper.readFile('./userData.txt', 'Async');
 if (dataFile) userInfo = JSON.parse(dataFile);
 
 io.on('connection', (socket) => {
-    // if (userInfo !== {}) {
-    //     for (const router in userInfo) {
-    //         console.log('connection', router, userInfo[router].length);
-    //         socket.emit(router, userInfo[router].length);
-    //     }
-    // }
+    socket.on('dashboard-blog', (data) => {
+        io.emit('dashboard-blog', data);
+    });
+    socket.on('dashboard-shop', (data) => {
+        io.emit('dashboard-shop', data);
+    });
     socket.on('router', (data) => {
-        if (!userInfo[data]) userInfo[data] = [];
-        userInfo[data].push(socket.id);
-        fs.writeFileSync('./userData.txt', JSON.stringify(userInfo));
-        socket.emit('shop', userInfo[data].length);
-        console.log('on', data, userInfo[data].length);
+        if (data === 'dashboard') {
+            for (const router in userInfo) {
+                io.emit(router, userInfo[router].length);
+                socket.on(router, (data) => {
+                    io.emit(`dashboard-${router}`, data);
+                });
+            }
+        } else {
+            if (!userInfo[data]) userInfo[data] = [];
+            userInfo[data].push(socket.id);
+            fsHelper.writeFile('./userData.txt', userInfo, 'Sync');
+            io.emit(data, userInfo[data].length);
+        }
+    });
+
+    socket.on('shop-coupon', (data) => {
+        io.emit('shop-coupon', data);
+    });
+    socket.on('blog-coupon', (data) => {
+        io.emit('blog-coupon', data);
     });
 
     socket.on('disconnect', () => {
         for (const router in userInfo) {
             userInfo[router] = userInfo[router].filter((data) => data !== socket.id);
-            socket.emit(router, userInfo[router].length);
-            console.log('disconnect', router, userInfo[router].length);
+            io.emit(router, userInfo[router].length);
         }
-        fs.writeFileSync('./userData.txt', JSON.stringify(userInfo));
+        fsHelper.writeFile('./userData.txt', userInfo, 'Async');
     });
 });

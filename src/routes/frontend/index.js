@@ -4,6 +4,7 @@ const { authenticateToken } = require('@auth');
 const { fetchDataMiddleware } = require('@middlewares/fetchData');
 
 const homeRouter = require('./home_router');
+const subscribeRouter = require('./subscribe_router');
 const blogRouter = require('./blog_router');
 const shopRouter = require('./shop_router');
 const contactRouter = require('./contact_router');
@@ -17,6 +18,7 @@ router.use('/', authenticateToken, fetchDataMiddleware, (req, res, next) => {
     next();
 }),
     router.use('/', homeRouter);
+router.use('/subscribe', subscribeRouter);
 router.use('/blog', blogRouter);
 router.use('/shop', shopRouter);
 router.use('/contact', contactRouter);

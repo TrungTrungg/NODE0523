@@ -4,7 +4,7 @@ const multer = require('multer');
 
 const { validator } = require('@helpers');
 const { itemController: controller } = require('@controllers');
-const upload = multer({ dest: './public/backend/uploads' });
+const upload = multer({ dest: './public/uploads' });
 // Đỗ dữ liệu trang Item
 router.get('(/status/:status)?', controller.renderList);
 

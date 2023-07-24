@@ -13,7 +13,7 @@ const renderBlog = catchAsync(async (req, res) => {
 
     const { id: id_blog } = await categoryService.getIdByName('Tin tức');
     const totalItems = await articleService.countArticleByCategory(category_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemPerPage = 4));
+    const pagination = handlePagination(totalItems, currentPage, (itemPerPage = 4));
     const [blogCategory, articles, popularArticles, currentArticles] = await Promise.all([
         categoryService.getCategiresByCategoryId(id_blog),
         articleService.getArticleWithCategory(category_id, pagination),
@@ -57,6 +57,26 @@ const renderDetailBlog = catchAsync(async (req, res) => {
         blogCategory,
     };
     res.render('frontend/pages/blog/detail', options);
+});
+
+const ajaxRender = catchAsync(async (req, res) => {
+    const { id: id_blog } = await categoryService.getIdByName('Tin tức');
+    const article = await articleService.getOneById(id);
+
+    const [blogCategory, articles, popularArticles, currentArticles, relatedArticles] = await Promise.all([
+        categoryService.getCategiresByCategoryId(id_blog),
+        articleService.getArticleWithCategory(article.category_id, { itemPerPage: 12, skip: 0 }),
+        articleService.getArticleSpecial(article.category_id),
+        articleService.getArticleCurrent(),
+        articleService.getArticleRelated(article.category_id),
+    ]);
+    const options = {
+        articles,
+        popularArticles,
+        currentArticles,
+        relatedArticles,
+        blogCategory,
+    };
 });
 module.exports = {
     renderBlog,

@@ -1,8 +1,8 @@
 <%
-    showArticle = (articles) => {
+    showArticle = (articles, desLength) => {
         let listArticles = articles.map((article, index) => {
             let description = article.description
-            let maxLength =530
+            let maxLength = desLength
             let reverseImg = ''
             let reverseContent = 'ps-md-4'
             if(index % 2 != 0) {
@@ -47,7 +47,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="entry-content" >
+                        <div class="entry-content" style="margin-top: 10px !important" >
                             <p style="margin-bottom: 0 !important">${description}</p>
                             <a href="/blog/article/${article.id}" class="more-link">Xem thêm</a>
                         </div>
@@ -73,7 +73,7 @@
                         <div class="col-auto">
                             <div class="entry-image">
                                 <a>
-                                    <img class="rounded-circle" src="/uploads/article${article.image}" alt="Image">
+                                    <img class="rounded-circle" src="/uploads/article/${article.image}" alt="Image">
                                 </a>
                             </div>
                         </div>

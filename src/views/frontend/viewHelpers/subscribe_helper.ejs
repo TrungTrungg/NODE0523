@@ -2,10 +2,10 @@
     showInputSubscribe = (setting) => {
         return(`
             <div class="widget-subscribe-form-result"></div>
-            <form id="widget-subscribe-form" action="/admin/subscribe" method="post" class="mb-0">
+            <form id="widget-subscribe-form" action="/subscribe" method="post" class="mb-0">
                 <div class="input-group mx-auto">
                     <div class="input-group-text">
-                        <i class="${ setting.button.icon}"></i>
+                        <i id="icon-check" class="${ setting.button.icon}"></i>
                     </div>
                     <input type="email" id="widget-subscribe-form-email" name="email" class="form-control required email" placeholder="Enter your Email">
                     <button class="btn btn-${ setting.button.color}" type="submit">${ setting.button.name}</button>

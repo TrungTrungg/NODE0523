@@ -5,6 +5,17 @@
 <!-- script -->
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script>
-  const socket = io();
-  socket.emit('router', 'shop-detail');
+  const socket = io()
+  socket.emit('router', 'shop');
+  socket.on('dashboard-shop', data => {
+    toastrMessage = data
+    toastr.success(toastrMessage, 'MESSAGE', {
+      newestOnTop: true,
+      closeButton: false,
+      progressBar: true,
+      preventDuplicates: false,
+      showMethod: 'slideDown',
+      timeOut: false,
+    });
+  })
 </script>

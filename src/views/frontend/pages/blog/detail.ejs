@@ -5,5 +5,16 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script>
   const socket = io();
-  socket.emit('router', 'blog-detail');
+  socket.emit('router', 'blog');
+  socket.on('dashboard-blog', data => {
+    toastrMessage = data
+    toastr.success(toastrMessage, 'MESSAGE', {
+      newestOnTop: true,
+      closeButton: false,
+      progressBar: true,
+      preventDuplicates: false,
+      showMethod: 'slideDown',
+      timeOut: false,
+    });
+  })
 </script>

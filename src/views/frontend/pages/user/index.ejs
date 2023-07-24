@@ -72,7 +72,7 @@
                           <th>Ngày mua</th>
                           <th>Mã Khách hàng</th>
                           <th>Tổng tiền sản phẩm</th>
-                          <th>Tin nhắn</th>
+                          <th>Trạng thái</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -84,8 +84,8 @@
                                     <code>${order.createdAt.toISOString().slice(0, 10)}</code>
                                   </td>
                                   <td>${order.user_code}</td>
-                                  <td>${order.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ</td>
-                                  <td>${order.message}</td>
+                                  <td>${order.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VNĐ  ${order.coupon_id ? '(có mã giảm giá)' : ''}</td>
+                                  <td>${order.status}</td>
                                 </tr>
                                 `)
                             }).join('')

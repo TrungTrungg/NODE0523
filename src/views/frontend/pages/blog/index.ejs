@@ -11,7 +11,15 @@
 <script>
   const socket = io();
   socket.emit('router', 'blog');
-  socket.on('server-message', (data) => {
-    console.log(data);
+  socket.on('dashboard-blog', data => {
+    toastrMessage = data
+    toastr.success(toastrMessage, 'MESSAGE', {
+      newestOnTop: true,
+      closeButton: false,
+      progressBar: true,
+      preventDuplicates: false,
+      showMethod: 'slideDown',
+      timeOut: false,
+    });
   })
 </script>

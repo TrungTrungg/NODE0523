@@ -7,7 +7,7 @@ $(document).ready(function () {
     regFormDOM.submit(function (event) {
         event.preventDefault();
         const formData = $(this).serialize();
-        const url = '/auth/register';
+        const url = '/register';
         $.ajax({
             type: 'POST',
             url: url,
@@ -24,7 +24,7 @@ $(document).ready(function () {
                         showMethod: 'slideDown',
                         timeOut: 10000,
                     });
-                    window.location.href = '/';
+                    window.location.href = '/register-login';
                 }
 
                 if (data.error) {
@@ -53,7 +53,7 @@ $(document).ready(function () {
     loginFormDOM.submit(function (event) {
         event.preventDefault();
         const formData = $(this).serialize();
-        const url = '/auth/login';
+        const url = '/login';
         $.ajax({
             type: 'POST',
             url: url,

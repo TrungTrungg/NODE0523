@@ -20,7 +20,12 @@ const readFile = (fileName, option) => {
     }
 };
 
+const checkFileExist = (filePath) => {
+    return fs.existsSync(filePath);
+};
+
 module.exports = {
     writeFile,
     readFile,
+    checkFileExist,
 };

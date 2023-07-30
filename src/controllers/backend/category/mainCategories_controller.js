@@ -84,6 +84,7 @@ const renderAddPage = catchAsync(async (req, res, next) => {
         success: req.flash('success'),
         error: req.flash('error'),
     };
+    console.log(req.flash('error'));
     // Options
     const options = {
         page: 'Add',
@@ -98,6 +99,7 @@ const addOne = catchAsync(async (req, res, next) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
+
         res.redirect(`/admin/${collection}/add`);
     } else {
         const { name, url, status, ordering } = matchedData(req);
@@ -209,7 +211,7 @@ const changeIsSpecialAjax = catchAsync(async (req, res, next) => {
 
     await service.changeFieldById(id, 'isMenu', is_special);
 
-    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, is_special });
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_ISMENU, is_special });
 });
 
 const changeUrlAjax = catchAsync(async (req, res, next) => {
@@ -218,7 +220,7 @@ const changeUrlAjax = catchAsync(async (req, res, next) => {
     // handle change status
 
     await service.changeFieldById(id, 'url', url);
-    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_URL, url });
 });
 module.exports = {
     renderList,

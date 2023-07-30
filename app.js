@@ -36,9 +36,14 @@ mongoose
 // use express flash
 app.use(
     session({
-        secret: 'abcz',
+        secret: 'mysecretkey',
         resave: false,
         saveUninitialized: true,
+        cookie: {
+            maxAge: 3600000,
+            httpOnly: true,
+            secure: false,
+        },
     }),
 );
 

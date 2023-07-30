@@ -85,7 +85,10 @@ const renderList = catchAsync(async (req, res) => {
 
 // render add item page
 const renderAddPage = catchAsync(async (req, res) => {
-    const categories = await categoryService.getBlogCategory();
+    const { id: articleCategoryId } = await categoryService.getIdByName('Tin tức');
+    const categories = await categoryService.getCategoriesById(articleCategoryId);
+
+    const article = { categories };
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
@@ -93,7 +96,7 @@ const renderAddPage = catchAsync(async (req, res) => {
     const options = {
         page: 'Add',
         collection,
-        categories,
+        article,
         messages,
     };
     res.render(`backend/pages/${collection}/${collection}_add`, options);
@@ -110,7 +113,6 @@ const addOne = catchAsync(async (req, res) => {
         if (req.file) imageName = req.file.filename;
         const { content } = req.body;
         const { name, status, ordering, category_id, author, description, url, is_special } = matchedData(req);
-        const categories = await categoryService.getBlogCategory(articleCategoryId);
 
         const slug = name
             .toLowerCase()
@@ -127,7 +129,6 @@ const addOne = catchAsync(async (req, res) => {
             content,
             url,
             is_special,
-            categories,
             category_id,
             imageName,
         );
@@ -139,7 +140,11 @@ const addOne = catchAsync(async (req, res) => {
 // delete one item
 const deleteOne = catchAsync(async (req, res) => {
     const { id } = req.params;
-
+    const { image } = await service.getOneById(id);
+    const imagePath = `public/uploads/article/${image}`;
+    if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+    }
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
@@ -177,7 +182,7 @@ const editOne = catchAsync(async (req, res) => {
         if (req.file) {
             imageName = req.file.filename;
             const { image } = await service.getOneById(id);
-            const imagePath = `public\\backend\\uploads\\${image}`;
+            const imagePath = `public/uploads/article/${image}`;
             if (fs.existsSync(imagePath)) {
                 fs.unlinkSync(imagePath);
             }
@@ -209,25 +214,6 @@ const editOne = catchAsync(async (req, res) => {
         res.redirect(`/admin/${collection}`);
     }
 });
-
-// Change status of item
-// const changeStatus = catchAsync(async (req, res) => {
-//     const { id, status } = req.params;
-//     const { page, search } = req.query;
-
-//     // handle query
-//     let query = `?page=1`;
-//     if (search) query += `&search=${search}`;
-
-//     // handle change status
-//     let newStatus = status;
-//     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
-//     else newStatus = filterOptions.active;
-
-//     await service.changeStatusById(id, newStatus.toLowerCase());
-//     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
-//     res.redirect(`/admin/item${query}`);
-// })
 
 const changeStatusAjax = catchAsync(async (req, res) => {
     const { id, status } = req.params;
@@ -285,7 +271,7 @@ const changeIsSpecialAjax = async (req, res, next) => {
 
     await service.changeFieldById(id, 'is_special', is_special);
 
-    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, is_special });
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_SPECIAL, is_special });
 };
 
 const getListCategoriesAjax = catchAsync(async (req, res) => {

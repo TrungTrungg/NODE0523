@@ -154,7 +154,9 @@ const renderEditPage = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const productCategoryy = await service.getOneById(id);
     // category
-    const { name: cateName, category_id } = await service.getCategory(productCategoryy.category_id);
+    const { name: cateName, category_id: product_category_id } = await service.getCategory(
+        productCategoryy.category_id,
+    );
     // categories
     const { id: shop_id } = await service.getIdByName('Shop');
     const categoriess = await service.getCategiresByCategoryId(shop_id);
@@ -163,7 +165,8 @@ const renderEditPage = catchAsync(async (req, res, next) => {
         return { value: id, name, category_id };
     });
     // const categories = await categoryService.getSubCategory();
-    const productCategory = { ...productCategoryy._doc, cateName, category_id, categories };
+    const productCategory = { ...productCategoryy._doc, cateName, product_category_id, categories };
+
     // message
     const messages = {
         success: req.flash('success'),
@@ -195,7 +198,7 @@ const editOne = catchAsync(async (req, res, next) => {
             .replace(/[^\w\s-]/gi, '')
             .replace(/\s+/gi, '-')
             .trim();
-        await service.updateOneById(id, name, status.toLowerCase(), ordering, slug, url, category_id);
+        await service.updateOneById(id, name, slug, status.toLowerCase(), ordering, url, category_id);
         req.flash('success', notify.SUCCESS_EDIT);
         res.redirect(`/admin/${collection}`);
     }

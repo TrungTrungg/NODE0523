@@ -52,11 +52,11 @@ const userLoginFormValidate = [userValidator.emailLoginCheck, userValidator.pass
 const subscribeFormValidate = [subscribeValidator.mailCheck];
 
 const orderFormValidate = [
-    orderValidator.fnameCheck,
-    orderValidator.lnameCheck,
-    orderValidator.addressCheck,
+    userValidator.fnameCheck,
+    userValidator.lnameCheck,
+    userValidator.addressCheck,
+    userValidator.phoneCheck,
     orderValidator.emailCheck,
-    orderValidator.phoneCheck,
     orderValidator.locationCheck,
 ];
 const couponCheck = [orderValidator.couponCheck];

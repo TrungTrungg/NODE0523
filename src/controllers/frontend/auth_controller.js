@@ -27,13 +27,13 @@ const register = catchAsync(async (req, res) => {
     } else {
         const { fname, lname, address, email, phone, password } = matchedData(req);
         await service.create(fname, lname, address, email, phone, password);
-        res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING });
+        res.send({ success: true, message: notify.SUCCESS_USER_REGISTER });
     }
 });
 const login = catchAsync(async (req, res) => {
     const errors = resultsValidator(req);
     if (errors.length > 0) {
-        res.send({ error: true, message: 'Tài khoản hoặc mật khẩu không đúng' });
+        res.send({ error: true, message: notify.ERROR_USER_LOGIN });
     } else {
         const { email } = matchedData(req);
         const { id } = await service.getOne(email);
@@ -42,7 +42,7 @@ const login = catchAsync(async (req, res) => {
         });
         res.cookie('jwt', token);
         req.flash('success', notify.SUCCESS_ADD);
-        res.send({ success: true, message: 'OK!' });
+        res.send({ success: true, message: notify.SUCCESS_USER_LOGIN });
     }
 });
 

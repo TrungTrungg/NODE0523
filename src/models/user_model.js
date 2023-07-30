@@ -7,9 +7,10 @@ const userSchema = new mongoose.Schema(
         last_name: String,
         address: String,
         email: String,
-        phone: Number,
+        phone: String,
         password: String,
         avatar: String,
+        is_admin: { type: Boolean, default: false },
     },
     { timestamps: true },
 );

@@ -1,4 +1,4 @@
-const { categoryService, settingService, articleService, userService } = require('@services');
+const { categoryService, settingService, articleService } = require('@services');
 const { catchAsync } = require('@helpers');
 
 const fetchDataMiddleware = catchAsync(async (req, res, next) => {

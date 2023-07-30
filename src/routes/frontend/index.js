@@ -22,7 +22,7 @@ router.use('/subscribe', subscribeRouter);
 router.use('/blog', blogRouter);
 router.use('/shop', shopRouter);
 router.use('/contact', contactRouter);
-router.use('/auth', authRouter);
+router.use('/', authRouter);
 router.use('/user', userRouter);
 router.use('/cart', cartRouter);
 router.use('/checkout', checkoutRouter);

@@ -69,7 +69,7 @@
             nameXHtml = showInput('text', 'Name', 'name', productCategory?.name)
             urlXHtml = showInput('text', 'Url', 'url', productCategory?.url)
             orderingXHtml = showInput('number', 'Ordering', 'ordering', productCategory?.ordering)
-            statusXHtml = showSelectBox('', 'Status', 'status', statusArr, articleCategory?.status, false, '')
+            statusXHtml = showSelectBox('', 'Status', 'status', statusArr, productCategory?.status, false, '')
             categoryXHtml = showSelectBox(collection, 'Category', 'category_id', productCategory?.categories, productCategory?.category_id, false, '')
             break;
         case 'brand':
@@ -131,7 +131,7 @@
             expireDateXHtml = showInput('date', 'Expire at', 'expired_at', coupon?.expired_at?.toISOString().slice(0, 10))
             couponQuantityXHtml = showInput('number', 'Quantity', 'quantity', coupon?.quantity)
 
-            conditionXHtml = showInput('number', 'Condition', 'codition', coupon?.condition)
+            conditionXHtml = showInput('number', 'Condition', 'condition', coupon?.condition)
             usedXHtml = showInput('number', 'Used', 'used', coupon?.used,'disabled')
             buttonRepeatXHtml = '<button type="button" onclick="javascript:handleRandomCode()" class="btn btn-secondary" style="width: 40px; height: 40px"><i class="fas fa-repeat-alt"></i></button>'
             break;
@@ -143,7 +143,7 @@
             break;
     }
     return(`
-        <form method="${method}" action="${action}" enctype="${enctype}">
+        <form method="${method}" action="${action}" enctype="${enctype}" id="form-admin">
             <div class="card-body">
                 <input type="hidden" name="id" value="${id ? id.toString() : ''}">
                     ${nameXHtml}

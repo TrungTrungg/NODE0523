@@ -7,8 +7,8 @@
             let subMenuLi = subCategories.map((sub) => {
                 if(sub.category_id === main.id) {
                     if(main.category_id === shop_id) {
-                        url = `/shop/category/${sub.id}`
-                    }else url = `/blog/${sub.id}`
+                        url = `/shop/category/${sub.slug}-${sub.id}`
+                    }else url = `/blog/${sub.slug}-${sub.id}`
                     return(`
                     <li class="menu-item">
                         <a class="menu-link" href="${url}">

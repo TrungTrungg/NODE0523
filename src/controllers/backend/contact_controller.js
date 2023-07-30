@@ -50,7 +50,6 @@ const renderList = catchAsync(async (req, res) => {
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination);
-    console.log(items);
     // message
     const messages = {
         success: req.flash('success'),
@@ -81,30 +80,6 @@ const deleteOne = catchAsync(async (req, res) => {
     await service.deleteOneById(id);
     req.flash('success', notify.SUCCESS_DELETE);
     res.redirect(`/admin/${collection}`);
-});
-
-// Change status of item
-// const changeStatus = catchAsync(async (req, res) => {
-//     const { id, status } = req.)arams;
-//     const { page, search } = req.query;
-
-//     // handle query
-//     let query = `?page=1`;
-//     if (search) query += `&search=${search}`;
-
-//     // handle change status
-//     let newStatus = status;
-//     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
-//     else newStatus = filterOptions.active;
-
-//     await service.changeStatusById(id, newStatus.toLowerCase());
-//     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
-//     res.redirect(`/admin/item${query}`);
-// };
-
-const addContact = catchAsync(async (req, res) => {
-    const { name, email, phone, message } = req.body;
-    await service.create(name, email, phone, message);
 });
 
 const changeStatusAjax = catchAsync(async (req, res) => {
@@ -140,30 +115,8 @@ const changeStatusAjax = catchAsync(async (req, res) => {
     });
 });
 
-const changeOrderingAjax = catchAsync(async (req, res) => {
-    const { id, ordering } = req.params;
-    if (isNaN(ordering)) {
-        res.send({ error: true, message: notify.ERROR_ORDERING_VALUE });
-    } else {
-        // handle change status
-        await service.changeFieldById(id, 'ordering', ordering);
-        res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, ordering });
-    }
-});
-const changeUrlAjax = async (req, res, next) => {
-    const { id, url } = req.params;
-
-    await service.changeFieldById(id, 'url', url);
-
-    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, url });
-};
-
 module.exports = {
     renderList,
-    addContact,
     deleteOne,
-    // changeStatus,
     changeStatusAjax,
-    changeUrlAjax,
-    changeOrderingAjax,
 };

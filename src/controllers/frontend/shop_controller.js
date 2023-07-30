@@ -1,10 +1,17 @@
-const { productService: service, categoryService, brandService, settingService } = require('@services');
-const { handlePagination, getListCategories, getListBrands, catchAsync } = require('@helpers');
+const fs = require('fs');
+
+const { productService: service } = require('@services');
+const { handlePagination, getListBrands, catchAsync, shopHelper } = require('@helpers');
 const { shopCollection: collection, productPrice } = require('@utils');
 
 const renderShop = catchAsync(async (req, res) => {
-    const { category_id } = req.params;
+    const { slugId } = req.params;
     const { page, search, brand_id, price, sort, sale } = req.query;
+    let category_id = '';
+    if (slugId) {
+        const match = slugId.match(/([a-f0-9]+)$/i);
+        category_id = match[1];
+    }
 
     let keyword = '';
     if (search) keyword = !search.trim() ? '' : search.trim();
@@ -13,41 +20,16 @@ const renderShop = catchAsync(async (req, res) => {
     if (page) currentPage = parseInt(page);
 
     const totalItems = await service.countByCategory(category_id, keyword, brand_id, price, sale);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 9), (pageRange = 5));
+    const pagination = handlePagination(totalItems, currentPage, (itemsPerPage = 12), (pageRange = 5));
 
-    // // get list product
-    // const products = await service.getAll('', keyword, category_id, brand_id, pagination, price, sort, sale);
-
-    // // recent products
-    // const recentProd = await service.getByCondition(category_id, '', 3);
-
-    // // popular products
-    // const popularProd = await service.getByCondition(category_id, 'popular', 3);
-
-    // // special products
-    // const specialProd = await service.getByCondition(category_id, 'special', 3);
-    const [products, recentProd, popularProd, specialProd] = await Promise.all([
+    const [products, brands] = await Promise.all([
         // get list product
         service.getAll('', keyword, category_id, brand_id, pagination, price, sort, sale),
-
-        // recent products
-        service.getByCondition(category_id, '', 3),
-
-        // popular products
-        service.getByCondition(category_id, 'popular', 3),
-
-        // special products
-        service.getByCondition(category_id, 'special', 3),
+        // brands
+        getListBrands(),
     ]);
-    // get shop categories
-    const { id: shop_id } = await categoryService.getIdByName('Shop');
-    const mainCategories = await categoryService.getShopCategory(shop_id);
-    const listCategoryId = mainCategories.map((child) => child.id);
-    const shopChildCategories = await categoryService.getAll('', '', '', {}, listCategoryId);
-    const categories = [...shopChildCategories, ...mainCategories];
-    // get brands
-    const brands = await getListBrands();
 
+    const { shop_id, categories, recentProd, popularProd, specialProd } = await shopHelper.fetchDataFile(category_id);
     // create price filter
     const priceFilter = [
         { name: productPrice.price1.name, value: productPrice.price1.value },
@@ -91,17 +73,14 @@ const renderShop = catchAsync(async (req, res) => {
 });
 
 const renderProductDetail = catchAsync(async (req, res) => {
-    const { id } = req.params;
+    const { slugId } = req.params;
+
+    const match = slugId.match(/([a-f0-9]+)$/i);
+    const id = match[1];
+
     const product = await service.getOneById(id);
-    // const relatedProd = await service.getByCondition(product.category_id, '', 5, id);
-    // const { purchase: purchaseSetting } = await settingService.getSetting();
-    // const brand = await brandService.getOneById(product.brand_id);
-    // const category = await categoryService.getOneById(product.category_id);
-    const [relatedProd, brand, category] = await Promise.all([
-        service.getByCondition(product.category_id, '', 5, id),
-        brandService.getOneById(product.brand_id),
-        categoryService.getOneById(product.category_id),
-    ]);
+    const { relatedProd, brand, category } = await shopHelper.fetchDataDetailFile(product);
+
     const options = {
         page: product.name,
         pageDesc: '',

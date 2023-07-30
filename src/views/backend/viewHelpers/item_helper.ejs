@@ -132,28 +132,28 @@
                     menuXHtml = ''
                     editXHml = ''
 
-                    phoneXHtml = handleName(item.phone, keyword)
+                    phoneXHtml = handleName(item.phone)
                     checkboxXHtml = handleCheckbox(item.id, item.email)
-                    emailXHtml = handleName(item.email, keyword)
+                    emailXHtml = handleName(item.email)
                     nameXHtml = handleName(item.name, keyword)
                     break;
                 case 'coupon':
                     specialXHtml = ''
                     menuXHtml = ''
 
-                    codeXHtml = handleName(item.code, keyword)
-                    typeXHtml = handleName(item.type, keyword)
-                    valueXHtml = handleName(item.value, keyword)
-                    startedXHtml = handleName(item.started_at?.toISOString().slice(0, 10), keyword)
-                    expiredXHtml = handleName(item.expired_at?.toISOString().slice(0, 10), keyword)
+                    codeXHtml = handleName(item.code)
+                    typeXHtml = handleName(item.type)
+                    valueXHtml = handleName(item.value)
+                    startedXHtml = handleName(item.started_at?.toISOString().slice(0, 10))
+                    expiredXHtml = handleName(item.expired_at?.toISOString().slice(0, 10))
                     quantityXHtml = handleOrdering(collection, item.quantity, item.id)
                     break;
                 case 'delivery':
                     specialXHtml = ''
                     menuXHtml = ''
                     
-                    locationXHtml = handleName(item.location, keyword)
-                    shippingFeeXHtml = handleName(item.shipping_fee, keyword)
+                    locationXHtml = handleName(item.location)
+                    shippingFeeXHtml = handleName(item.shipping_fee)
                     statusXHtml = handleStatus(collection, item.status, item.id, query)
                     break;
                 case 'order':

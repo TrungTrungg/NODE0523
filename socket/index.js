@@ -4,7 +4,9 @@ const io = new Server(server);
 const { fsHelper } = require('@helpers');
 
 let userInfo = {};
-let dataFile = fsHelper.readFile('./userData.txt', 'Async');
+if (!fsHelper.checkFileExist('src/files/socketData.txt')) fsHelper.writeFile('src/files/socketData.txt', '[]');
+
+let dataFile = fsHelper.readFile('src/files/socketData.txt', 'Async');
 if (dataFile) userInfo = JSON.parse(dataFile);
 
 io.on('connection', (socket) => {
@@ -25,7 +27,7 @@ io.on('connection', (socket) => {
         } else {
             if (!userInfo[data]) userInfo[data] = [];
             userInfo[data].push(socket.id);
-            fsHelper.writeFile('./userData.txt', userInfo, 'Sync');
+            fsHelper.writeFile('src/files/socketData.txt', userInfo, 'Sync');
             io.emit(data, userInfo[data].length);
         }
     });
@@ -42,6 +44,6 @@ io.on('connection', (socket) => {
             userInfo[router] = userInfo[router].filter((data) => data !== socket.id);
             io.emit(router, userInfo[router].length);
         }
-        fsHelper.writeFile('./userData.txt', userInfo, 'Async');
+        fsHelper.writeFile('src/files/socketData.txt', userInfo, 'Async');
     });
 });

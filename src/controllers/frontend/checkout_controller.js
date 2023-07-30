@@ -35,6 +35,7 @@ const getShippingFee = catchAsync(async (req, res) => {
 });
 
 const create = catchAsync(async (req, res) => {
+    console.log(req.body.email);
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         res.send({ error: true, message: errors });

@@ -35,3 +35,9 @@
 	top: calc( 20% ) !important;
 	width: 180px !important;
 }
+
+.product-img {
+	width: 300px !important;
+	height: 250px !important;
+}
+

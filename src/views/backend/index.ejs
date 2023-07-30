@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-                <title>AdminLTE</title>
-                <% include ./components/StyleSheet %>
-            </head>
-            <body class="hold-transition sidebar-mini layout-fixed">
-                <div
-                    class="wrapper">
-                    <!-- Preloader -->
-                    <% include ./components/Preloader %>
 
-                    <!-- Navbar -->
-                    <% include ./components/Header %>
-                    <!-- /.navbar -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE</title>
+  <% include ./components/StyleSheet %>
+</head>
 
-                    <!-- Main Sidebar Container -->
-                    <% include ./components/Sidebar %>
+<body class="hold-transition sidebar-mini layout-fixed">
+  <div class="wrapper">
+    <!-- Preloader -->
+    <% include ./components/Preloader %>
 
-                    <!-- Content Wrapper. Contains page content -->
-                        <div class="content-wrapper"> <%- body %>
-                    </div>
-                    <!-- /.content-wrapper -->
+    <!-- Navbar -->
+    <% include ./components/Header %>
+    <!-- /.navbar -->
 
-                </div>
-                <!-- Footer -->
-                <% include ./components/Footer %>
-                <!-- /.footer -->
-                <!-- ./wrapper -->
-                <% include ./components/Scripts %>
-            <% include ./components/ToastrMessage %>
+    <!-- Main Sidebar Container -->
+    <% include ./components/Sidebar %>
 
-        </body>
-    </html>
-</head></html>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper"> <%- body %>
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- Footer -->
+  <% include ./components/Footer %>
+  <!-- /.footer -->
+  <!-- ./wrapper -->
+  <% include ./components/Scripts %>
+  <% include ./components/ToastrMessage %>
+
+</body>
+
+</html>
+</head>
+
+</html>

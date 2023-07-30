@@ -48,13 +48,13 @@
 
             xHtml += `
             <li class="page-item ${isActive}">
-                <a class="page-link" href="/admin/${collection}${path}?page=${pageLink}${query}" aria-label="">
+                <a class="page-link" href="/${collection}${path}?page=${pageLink}${query}" aria-label="">
                     <span aria-hidden="true">${pageNumber}</span>
                 </a>
             </li>
             `
         }
-        return `<ul class="pagination">
+        return `<ul class="pagination" style="margin-top: 30px !important">
                     ${xHtml}
                 </ul>`
     }

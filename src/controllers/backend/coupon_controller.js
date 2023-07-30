@@ -83,20 +83,12 @@ const deleteOne = catchAsync(async (req, res) => {
 // render Edit item page
 const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const couponn = await service.getOneById(id);
+    const coupon = await service.getOneById(id);
     const messages = {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const couponConditions = [
-        { value: 0, name: 'Từ 0Đ' },
-        { value: 100000, name: 'Từ 100,000 VNĐ' },
-        { value: 1000000, name: 'Từ 1,000,000 VNĐ' },
-        { value: 10000000, name: 'Từ 10,000,000 VNĐ' },
-        { value: 100000000, name: 'Từ 100,000,000 VNĐ' },
-    ];
 
-    const coupon = { ...couponn._doc, couponConditions };
     const options = {
         page: 'Item',
         collection,

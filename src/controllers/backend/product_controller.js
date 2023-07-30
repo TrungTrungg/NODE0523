@@ -54,7 +54,7 @@ const renderList = catchAsync(async (req, res) => {
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword, category_id, brand_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
+    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 100), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, brand_id, pagination);
@@ -191,12 +191,12 @@ const addOne = catchAsync(async (req, res) => {
 const deleteOne = catchAsync(async (req, res) => {
     const { id } = req.params;
     const product = await service.getOneById(id);
-    imagePath = `public\\uploads\\product\\${product.image}`;
+    imagePath = `public/uploads/product/${product.image}`;
     if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
     }
     product.gallery_image.map((gallery) => {
-        imagePath = `public\\uploads\\product\\${gallery}`;
+        imagePath = `public/uploads/product/${gallery}`;
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
         }
@@ -243,7 +243,7 @@ const editOne = catchAsync(async (req, res) => {
             for (let i = 0; i < req.files.length; i++) {
                 if (req.files[i].fieldname === 'image') {
                     image = req.files[i].filename;
-                    imagePath = `public\\uploads\\product\\${product.image}`;
+                    imagePath = `public/uploads/product/${product.image}`;
                     if (fs.existsSync(imagePath)) {
                         fs.unlinkSync(imagePath);
                     }
@@ -251,7 +251,7 @@ const editOne = catchAsync(async (req, res) => {
                 if (req.files[i].fieldname === 'gallery_image') {
                     gallery_image.push(req.files[i].filename);
                     product.gallery_image.map((gallery) => {
-                        imagePath = `public\\uploads\\product\\${gallery}`;
+                        imagePath = `public/uploads/product/${gallery}`;
                         if (fs.existsSync(imagePath)) {
                             fs.unlinkSync(imagePath);
                         }
@@ -313,26 +313,6 @@ const editOne = catchAsync(async (req, res) => {
         res.redirect(`/admin/${collection}`);
     }
 });
-
-// Change status of item
-// const changeStatus = catchAsync(async (req, res) => {
-//     const { id, status } = req.param);
-//     const { page, search } = req.query;
-
-//     // handle query
-//     let query = `?page=1`;
-//     if (search) query += `&search=${search}`;
-
-//     // handle change status
-//     let newStatus = status;
-//     if (newStatus === filterOptions.active.toLowerCase()) newStatus = filterOptions.inactive;
-//     else newStatus = filterOptions.active;
-
-//     await service.changeStatusById(id, newStatus.toLowerCase());
-//     req.flash('success', notify.SUCCESS_CHANGE_STATUS);
-//     res.redirect(`/admin/item${query}`);
-// };
-
 const changeStatusAjax = catchAsync(async (req, res) => {
     const { id, status } = req.params;
     const { search } = req.query;
@@ -389,14 +369,14 @@ const changeIsSpecialAjax = async (req, res, next) => {
 
     await service.changeFieldById(id, 'special', is_special);
 
-    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, is_special });
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_SPECIAL, is_special });
 };
 const changeIsShowhomeAjax = async (req, res, next) => {
     const { id, is_showhome } = req.params;
 
     await service.changeFieldById(id, 'showHome', is_showhome);
 
-    res.send({ success: true, message: notify.SUCCESS_CHANGE_ORDERING, is_showhome });
+    res.send({ success: true, message: notify.SUCCESS_CHANGE_SHOW, is_showhome });
 };
 const getListCategoriesAjax = catchAsync(async (req, res) => {
     const { category_id } = req.params;

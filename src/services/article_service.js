@@ -20,7 +20,6 @@ const create = async (
         ordering,
         slug,
         category_id,
-        post_date,
         author,
         description,
         content,

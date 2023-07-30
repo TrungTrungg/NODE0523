@@ -10,22 +10,22 @@
                 <div class="product col-md-3 col-sm-6 col-12 text-center media-box fbox-bg">
                   <article class="portfolio-item">
                     <div class="portfolio-image fbox-content" style="border-top: 1px solid #E5E5E5;
-                    border-radius: 5px 5px 0 0;">
-                      <a>
-                        <img src="/uploads/product/${product.image}" alt="Locked Steel Gate">
+                    border-radius: 5px 5px 0 0; vertical-align: middle !important" >
+                      <a >
+                        <img class="product-img" src="/uploads/product/${product.image}" alt="Locked Steel Gate" style="vertical-align: middle !important">
                       </a>
                       <div class="bg-overlay">
                         ${sale}
                         <div class="bg-overlay-content dark animated fadeOut" data-hover-animate="fadeIn" data-bs-theme="dark" style="animation-duration: 600ms;">
-                          <a href="/shop/product/${product.id}" class="overlay-trigger-icon bg-light text-dark animated fadeInDownSmall" data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall" data-hover-speed="350" title="Detail" data-hover-delay="350" style="animation-duration: 350ms;"><i class="icon-line-ellipsis"></i></a>
+                          <a href="/shop/product/${product.slug}-${product.id}" class="overlay-trigger-icon bg-light text-dark animated fadeInDownSmall" data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall" data-hover-speed="350" title="Detail" data-hover-delay="350" style="animation-duration: 350ms;"><i class="icon-line-ellipsis"></i></a>
                           <a href="javascript:handleAddToCart('${product.id}','${product.name}','${product.image}', '${salePrice}')" class="overlay-trigger-icon bg-light text-dark animated fadeInDownSmall" data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall" data-hover-speed="350" title="Add to cart" data-hover-delay="550" style="animation-duration: 350ms;"><i class="icon-shopping-cart"></i></a>
                         </div>
                         <div class="bg-overlay-bg dark animated fadeOut" data-hover-animate="fadeIn" data-bs-theme="dark" style="animation-duration: 600ms;"></div>
                       </div>
                     </div>
-                    <div class="product-desc fbox-content align-middle" style="background-color: #F2F2F2;min-height: 225px!important">
+                    <div class="product-desc fbox-content align-middle" style="background-color: #F2F2F2; height: 250px!important">
                       <div class="product-title ">
-                        <h3><a href="/shop/product/${product.id}">${product.name}</a></h3>
+                        <h3><a href="/shop/product/${product.slug}-${product.id}">${product.name}</a></h3>
                       </div>
                       <div class="product-price">${product.sale > 0 ? `<del style="display: block !important">${price}</del> <ins>${salePrice} VNĐ</ins>` : `<ins>${price}</ins>`}</div>
                       <div class="product-rating">
@@ -86,12 +86,12 @@
             <div class="grid-inner row g-0">
               <div class="col-auto">
                 <div class="entry-image">
-                  <a href="#"><img src="/uploads/product/${product.image}" alt="Image"></a>
+                  <a href="/shop/product/${product.slug}-${product.id}"><img src="/uploads/product/${product.image}" alt="Image"></a>
                 </div>
               </div>
               <div class="col ps-3">
                 <div class="entry-title">
-                  <h4><a href="/shop/product/${product.id}">${product.name}</a></h4>
+                  <h4><a href="/shop/product/${product.slug}-${product.id}">${product.name}</a></h4>
                 </div>
                 <div class="entry-meta no-separator">
                   <ul>
@@ -130,20 +130,20 @@
           <div class="oc-item">
             <div class="product">
               <div class="product-image">
-                <a href="#"><img src="/uploads/product/${product.image}" alt="Checked Short Dress"></a>
-                <a href="#"><img src="/uploads/product/${product.image}" alt="Checked Short Dress"></a>
+                <a href="/shop/product/${product.slug}-${product.id}"><img src="/uploads/product/${product.image}" alt="Checked"></a>
+                <a href="/shop/product/${product.slug}-${product.id}"><img src="/uploads/product/${product.image}" alt="Checked"></a>
                 ${sale}
                 <div class="bg-overlay">
                   <div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
                     <a href="javascript:handleAddToCart('${product.id}','${product.name}','${product.image}', '${salePrice}')" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
-                    <a href="/shop/product/${product.id}" class="btn btn-dark"><i class="icon-line-ellipsis"></i></a>
+                    <a href="/shop/product/${product.slug}-${product.id}" class="btn btn-dark"><i class="icon-line-ellipsis"></i></a>
                   </div>
                   <div class="bg-overlay-bg bg-transparent"></div>
                 </div>
               </div>
               <div class="product-desc center">
                 <div class="product-title">
-                  <h3><a href="/shop/product/${product.id}">${product.name}</a></h3>
+                  <h3><a href="/shop/product/${product.slug}-${product.id}">${product.name}</a></h3>
                 </div>
                 <div class="product-price">${product.sale > 0 ? `<del style="display: block !important">${price}</del> <ins>${salePrice} VNĐ</ins>` : `<ins>${price}</ins>`}</div>
                 <div class="product-rating">

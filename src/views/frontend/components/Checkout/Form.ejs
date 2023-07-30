@@ -18,7 +18,7 @@
 
     <div class="col-md-6 form-group">
       <label for="billing-form-email">Email:</label>
-      <input type="email" id="billing-form-email" name="email" value="<%= typeof user !== 'undefined' ? user.email : '' %>" class="sm-form-control" />
+      <input type="email" id="billing-form-email" name="email" value="<%= typeof user !== 'undefined' ? user.email : '' %>" class="sm-form-control" <%= typeof user !== 'undefined' ? 'readonly' : '' %> />
     </div>
 
     <div class="col-md-6 form-group">

@@ -18,8 +18,16 @@ const deliveryRouter = require('./delivery_router');
 const settingRouter = require('./setting_router');
 
 router.use('/', (req, res, next) => {
-    res.locals.layout = 'backend';
-    next();
+    if (req.app.locals.user) {
+        if (req.app.locals.user.is_admin) {
+            res.locals.layout = 'backend';
+            next();
+        } else {
+            res.redirect('back');
+        }
+    } else {
+        res.redirect('back');
+    }
 });
 
 router.use('/', dashboardRouter);

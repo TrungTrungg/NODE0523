@@ -4,8 +4,6 @@ const handleStatusClick = (collection, id, status, query) => {
     const filterAllDOM = $(`#status-all`);
     const filterActiveDOM = $(`#status-active`);
     const filterInactiveDOM = $(`#status-inactive`);
-
-    const newUrl = `${collection}/changeStatusAjax/${id}/${status}${query}`;
     $.ajax({
         type: 'GET',
         url: new URL(`http://localhost:3000/admin/${collection}/changeStatusAjax/${id}/${status}${query}`),

@@ -10,6 +10,7 @@ const userModel = require('@models/user_model');
 const orderModel = require('@models/order_model');
 const couponModel = require('@models/coupon_model');
 const deliveryModel = require('@models/delivery_model');
+const advertiseModel = require('@models/advertise_model');
 
 const settingModel = require('@models/setting_model');
 
@@ -27,4 +28,5 @@ module.exports = {
     orderModel,
     couponModel,
     deliveryModel,
+    advertiseModel,
 };

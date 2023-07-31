@@ -54,7 +54,7 @@ const renderList = catchAsync(async (req, res) => {
 
     // Pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword, category_id, brand_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 100), (pageRange = 3));
+    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 15), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, brand_id, pagination);
@@ -206,6 +206,25 @@ const deleteOne = catchAsync(async (req, res) => {
     res.redirect(`/admin/${collection}`);
 });
 
+const deleteMulti = catchAsync(async (req, res) => {
+    console.log(req.body);
+    // const { id } = req.params;
+    // const product = await service.getOneById(id);
+    // imagePath = `public/uploads/product/${product.image}`;
+    // if (fs.existsSync(imagePath)) {
+    //     fs.unlinkSync(imagePath);
+    // }
+    // product.gallery_image.map((gallery) => {
+    //     imagePath = `public/uploads/product/${gallery}`;
+    //     if (fs.existsSync(imagePath)) {
+    //         fs.unlinkSync(imagePath);
+    //     }
+    // });
+    // await service.deleteOneById(id);
+    // req.flash('success', notify.SUCCESS_DELETE);
+    // res.redirect(`/admin/${collection}`);
+});
+
 // render Edit item page
 const renderEditPage = catchAsync(async (req, res) => {
     const { id } = req.params;
@@ -230,7 +249,26 @@ const renderEditPage = catchAsync(async (req, res) => {
 
 // Edit item
 const editOne = catchAsync(async (req, res) => {
-    const { id, special, showHome } = req.body;
+    const {
+        id,
+        special,
+        showHome,
+        category_id,
+        name,
+        status,
+        ordering,
+        price,
+        quantity,
+        sold,
+        sale,
+        description,
+        size,
+        ram,
+        cpu,
+        ssd,
+        vga,
+        brand_id,
+    } = req.body;
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         req.flash('error', errors);
@@ -259,25 +297,7 @@ const editOne = catchAsync(async (req, res) => {
                 }
             }
         }
-        // Lấy data sau khi validate
-        const {
-            name,
-            status,
-            ordering,
-            is_special,
-            price,
-            quantity,
-            sold,
-            sale,
-            description,
-            size,
-            ram,
-            cpu,
-            ssd,
-            vga,
-            category_id,
-            brand_id,
-        } = matchedData(req);
+
         // slug
         const slug = unidecode(name)
             .toLowerCase()
@@ -389,6 +409,7 @@ module.exports = {
     renderAddPage,
     addOne,
     deleteOne,
+    deleteMulti,
     renderEditPage,
     editOne,
     // changeStatus,

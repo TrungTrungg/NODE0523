@@ -7,6 +7,11 @@ const renderList = catchAsync(async (req, res) => {
     const { status } = req.params;
     const { search, page, category } = req.query;
 
+    let currentStatus = status;
+    if (currentStatus !== undefined) {
+        currentStatus = status === filterOptions.all ? undefined : status;
+    }
+
     // Xử lý query
     let keyword = '';
     if (search) keyword = !search.trim() ? '' : search.trim();

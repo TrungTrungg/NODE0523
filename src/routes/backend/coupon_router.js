@@ -5,7 +5,9 @@ const { couponController: controller } = require('@controllers');
 
 // Đỗ dữ liệu trang Item
 router.get('(/status/:status)?', controller.renderList);
+
 router.get('/add', controller.renderAddPage);
+
 router.post('/', controller.addOne);
 
 // Xóa 1 Item

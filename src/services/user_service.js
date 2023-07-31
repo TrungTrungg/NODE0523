@@ -10,6 +10,10 @@ const updateUserInfo = async (email, first_name, last_name, address, phone) => {
     return await model.updateOne({ email }, { first_name, last_name, address, phone });
 };
 
+const updatePassword = async (id, password) => {
+    return await model.updateOne({ _id: id }, { password: password });
+};
+
 const getOne = async (email) => {
     return await model.findOne({ email });
 };
@@ -19,4 +23,4 @@ const getOneById = async (id) => {
 const countAll = async () => {
     return await model.count();
 };
-module.exports = { create, getOne, getOneById, updateUserInfo, countAll };
+module.exports = { create, updatePassword, getOne, getOneById, updateUserInfo, countAll };

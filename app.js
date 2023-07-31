@@ -11,7 +11,7 @@ const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
 
-// const logger = require('morgan');
+const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 
 const mongoose = require('mongoose');
@@ -81,10 +81,13 @@ app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    if (req.path.startsWith('/admin')) {
+        res.render('backend/error');
+    } else {
+        res.render('frontend/error');
+    }
 });
 
 module.exports = app;

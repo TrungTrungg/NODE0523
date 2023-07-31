@@ -1,0 +1,66 @@
+<!-- Page Title
+		============================================= -->
+<section id="page-title">
+
+  <div class="container clearfix">
+    <h1>Không tìm thấy trang</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+      <li class="breadcrumb-item active" aria-current="page">404</li>
+    </ol>
+  </div>
+
+</section><!-- #page-title end -->
+
+<!-- Content
+		============================================= -->
+<section id="content">
+  <div class="content-wrap">
+    <div class="container clearfix">
+
+      <div class="row align-items-center col-mb-80">
+
+        <div class="col-lg-6">
+          <div class="error404 center">404</div>
+        </div>
+
+        <div class="col-lg-6">
+
+          <div class="heading-block text-center text-lg-start border-bottom-0">
+            <h4>Rất tiếc! Không thể tìm thấy trang bạn đang tìm kiêm.</h4>
+            <span>Hãy thử tìm kiếm kết quả phù hợp nhất hoặc duyệt qua các liên kết bên dưới:</span>
+          </div>
+
+          <form action="/shop<%= typeof category_id !== 'undefined' ? `/category/${category_id}` : '' %>" method="get" class="mb-5">
+            <div class="input-group input-group-lg">
+              <input type="text" class="form-control" placeholder="Nhập từ khóa..." name="search">
+              <button class="btn btn-danger" type="submit">Tìm kiếm</button>
+            </div>
+          </form>
+
+          <div class="row col-mb-30">
+
+            <div class="col-6 col-sm-6 widget_links">
+              <ul>
+                <li><a href="/">Trang chủ</a></li>
+                <li><a href="/contact">Liên hệ</a></li>
+              </ul>
+            </div>
+
+            <div class="col-6 col-sm-6 widget_links">
+              <ul>
+                <li><a href="/shop">Mua sắm</a></li>
+                <li><a href="/blog">Tin tức</a></li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section><!-- #content end -->
+<pre><%= error.stack %></pre>

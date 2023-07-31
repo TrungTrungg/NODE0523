@@ -296,7 +296,7 @@ const handleChangeIsShowhome = (collection, id, isSpecial, name) => {
 };
 
 const handleRandomCode = () => {
-    const inputDOM = $('#itemcode');
+    const inputDOM = $('#item-code');
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < 6; i++) {
@@ -368,3 +368,32 @@ const handleChangeInput = (name) => {
         inputDOM.val(today.toISOString().slice(0, 10));
     }
 };
+
+const handleClickUpdate = () => {
+    $.ajax({
+        type: 'get',
+        url: '/admin/updateData',
+        success: (data) => {
+            console.log(data);
+            let toastrMessage = data.message;
+            toastr.success(toastrMessage, 'SUCCESS', {
+                newestOnTop: true,
+                closeButton: false,
+                progressBar: true,
+                preventDuplicates: true,
+                showMethod: 'slideDown',
+                timeOut: 10000,
+            });
+        },
+    });
+};
+
+$(document).ready(() => {
+    const checkAll = $('#checkAll');
+    const checked = $('.checkbox');
+    checkAll.prop('checked', false);
+    checkAll.change(function () {
+        const isChecked = $(checkAll).prop('checked');
+        checked.prop('checked', isChecked);
+    });
+});

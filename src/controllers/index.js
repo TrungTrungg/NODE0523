@@ -14,6 +14,8 @@ const {
     orderController,
     couponController,
     deliveryController,
+    advertiseController,
+    userController,
 } = require('@controllers/backend');
 
 const {
@@ -42,7 +44,9 @@ module.exports = {
     settingController,
     orderController,
     couponController,
+    advertiseController,
     deliveryController,
+    userController,
 
     homeController,
     frontSubscribeController,

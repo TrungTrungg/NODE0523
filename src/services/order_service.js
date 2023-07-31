@@ -57,7 +57,7 @@ const getOrdersByUser = async (user) => {
     if (user) {
         conditions['user.email'] = user;
     }
-    return await model.find(conditions);
+    return await model.find(conditions).sort({ createdAt: -1 }).limit(10);
 };
 
 // Count

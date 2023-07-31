@@ -33,6 +33,7 @@ module.exports = {
     contactCollection: 'contact',
     couponCollection: 'coupon',
     deliveryCollection: 'delivery',
+    advertiseCollection: 'advertise',
     orderCollection,
 
     userValidator,

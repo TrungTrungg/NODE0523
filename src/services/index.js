@@ -10,6 +10,7 @@ const userService = require('@services/user_service');
 const orderService = require('@services/order_service');
 const couponService = require('@services/coupon_service');
 const deliveryService = require('@services/delivery_service');
+const advertiseService = require('@services/advertise_service');
 
 const settingService = require('@services/setting_service');
 
@@ -27,4 +28,5 @@ module.exports = {
     orderService,
     couponService,
     deliveryService,
+    advertiseService,
 };

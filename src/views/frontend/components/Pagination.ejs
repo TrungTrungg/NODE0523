@@ -9,7 +9,7 @@
 </ul> -->
 
 <%
-    showPagination = (collection, category_id, keyword, {min, max, currentPage, totalPages}, price, sort, sale) => {
+    showPagination = (collection, category_id, keyword, {min, max, currentPage, totalPages}, price, sort, sale,brand_id) => {
         if(totalPages <= 1) return
         let query = ''
         let path = ''
@@ -24,6 +24,8 @@
             query += `&sort=${sort}`
         if(sale)
             query += `&sale=${sale}`
+        if(brand_id)
+            query += `&brand_id=${brand_id}`
 
         let xHtml = ''
         let previous = min - 1

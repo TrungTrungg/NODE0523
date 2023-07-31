@@ -40,6 +40,8 @@
             let userCodeXHtml = ''
             let orderStatusXHtml = ''
 
+            let positionXHtml = ''
+
             let checkboxXHtml = handleCheckbox(item.id, item.email)
             let specialXHtml = '<td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
             let menuXHtml = '<td>' + handleSpecial(collection, item.id, '', item.isMenu, 'menu') +'</td>'
@@ -166,6 +168,18 @@
                     readXHml = `<a type="button" class="btn btn-warning" href="/admin/${collection}/detail/${item._id}">Detail</a>`
                     orderStatusXHtml = showISelectBox(selectStatusOption, item.id, item.status)
                 break;
+                case 'advertise':
+                    specialXHtml = ''
+                    menuXHtml = ''
+                    
+                    imageXHtml = handleImage(item.image, collection)
+                    nameXHtml = handleName(item.name, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    urlXHtml = handleUrl(collection, item.url, item.id)
+                    startedXHtml = handleName(item.started_at?.toISOString().slice(0, 10))
+                    expiredXHtml = handleName(item.expired_at?.toISOString().slice(0, 10))
+                    positionXHtml = handleName(item.position)
+                break;
                 default:
                     break;
             }
@@ -187,6 +201,7 @@
                                 ${specialXHtml}
                                 ${showHomeXHtml}
                                 ${menuXHtml}
+                                ${positionXHtml}
                                 ${urlXHtml}
                                 ${orderingXHtml}
 
@@ -196,6 +211,7 @@
                                 ${startedXHtml}
                                 ${expiredXHtml}
                                 ${quantityXHtml}
+
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 ${readXHml}

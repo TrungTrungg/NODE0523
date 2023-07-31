@@ -24,8 +24,13 @@ const checkFileExist = (filePath) => {
     return fs.existsSync(filePath);
 };
 
+const deleteFile = (filePath) => {
+    return fs.unlinkSync(filePath);
+};
+
 module.exports = {
     writeFile,
     readFile,
     checkFileExist,
+    deleteFile,
 };

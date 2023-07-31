@@ -2,6 +2,9 @@
 $(document).ready(function () {
     const regFormDOM = $('#register-form');
     const loginFormDOM = $('#login-form');
+    const forgotPasswordFormDOM = $('#forgotPassword-form');
+    const changeInfoFormDOM = $('#changeInfo-form');
+    const changePasswordFormDOM = $('#changePassword-form');
     const contactFormDOM = $('#template-contactform');
     const subscribeFomDOM = $('#widget-subscribe-form');
     regFormDOM.submit(function (event) {
@@ -66,6 +69,162 @@ $(document).ready(function () {
 
                 if (data.error) {
                     let toastrMessage = data.message;
+                    toastr.error(toastrMessage, 'ERROR', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+            },
+        });
+    });
+    forgotPasswordFormDOM.submit(function (event) {
+        event.preventDefault();
+        const formData = forgotPasswordFormDOM.serialize();
+        const url = '/resetPassword';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            dataType: 'json',
+            success: (data) => {
+                if (data.success) {
+                    let toastrMessage = data.message;
+                    toastr.success(toastrMessage, 'SUCCESS', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+
+                if (data.error) {
+                    let toastrMessage = data.message;
+                    toastr.error(toastrMessage, 'ERROR', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+            },
+        });
+    });
+    forgotPasswordFormDOM.submit(function (event) {
+        event.preventDefault();
+        const formData = forgotPasswordFormDOM.serialize();
+        const url = '/resetPassword';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            dataType: 'json',
+            success: (data) => {
+                if (data.success) {
+                    let toastrMessage = data.message;
+                    toastr.success(toastrMessage, 'SUCCESS', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+
+                if (data.error) {
+                    let toastrMessage = data.message;
+                    toastr.error(toastrMessage, 'ERROR', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+            },
+        });
+    });
+    changeInfoFormDOM.submit(function (event) {
+        event.preventDefault();
+        const formData = changeInfoFormDOM.serialize();
+        const url = '/changeInfo';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            dataType: 'json',
+            success: (data) => {
+                if (data.success) {
+                    let toastrMessage = data.message;
+                    toastr.success(toastrMessage, 'SUCCESS', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                    setTimeout(() => {
+                        window.location.href = '/user/#tab-info';
+                    }, 1500);
+                }
+
+                if (data.error) {
+                    let toastrMessage = data.message;
+                    toastr.error(toastrMessage, 'ERROR', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+            },
+        });
+    });
+    changePasswordFormDOM.submit(function (event) {
+        event.preventDefault();
+        const formData = changePasswordFormDOM.serialize();
+        const url = '/changePassword';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            dataType: 'json',
+            success: (data) => {
+                if (data.success) {
+                    let toastrMessage = data.message;
+                    toastr.success(toastrMessage, 'SUCCESS', {
+                        newestOnTop: true,
+                        closeButton: false,
+                        progressBar: true,
+                        preventDuplicates: false,
+                        showMethod: 'slideDown',
+                        timeOut: 30000,
+                    });
+                }
+
+                if (data.error) {
+                    const errorMessage = data.message
+                        .map((error) => {
+                            return `
+                        <li>
+                            <b>${error.path}:</b> ${error.msg}
+                        </li>    
+                `;
+                        })
+                        .join('');
+                    toastrMessage = errorMessage;
                     toastr.error(toastrMessage, 'ERROR', {
                         newestOnTop: true,
                         closeButton: false,

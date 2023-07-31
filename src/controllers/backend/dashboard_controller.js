@@ -1,6 +1,5 @@
 const { productService, articleService, userService, orderService } = require('@services');
-const { catchAsync } = require('@helpers');
-const { promises } = require('nodemailer/lib/xoauth2');
+const { catchAsync, dataHelper } = require('@helpers');
 
 const renderDashboard = catchAsync(async (req, res) => {
     const [products, articles, users, orders, latestOrders] = await Promise.all([
@@ -25,6 +24,12 @@ const renderDashboard = catchAsync(async (req, res) => {
     res.render('backend/pages/dashboard', options);
 });
 
+const updateDataAjax = catchAsync(async (req, res) => {
+    dataHelper.resetData();
+    res.send({ message: 'Cập nhật trang web thành công!' });
+});
+
 module.exports = {
     renderDashboard,
+    updateDataAjax,
 };

@@ -61,14 +61,17 @@ const emailLoginCheck = body('email')
         }
         return true;
     });
-const passwordLoginCheck = body('password')
+const passwordLoginCheck = body('passwordLogin')
     .notEmpty()
     .bail()
     .custom(async (value, { req }) => {
-        const user = await userService.getOne(req.body.email);
+        let user = await userService.getOne(req.body.email);
+        if (req.app.locals.user) {
+            user = req.app.locals.user;
+        }
         const match = await bcrypt.compare(value, user.password);
         if (!match) {
-            throw new Error();
+            throw new Error(notify.ERROR_USER_PASSWORD_VALUE);
         }
         return true;
     });

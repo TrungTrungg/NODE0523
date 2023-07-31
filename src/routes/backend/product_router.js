@@ -18,6 +18,9 @@ router.post('/', upload.any(), validator.productFormValidate, controller.addOne)
 // Xóa 1 Item
 router.get('/delete/:id', controller.deleteOne);
 
+// Xóa nhiều Item
+router.post('/delete', controller.deleteMulti);
+
 // Chuyển hướng trang chỉnh sửa 1 Item
 router.get('/edit/:id', controller.renderEditPage);
 

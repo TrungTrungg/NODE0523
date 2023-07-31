@@ -32,7 +32,6 @@ if (cartData && cartData !== '[]') {
         .map((item, index) => {
             $(`#input-${item.id}`).val(item.quantity);
             total += parseInt(item.total);
-            if (index > 2) return '<h6 class="text-center m-0">...</h6>';
             return `
                     <div class="top-cart-item">
                     <div class="top-cart-item-image">
@@ -326,8 +325,6 @@ const handleAddToCart = (id, name, image, price) => {
     const items = newjsonCartData
         .map((item, index) => {
             total += parseInt(item.total);
-            if (index > 2) return '<h6 class="text-center m-0">...</h6>';
-
             return `
         <div class="top-cart-item">
         <div class="top-cart-item-image">
@@ -569,7 +566,9 @@ formCheckoutDOM.submit(function (event) {
                         showMethod: 'slideDown',
                         timeOut: 30000,
                     });
-                    setTimeout((window.location.href = '/user'), 3000);
+                    setTimeout(() => {
+                        window.location.href = '/user/#tab-orders';
+                    }, 3000);
                     localStorage.clear();
                 }
                 if (data.error) {

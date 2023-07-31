@@ -1,5 +1,6 @@
 <%
     showArticle = (articles, desLength) => {
+        if(articles.length <= 0) return '<h3 class="text-center m-5">Không có bài viết nào được tìm thấy!</h3>'
         let listArticles = articles.map((article, index) => {
             let description = article.description
             let maxLength = desLength
@@ -15,14 +16,14 @@
                 <div class="grid-inner row g-0">
                     <div class="col-md-4 ${reverseImg}">
                         <div class="entry-image">
-                            <a href="/blog/article/${article.slug}-${article.id}" data-lightbox="image"
+                            <a href="/blog/article/${article.slug}-${article._id.toString()}" data-lightbox="image"
                             ><img src="/uploads/article/${article.image}" alt="Standard Post with Image"></a>
                         </div>
                     </div>
                     <div class="col-md-8 ${reverseContent}">
                         <div class="entry-title title-sm">
                             <h2>
-                                <a href="/blog/article/${article.slug}-${article.id}">${article.name}</a>
+                                <a href="/blog/article/${article.slug}-${article._id.toString()}">${article.name}</a>
                             </h2>
                         </div>
                         <div class="entry-meta">
@@ -49,7 +50,7 @@
                         </div>
                         <div class="entry-content" style="margin-top: 10px !important" >
                             <p style="margin-bottom: 0 !important">${description}</p>
-                            <a href="/blog/article/${article.slug}-${article.id}" class="more-link">Xem thêm</a>
+                            <a href="/blog/article/${article.slug}-${article._id.toString()}" class="more-link">Xem thêm</a>
                         </div>
                     </div>
                 </div>
@@ -109,12 +110,12 @@
                   <div class="grid-inner row align-items-center gutter-20">
                     <div class="col-4">
                       <div class="entry-image">
-                        <a href="/blog/article/${article.slug}-${article.id}"><img src="/uploads/article/${article.image}" alt="Blog Single"></a>
+                        <a href="/blog/article/${article.slug}-${article._id.toString()}"><img src="/uploads/article/${article.image}" alt="Blog Single"></a>
                       </div>
                     </div>
                     <div class="col-8">
                       <div class="entry-title title-xs">
-                        <h3><a href="/blog/article/${article.slug}-${article.id}">${article.name}</a></h3>
+                        <h3><a href="/blog/article/${article.slug}-${article._id.toString()}">${article.name}</a></h3>
                       </div>
                       <div class="entry-meta">
                         <ul>

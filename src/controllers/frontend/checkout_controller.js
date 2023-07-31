@@ -1,7 +1,7 @@
 const { matchedData } = require('express-validator');
 
 const { couponService, deliveryService, orderService, userService } = require('@services');
-const { catchAsync } = require('@helpers');
+const { catchAsync, mailHelper } = require('@helpers');
 const { checkoutCollection: collection } = require('@utils');
 const { resultsValidator } = require('@validators');
 
@@ -35,7 +35,6 @@ const getShippingFee = catchAsync(async (req, res) => {
 });
 
 const create = catchAsync(async (req, res) => {
-    console.log(req.body.email);
     const errors = resultsValidator(req);
     if (errors.length > 0) {
         res.send({ error: true, message: errors });
@@ -76,6 +75,27 @@ const create = catchAsync(async (req, res) => {
             deliveryParse.id,
             message,
         );
+        const subject = 'Thông tin thanh toán';
+        const text = `<div><p>Xin chào,</p>
+                        <p>Cảm ơn bạn đã mua hàng. Dưới đây là thông tin chi tiết về đơn đặt hàng của bạn:</p>
+                        <p>Mã khách hàng: ${user_code}</p>
+                        <ul>
+                        <ul>
+                            ${productsParse
+                                .map(
+                                    (product) =>
+                                        `<li>${product.name} - Số lượng: ${product.quantity} - Giá: ${product.price
+                                            .toString()
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</li>`,
+                                )
+                                .join('')}
+                        </ul>
+                        <p>Tổng tiền: ${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+                            <p>Mọi thắc mắc, vui lòng liên hệ với chúng tôi.</p>
+                        <p>Trân trọng,</p>
+                        <p>TTShop</p></div>`;
+        mailHelper.sendMail(email, subject, text);
+
         res.send({ success: true, message: 'Đặt hàng thành công' });
     }
 });

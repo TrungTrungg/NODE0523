@@ -14,6 +14,7 @@ const userRouter = require('./user_router');
 const orderRouter = require('./order_router');
 const couponRouter = require('./coupon_router');
 const deliveryRouter = require('./delivery_router');
+const advertiseRouter = require('./advertise_router');
 
 const settingRouter = require('./setting_router');
 
@@ -43,6 +44,7 @@ router.use('/user', userRouter);
 router.use('/order', orderRouter);
 router.use('/coupon', couponRouter);
 router.use('/delivery', deliveryRouter);
+router.use('/advertise', advertiseRouter);
 
 router.use('/setting', settingRouter);
 

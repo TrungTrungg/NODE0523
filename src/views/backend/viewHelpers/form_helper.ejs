@@ -7,8 +7,9 @@
 <%
     const statusArr = [{name: 'active', value: 'active'},{name: 'inactive', value: 'inactive'}]
     const typeArr = [{name: 'percent', value: 'percent'},{name: 'fixed', value: 'fixed'}]
+    const positionArr = [{name: 'Left Sidebar', value: 'Left Sidebar'},{name: 'Right Sidebar', value: 'Right Sidebar'}]
 
-    showForm = (collection, method, action, enctype, id, coupon, mainCategory, articleCategory, productCategory,brand,product,article, slider, delivery) => {
+    showForm = (collection, method, action, enctype, id, coupon, mainCategory, articleCategory, productCategory,brand,product,article, slider, delivery, advertise) => {
     // coupon
         let codeXHtml = ''
         let typeXHtml = ''
@@ -46,6 +47,7 @@
         let statusXHtml = ''
         let label = ''
 
+        let positionXHtml = ''
         let locationXHtml = ''
     switch (collection) {
         case 'item':
@@ -133,12 +135,22 @@
 
             conditionXHtml = showInput('number', 'Condition', 'condition', coupon?.condition)
             usedXHtml = showInput('number', 'Used', 'used', coupon?.used,'disabled')
-            buttonRepeatXHtml = '<button type="button" onclick="javascript:handleRandomCode()" class="btn btn-secondary" style="width: 40px; height: 40px"><i class="fas fa-repeat-alt"></i></button>'
+            buttonRepeatXHtml = '<button type="button" onclick="javascript:handleRandomCode()" class="btn btn-secondary" style="width: 40px; height: 40px; margin-bottom: 16px"><i class="fas fa-repeat-alt"></i></button>'
             break;
         case 'delivery':
             locationXHtml = showSelectBox('', 'Location', 'location', delivery?.locations, delivery?._id, false, '')
             statusXHtml = showSelectBox('', 'Status', 'status', statusArr, delivery?.status, false, '')
             priceXHtml = showInput('number', 'Shipping fee', 'shipping_fee', delivery?.shipping_fee)
+            break;
+        case 'advertise':
+            nameXHtml = showInput('text', 'Name', 'name', advertise?.name)
+            urlXHtml = showInput('text', 'Url', 'url', advertise?.url)
+            startDateXHtml = showInput('date', 'Start at', 'started_at', advertise?.started_at?.toISOString().slice(0, 10))
+            expireDateXHtml = showInput('date', 'Expire at', 'expired_at', advertise?.expired_at?.toISOString().slice(0, 10))
+            statusXHtml = showSelectBox('', 'Status', 'status', statusArr, advertise?.status, false, '')
+            positionXHtml = showSelectBox('', 'Position', 'position', positionArr, advertise?.position, false, '')
+            imageXHtml = showUploadImage(advertise?.image, 'Image', 'image', false)
+            break;
         default:
             break;
     }
@@ -158,6 +170,7 @@
                     <div class="form-group row  m-0">
                         ${orderingXHtml}
                         ${statusXHtml}
+                        ${positionXHtml}
                     </div>
                         <div class="form-group text-center  m-0">
                         ${label}
@@ -184,7 +197,7 @@
                     ${contentXHtml}
                     ${imageXHtml}
                     ${galleryImageXHtml}
-                    <div class="d-flex justify-content-between align-items-between">
+                    <div class="d-flex justify-content-end align-items-end">
                         ${codeXHtml}
                         ${buttonRepeatXHtml}
                     </div>

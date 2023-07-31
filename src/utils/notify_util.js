@@ -26,6 +26,7 @@ module.exports = {
     ERROR_USER_EMAIL_VALUE: `Email không hợp lệ!`,
     ERROR_USER_EMAIL_DUPLICATE: `Email này đã được đăng ký!`,
     ERROR_USER_PASSWORD_EMPTY: `Vui lòng nhập mật khẩu!`,
+    ERROR_USER_PASSWORD_VALUE: `Sai mật khẩu!`,
     ERROR_USER_PASSWORD_LENGTH: `Độ dài mật khẩu không hợp lệ (phải từ 3 đến 15 ký tự)!`,
     ERROR_USER_CONFIRMPASSWORD: `Xác minh mật khẩu không đúng!`,
     ERROR_USER_PHONE_EMPTY: `Vui lòng nhập số điện thoại!`,

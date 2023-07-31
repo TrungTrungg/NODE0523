@@ -99,11 +99,11 @@ const updateOneById = async (
         cpu,
         ssd,
         vga,
-        category_id,
         brand_id,
     };
+    if (category_id) condition.category_id = category_id;
     if (image) condition.image = image;
-    if (gallery_image) condition.gallery_image = gallery_image;
+    if (gallery_image.length > 0) condition.gallery_image = gallery_image;
     // if (is_special === 'yes') condition.is_special = true;
     // else condition.is_special = false;
     return await model.updateOne({ _id: id }, condition);

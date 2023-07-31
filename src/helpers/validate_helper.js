@@ -39,7 +39,7 @@ const productFormValidate = [
     productValidator.orderingCheck,
     productValidator.statusCheck,
     productValidator.descriptionCheck,
-    productValidator.categoryCheck,
+    // productValidator.categoryCheck,
 ];
 
 const userRegisterFormValidate = [
@@ -48,6 +48,12 @@ const userRegisterFormValidate = [
     userValidator.comfirmPasswordCheck,
 ];
 const userLoginFormValidate = [userValidator.emailLoginCheck, userValidator.passwordLoginCheck];
+
+const userChangePasswordFormValidate = [
+    userValidator.passwordLoginCheck,
+    userValidator.passwordCheck,
+    userValidator.comfirmPasswordCheck,
+];
 
 const subscribeFormValidate = [subscribeValidator.mailCheck];
 
@@ -70,6 +76,7 @@ module.exports = {
     subscribeFormValidate,
     userRegisterFormValidate,
     userLoginFormValidate,
+    userChangePasswordFormValidate,
     orderFormValidate,
     couponCheck,
 };

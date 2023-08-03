@@ -23,6 +23,7 @@ const renderBlog = catchAsync(async (req, res) => {
     const { blogCategory, popularArticles, currentArticles } = await blogHelper.fetchDataFile(category_id);
 
     const options = {
+        title: 'Trang tin tức',
         page: 'Trang tin tức',
         pageDesc: 'Những tin mới nhất',
         collection,
@@ -45,6 +46,7 @@ const renderDetailBlog = catchAsync(async (req, res) => {
     const { blogCategory, popularArticles, currentArticles, relatedArticles, articles } =
         await blogHelper.fetchDataFile(article.category_id);
     const options = {
+        title: 'Trang chi tiết bài viết',
         page: 'Trang tin tức',
         pageDesc: 'Những tin mới nhất',
         collection,

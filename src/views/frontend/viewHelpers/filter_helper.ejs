@@ -1,5 +1,6 @@
 <%
-    showFilter = (filterList,keyword, currentPage,category_id,brand_id, label, nameFilter) => {
+    showFilter = (filterList, keyword, currentPage, category_id, brand_id, condition, label, nameFilter) => {
+        let buttName = label
         let query = `?page=${currentPage}`
         let path = ''
         let url = ''
@@ -11,16 +12,20 @@
          if(nameFilter !== 'brand') if(brand_id) query += `&brand_id=${brand_id}`
         const list = filterList.map((item) => {
             if(nameFilter === 'brand') {
-                url = `/shop/${path}${query}&brand_id=${item.value}`
+                url = `/mua-sam/${path}${query}&brand_id=${item.value}`
+                if(item.value === brand_id) buttName = item.name
             }
             if(nameFilter === 'price') {
-                url = `/shop/${path}${query}&price=${item.value}`
+                url = `/mua-sam/${path}${query}&price=${item.value}`
+                if(item.value === condition) buttName = item.name
             }
             if(nameFilter === 'name') {
-            url = `/shop/${path}${query}&sort=${item.value}`
+                url = `/mua-sam/${path}${query}&sort=${item.value}`
+                if(item.value === condition) buttName = item.name
             }
              if(nameFilter === 'sale') {
-             url = `/shop/${path}${query}&sale=${item.value}`
+                 url = `/mua-sam/${path}${query}&sale=${item.value}`
+                if(item.value === condition) buttName = item.name
              }
             return(`
                 <a class="dropdown-item" href="${url}">${item.name.toLowerCase()}</a>
@@ -29,7 +34,7 @@
         return(`
             <div class="dropdown sortbuttons">
               <button type="button" class="button button-border m-0 button-dark border-width-2 border-dark nott ls0 fw-normal h-bg-color dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="catButton">
-                ${label}
+                ${buttName}
               </button>
               <div class="dropdown-menu py-0 border-default rounded-0" aria-labelledby="catButton">
                 ${list}

@@ -73,6 +73,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sản phẩm',
+
         page: collection,
         collection,
         items,
@@ -106,6 +108,8 @@ const renderAddPage = catchAsync(async (req, res) => {
         shop_id,
     };
     const options = {
+        title: 'Trang thêm sản phẩm',
+
         page: 'Add',
         collection,
         product,
@@ -239,6 +243,8 @@ const renderEditPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sửa sản phẩm',
+
         page: 'Item',
         collection,
         product,

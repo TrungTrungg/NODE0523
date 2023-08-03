@@ -56,6 +56,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang liên hệ',
+
         page: collection,
         collection,
         items,

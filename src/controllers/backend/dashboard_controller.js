@@ -17,6 +17,8 @@ const renderDashboard = catchAsync(async (req, res) => {
     ];
 
     const options = {
+        title: 'Trang bảng điều khiển',
+
         page: 'Dashboard',
         statisticArr,
         latestOrders,

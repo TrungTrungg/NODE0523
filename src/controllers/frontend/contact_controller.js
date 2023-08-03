@@ -4,6 +4,7 @@ const { contactCollection: collection } = require('@utils');
 
 const renderContact = catchAsync(async (req, res) => {
     const options = {
+        title: 'Trang liên hệ',
         page: 'Trang liên hệ',
         pageDesc: '',
     };

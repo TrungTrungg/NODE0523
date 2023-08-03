@@ -47,6 +47,7 @@ const renderShop = catchAsync(async (req, res) => {
         { name: 'Từ 50% trở lên', value: 'higher,50' },
     ];
     const options = {
+        title: 'Trang mua sắm',
         page: 'Trang mua sắm',
         pageDesc: 'Chọn lựa những sản phẩm yêu thích',
         collection,
@@ -68,6 +69,7 @@ const renderShop = catchAsync(async (req, res) => {
         price,
         sort,
         sale,
+        totalItems,
     };
     res.render('frontend/pages/shop', options);
 });
@@ -82,6 +84,7 @@ const renderProductDetail = catchAsync(async (req, res) => {
     const { relatedProd, brand, category } = await shopHelper.fetchDataDetailFile(product);
 
     const options = {
+        title: 'Trang chi tiết sản phẩm',
         page: product.name,
         pageDesc: '',
         collection,

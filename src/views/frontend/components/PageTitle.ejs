@@ -1,14 +1,13 @@
 <section id="page-title" style="padding: 30px 0 !important; vertical-align: middle;">
 
-  <div class="container clearfix">
-    <h3 style="margin-bottom: 5px !important;"><%= page %></h3>
-    <span><%= pageDesc %></span>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="/">Trang chủ</a>
-      </li>
-      <li class="breadcrumb-item active" aria-current="page"><%= collection %></li>
-    </ol>
+  <div class="container clearfix d-flex justify-content-between">
+    <div>
+      <h3 style="margin-bottom: 5px !important;"><%= page %></h3>
+      <span><%= pageDesc %></span>
+    </div>
+    <% if(typeof keyword !== 'undefined') {  %>
+    <h2>Có <b style="color: red !important;"><%= totalItems %></b> kết quả được tìm thấy với từ khóa <b style="color: red !important;"><%= keyword %></b></h2>
+    <% }%>
   </div>
 
 </section>

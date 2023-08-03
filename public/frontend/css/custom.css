@@ -5,6 +5,14 @@
 	Overwriting Default Theme Styles for Better Handling Updates
 -----------------------------------------------------------------*/
 
+a.active {
+	color: #1ABC9C !important
+}
+
+a.active2 {
+	color: #00cc62 !important
+}
+
 #tab-3 {
 	margin-top: 40px !important;
 }
@@ -37,7 +45,9 @@
 }
 
 .product-img {
-	width: 300px !important;
-	height: 250px !important;
+	width: 250px !important;
+	height: 200px !important;
 }
+
+
 

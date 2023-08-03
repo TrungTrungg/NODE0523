@@ -4,7 +4,7 @@ const router = express.Router();
 const { authController: controller } = require('@controllers');
 const { validator } = require('@helpers');
 
-router.get('/register-login', controller.renderRegisterLogin);
+router.get('/dang-ky-dang-nhap', controller.renderRegisterLogin);
 router.post('/register', validator.userRegisterFormValidate, controller.register);
 router.post('/login', validator.userLoginFormValidate, controller.login);
 router.get('/logout', controller.logout);

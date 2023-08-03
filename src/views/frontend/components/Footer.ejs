@@ -10,7 +10,7 @@
 
           <div class="widget clearfix">
 
-            <img src="/uploads/setting/<%= settings.footer.logo %>" alt="Image" class="footer-logo">
+            <img src="/uploads/setting/<%= settings.footer.logo %>" alt="Image" class="footer-logo" style="height: 200px; width: 400px;">
 
             <div class="py-2" style="background: url('') no-repeat center center;">
               <div class="row col-mb-30">
@@ -27,22 +27,7 @@
                 </div>
               </div>
             </div>
-            <a href=" <%= settings.footer.link.facebook%>" class="social-icon si-small si-rounded topmargin-sm si-facebook">
-              <i class="icon-facebook"></i>
-              <i class="icon-facebook"></i>
-            </a>
-            <a href=" <%= settings.footer.link.gmail%>" class="social-icon si-small si-rounded topmargin-sm si-gmail">
-              <i class="icon-gmail"></i>
-              <i class="icon-gmail"></i>
-            </a>
-            <a href=" <%= settings.footer.link.git%>" class="social-icon si-small si-rounded topmargin-sm si-github">
-              <i class="icon-github"></i>
-              <i class="icon-github"></i>
-            </a>
-            <a href=" <%= settings.footer.link.linkedin%>" class="social-icon si-small si-rounded topmargin-sm si-linkedin">
-              <i class="icon-linkedin"></i>
-              <i class="icon-linkedin"></i>
-            </a>
+
           </div>
         </div>
         <div class="col-lg-6 ">
@@ -50,6 +35,22 @@
             <h4>Bài đăng gần đây</h4>
             <div class="posts-sm row col-mb-30 " id="post-list-footer">
               <%- showFooterContent(recentPosts) %>
+              <a href=" <%= settings.footer.link.facebook%>" style="margin: 0px 5px  !important;" class="social-icon si-small si-rounded topmargin-sm si-facebook">
+                <i class="icon-facebook"></i>
+                <i class="icon-facebook"></i>
+              </a>
+              <a href=" <%= settings.footer.link.gmail%>" style="margin: 0px 5px !important;" class="social-icon si-small si-rounded topmargin-sm si-gmail">
+                <i class="icon-gmail"></i>
+                <i class="icon-gmail"></i>
+              </a>
+              <a href=" <%= settings.footer.link.git%>" style="margin: 0px 5px !important;" class="social-icon si-small si-rounded topmargin-sm si-github">
+                <i class="icon-github"></i>
+                <i class="icon-github"></i>
+              </a>
+              <a href=" <%= settings.footer.link.linkedin%>" style="margin: 0px 5px !important;" class="social-icon si-small si-rounded topmargin-sm si-linkedin">
+                <i class="icon-linkedin"></i>
+                <i class="icon-linkedin"></i>
+              </a>
             </div>
           </div>
         </div>

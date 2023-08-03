@@ -54,6 +54,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang đăng ký nhận tin',
+
         page: 'Subscribe',
         collection: 'subscribe',
         items,

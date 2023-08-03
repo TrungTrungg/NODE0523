@@ -3,16 +3,16 @@
 
   <div class="col-auto mb-4 d-flex">
     <!-- brands filter -->
-    <%- showFilter(brands,keyword,currentPage,category_id,brand_id, 'Lọc theo thương hiệu', 'brand') %>
+    <%- showFilter(brands, '',currentPage,category_id,brand_id,'', 'Lọc theo thương hiệu', 'brand') %>
     <!-- price filter -->
-    <%- showFilter(priceFilter,keyword,currentPage,category_id,brand_id, 'Lọc theo giá', 'price') %>
+    <%- showFilter(priceFilter,keyword,currentPage,category_id,brand_id, price, 'Lọc theo giá', 'price') %>
     <!-- name filter -->
-    <%- showFilter(saleFilter,keyword,currentPage,category_id,brand_id, 'Lọc theo giá giảm', 'sale') %>
+    <%- showFilter(saleFilter,keyword,currentPage,category_id,brand_id, sale, 'Lọc theo giá giảm', 'sale') %>
 
-    <%- showFilter(nameFilter,keyword,currentPage,category_id,brand_id, 'Xếp theo tên', 'name') %>
+    <%- showFilter(nameFilter,keyword,currentPage,category_id,brand_id, sort, 'Xếp theo tên', 'name') %>
 
 
-    <a type="button" class="button button-border m-0  button-dark border-width-2 border-dark nott ls0 fw-normal " style="margin-left: 10px !important;" href="/shop">
+    <a type="button" class="button button-border m-0  button-dark border-width-2 border-dark nott ls0 fw-normal " style="margin-left: 10px !important;" href="/mua-sam">
       Đặt lại
     </a>
 

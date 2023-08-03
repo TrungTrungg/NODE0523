@@ -55,6 +55,7 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang quảng cáo',
         page: collection,
         collection,
         items,
@@ -75,6 +76,7 @@ const renderAddPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang thêm quảng cáo',
         page: 'Add',
         collection,
         messages,
@@ -122,6 +124,7 @@ const renderEditPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sửa quảng cáo',
         page: 'Item',
         collection,
         advertise,

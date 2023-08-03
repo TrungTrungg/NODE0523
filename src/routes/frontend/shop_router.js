@@ -3,8 +3,10 @@ const router = express.Router();
 
 const { shopController: controller } = require('@controllers');
 
-router.get('(/category/:slugId)?', controller.renderShop);
+router.get('/mua-sam', controller.renderShop);
 
-router.get('/product/:slugId', controller.renderProductDetail);
+router.get('/san-pham/:slugId', controller.renderProductDetail);
+
+router.get('(/:mainSlug/:slugId)?', controller.renderShop);
 
 module.exports = router;

@@ -6,6 +6,7 @@ const { catchAsync } = require('@helpers');
 const renderSetting = catchAsync(async (req, res) => {
     const setting = await service.getSetting();
     const options = {
+        title: 'Trang cài đặt',
         page: 'Setting',
         setting,
     };

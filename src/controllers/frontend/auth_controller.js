@@ -12,6 +12,7 @@ const renderRegisterLogin = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang đăng ký - đăng nhập',
         page: 'Trang đăng ký - đăng nhập',
         pageDesc: '',
         collection,

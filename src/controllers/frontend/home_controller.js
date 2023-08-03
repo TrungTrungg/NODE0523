@@ -7,6 +7,7 @@ const renderHome = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang chủ',
         sliders,
         articles,
         recentProd,

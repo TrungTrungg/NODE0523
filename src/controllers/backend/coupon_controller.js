@@ -35,6 +35,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang mã giảm giá',
+
         page: collection,
         collection,
         items,
@@ -62,6 +64,8 @@ const renderAddPage = catchAsync(async (req, res) => {
 
     const coupon = { couponConditions };
     const options = {
+        title: 'Trang thêm mã giảm giá',
+
         page: 'Add',
         collection,
         coupon,
@@ -95,6 +99,8 @@ const renderEditPage = catchAsync(async (req, res) => {
     };
 
     const options = {
+        title: 'Trang sửa mã giảm giá',
+
         page: 'Item',
         collection,
         coupon,

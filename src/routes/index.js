@@ -6,8 +6,8 @@ const backendRouter = require('./backend');
 
 const apiRouter = require('./api');
 
-router.use('/', frontendRouter);
 router.use('/admin', backendRouter);
+router.use('/', frontendRouter);
 
 router.use('/api', apiRouter);
 

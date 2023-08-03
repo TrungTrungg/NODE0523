@@ -27,7 +27,7 @@ $(document).ready(function () {
                         showMethod: 'slideDown',
                         timeOut: 10000,
                     });
-                    window.location.href = '/register-login';
+                    window.location.href = '/dang-ky-dang-nhap';
                 }
 
                 if (data.error) {
@@ -35,7 +35,7 @@ $(document).ready(function () {
                         .map((error) => {
                             return `
                         <li>
-                            <b>${error.path}:</b> ${error.msg}
+                            <b> ${error.msg}</b>
                         </li>    
                 `;
                         })
@@ -174,7 +174,7 @@ $(document).ready(function () {
                         timeOut: 30000,
                     });
                     setTimeout(() => {
-                        window.location.href = '/user/#tab-info';
+                        window.location.href = '/nguoi-dung/#tab-info';
                     }, 1500);
                 }
 
@@ -219,7 +219,7 @@ $(document).ready(function () {
                         .map((error) => {
                             return `
                         <li>
-                            <b>${error.path}:</b> ${error.msg}
+                            <b>${error.path}</b>
                         </li>    
                 `;
                         })
@@ -290,7 +290,7 @@ $(document).ready(function () {
                         .map((error) => {
                             return `
                         <li>
-                            <b>${error.path}:</b> ${error.msg}
+                            <b>${error.msg}</b>
                         </li>    
                 `;
                         })

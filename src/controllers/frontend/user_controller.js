@@ -9,13 +9,10 @@ const renderUserInfo = catchAsync(async (req, res) => {
         success: req.flash('success'),
         error: req.flash('error'),
     };
-    const options = { page: 'Trang cá nhân', pageDesc: '', collection, orders, messages };
+    const options = { title: 'Trang cá nhân', page: 'Trang cá nhân', pageDesc: '', collection, orders, messages };
     res.render('frontend/pages/user', options);
 });
-const renderUserOrder = catchAsync(async (req, res) => {
-    const options = {};
-    res.render('frontend/pages/user/order', options);
-});
+
 module.exports = {
     renderUserInfo,
 };

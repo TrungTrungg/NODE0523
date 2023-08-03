@@ -58,6 +58,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang thanh trượt',
+
         page: collection,
         collection,
         items,
@@ -78,6 +80,8 @@ const renderAddPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang thêm thanh trượt',
+
         page: 'Add',
         collection,
         messages,
@@ -124,6 +128,8 @@ const renderEditPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sửa thanh trượt',
+
         page: 'Item',
         collection,
         slider,

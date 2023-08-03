@@ -4,8 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE</title>
+  <title><%= typeof title !== 'undefined'? `TTS's Admin | ${title}` : 'Admin' %></title>
   <% include ./components/StyleSheet %>
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/setting/468274f8ab536aebd7570412bdca2da5">\
+  <link rel="icon" href="/uploads/logo/logo.PNG" type="image/x-icon">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

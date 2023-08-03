@@ -9,6 +9,7 @@ const renderCheckout = catchAsync(async (req, res) => {
     const locations = await deliveryService.getLocations();
 
     const options = {
+        title: 'Trang thanh toán',
         page: 'Trang thanh toán',
         pageDesc: '',
         locations,

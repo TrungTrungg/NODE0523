@@ -35,13 +35,13 @@ if (cartData && cartData !== '[]') {
             return `
                     <div class="top-cart-item">
                     <div class="top-cart-item-image">
-                    <a href="/shop/product/${item.id}"><img src="/uploads/product/${
+                    <a href="/san-pham/${item.id}"><img src="/uploads/product/${
                 item.image
             }" alt="Blue Round-Neck Tshirt" /></a>
                     </div>
                     <div class="top-cart-item-desc">
                     <div class="top-cart-item-desc-title">
-                        <a href="/shop/product/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+                        <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
                         <span class="top-cart-item-price d-block" id="top-cart-price-${item.id}">${formatPriceNumber(
                 item.total,
             )} VNĐ</span>
@@ -68,13 +68,13 @@ if (cartData && cartData !== '[]') {
                 </td>
 
                 <td class="cart-product-thumbnail">
-                    <a href="/shop/product/${item.id}"><img width="64" height="64" src="/uploads/product/${
+                    <a href="/san-pham/${item.id}"><img width="64" height="64" src="/uploads/product/${
                 item.image
             }" alt="Pink Printed Dress"></a>
                 </td>
 
                 <td class="cart-product-name">
-                    <a href="/shop/product/${item.id}">${item.name}</a>
+                    <a href="/san-pham/${item.id}">${item.name}</a>
                 </td>
 
                 <td class="cart-product-price">
@@ -111,13 +111,13 @@ if (cartData && cartData !== '[]') {
         return `
             <tr class="cart_item">
           <td class="cart-product-thumbnail">
-            <a href="/shop/product/${data.id}"><img width="64" height="64" src="/uploads/product/${
+            <a href="/san-pham/${data.id}"><img width="64" height="64" src="/uploads/product/${
             data.image
         }" alt="Pink Printed Dress"></a>
           </td>
 
           <td class="cart-product-name">
-            <a href="/shop/product/${data.id}">${data.name.slice(0, 32)}...</a>
+            <a href="/san-pham/${data.id}">${data.name.slice(0, 32)}...</a>
           </td>
 
           <td class="cart-product-quantity">
@@ -162,13 +162,13 @@ const handleDeleteItemCart = (id) => {
                 </td>
 
                 <td class="cart-product-thumbnail">
-                    <a href="/shop/product/${item.id}"><img width="64" height="64" src="/uploads/product/${
+                    <a href="/san-pham/${item.id}"><img width="64" height="64" src="/uploads/product/${
                     item.image
                 }" alt="Pink Printed Dress"></a>
                 </td>
 
                 <td class="cart-product-name">
-                    <a href="/shop/product/${item.id}">${item.name}</a>
+                    <a href="/san-pham/${item.id}">${item.name}</a>
                 </td>
 
                 <td class="cart-product-price">
@@ -202,13 +202,13 @@ const handleDeleteItemCart = (id) => {
                 return `
                         <div class="top-cart-item">
                         <div class="top-cart-item-image">
-                        <a href="/shop/product/${item.id}"><img src="/uploads/product/${item.image}" alt="${
+                        <a href="/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${
                     item.name
                 }" /></a>
                         </div>
                         <div class="top-cart-item-desc">
                         <div class="top-cart-item-desc-title">
-                            <a href="/shop/product/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+                            <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
                             <span class="top-cart-item-price d-block">${formatPriceNumber(item.price)} VNĐ</span>
                         </div>
                         <div class="top-cart-item-quantity">x ${item.quantity}</div>
@@ -328,11 +328,11 @@ const handleAddToCart = (id, name, image, price) => {
             return `
         <div class="top-cart-item">
         <div class="top-cart-item-image">
-          <a href="/shop/product/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
+          <a href="/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
         </div>
         <div class="top-cart-item-desc">
           <div class="top-cart-item-desc-title">
-            <a href="/shop/product/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+            <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
             <span class="top-cart-item-price d-block">${formatPriceNumber(item.price)} VNĐ</span>
           </div>
           <div class="top-cart-item-quantity">x ${item.quantity}</div>
@@ -399,11 +399,11 @@ const handleClickAddToCart = (id, name, image, price) => {
                 return `
         <div class="top-cart-item">
         <div class="top-cart-item-image">
-          <a href="/shop/product/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
+          <a href="/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
         </div>
         <div class="top-cart-item-desc">
           <div class="top-cart-item-desc-title">
-            <a href="/shop/product/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+            <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
             <span class="top-cart-item-price d-block">${formatPriceNumber(item.price)} VNĐ</span>
           </div>
           <div class="top-cart-item-quantity">x ${item.quantity}</div>
@@ -439,7 +439,7 @@ const handleEnterCoupon = () => {
         });
         $.ajax({
             type: 'POST',
-            url: '/checkout',
+            url: '/thanh-toan',
             data: { code: inputDOM.val(), total },
             dataType: 'json',
             success: (data) => {
@@ -477,7 +477,7 @@ const handleEnterCoupon = () => {
                         .map((error) => {
                             return `
                         <li>
-                            <b>${error.path}:</b> ${error.msg}
+                            <b> ${error.msg}</b>
                         </li>    
                 `;
                         })
@@ -509,7 +509,7 @@ const handleSelectLocation = () => {
         if (selectDOM.val()) {
             $.ajax({
                 type: 'POST',
-                url: '/checkout/location',
+                url: '/thanh-toan/location',
                 data: { id: selectDOM.val() },
                 dataType: 'json',
                 success: (data) => {
@@ -552,7 +552,7 @@ formCheckoutDOM.submit(function (event) {
         const formData = $(this).serialize();
         $.ajax({
             type: 'POST',
-            url: '/checkout/createOrder',
+            url: '/thanh-toan/createOrder',
             data: formData,
             dataType: 'json',
             success: (data) => {
@@ -567,7 +567,7 @@ formCheckoutDOM.submit(function (event) {
                         timeOut: 30000,
                     });
                     setTimeout(() => {
-                        window.location.href = '/user/#tab-orders';
+                        window.location.href = '/nguoi-dung/#tab-orders';
                     }, 3000);
                     localStorage.clear();
                 }
@@ -576,7 +576,7 @@ formCheckoutDOM.submit(function (event) {
                         .map((error) => {
                             return `
                         <li>
-                            <b>${error.path}:</b> ${error.msg}
+                            <b> ${error.msg}</b>
                         </li>    
                 `;
                         })

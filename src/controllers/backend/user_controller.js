@@ -55,6 +55,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang người dùng',
+
         page: collection,
         collection,
         items,
@@ -90,6 +92,8 @@ const renderEditPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sửa người dùng',
+
         page: 'Item',
         collection,
         advertise,

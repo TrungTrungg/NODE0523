@@ -39,11 +39,6 @@ app.use(
         secret: 'mysecretkey',
         resave: false,
         saveUninitialized: true,
-        cookie: {
-            maxAge: 3600000,
-            httpOnly: true,
-            secure: false,
-        },
     }),
 );
 
@@ -65,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 // get url
 app.use((req, res, next) => {
-    app.locals.currentUrl = req.path;
+    req.app.locals.currentUrl = req.path;
     next();
 });
 // router
@@ -84,9 +79,9 @@ app.use(function (err, req, res, next) {
     // render the error page
     res.status(err.status || 500);
     if (req.path.startsWith('/admin')) {
-        res.render('backend/error');
+        res.render('backend/error', { title: 'Trang lỗi!' });
     } else {
-        res.render('frontend/error');
+        res.render('frontend/error', { title: 'Trang lỗi!' });
     }
 });
 

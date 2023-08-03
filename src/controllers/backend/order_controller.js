@@ -65,6 +65,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang đơn hàng',
+
         page: collection,
         collection,
         items,
@@ -95,6 +97,8 @@ const renderDetail = catchAsync(async (req, res) => {
     }
     const delivery = await deliveryService.getOneById(order.delivery_id);
     const options = {
+        title: 'Trang chi tiết đơn hàng',
+
         page: 'Detail',
         collection,
         order,

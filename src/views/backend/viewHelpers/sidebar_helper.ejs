@@ -123,17 +123,17 @@
             let parentActive = ''
             let childActive = ''
             
-            // if(sidebar.url === currentUrl) parentActive = 'active'
+            if(sidebar.url === currentUrl) parentActive = 'active'
             if(sidebar.isParent) {
                 dropdownList = sidebar.child.map((dataChild) => {
 
-                    // if(currentUrl.includes(dataChild.url)) {
-                    //     parentActive = 'active'
-                    //     menuOpen = 'menu-open'
-                    //     childActive = 'active'
-                    // }else {
-                    //     childActive = ''
-                    // }
+                    if(currentUrl.includes(dataChild.url)) {
+                        parentActive = 'active'
+                        menuOpen = 'menu-open'
+                        childActive = 'active'
+                    }else {
+                        childActive = ''
+                    }
                    
 
                     return (`

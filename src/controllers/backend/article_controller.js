@@ -68,6 +68,7 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang bài viết',
         page: collection,
         collection,
         items,
@@ -94,6 +95,8 @@ const renderAddPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang thêm bài viết',
+
         page: 'Add',
         collection,
         article,
@@ -162,6 +165,8 @@ const renderEditPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sửa bài viết',
+
         page: 'Item',
         collection,
         article,

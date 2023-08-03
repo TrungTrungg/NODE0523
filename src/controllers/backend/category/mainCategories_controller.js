@@ -64,6 +64,8 @@ const renderList = catchAsync(async (req, res, next) => {
 
     // Options
     const options = {
+        title: 'Trang danh mục chính',
+
         page: collection,
         collection,
         items,
@@ -87,6 +89,8 @@ const renderAddPage = catchAsync(async (req, res, next) => {
     console.log(req.flash('error'));
     // Options
     const options = {
+        title: 'Trang thêm danh mục bài viết',
+
         page: 'Add',
         collection,
         messages,
@@ -134,7 +138,14 @@ const renderEditPage = catchAsync(async (req, res, next) => {
         error: req.flash('error'),
     };
 
-    const options = { page: 'Edit', collection, messages, mainCategory };
+    const options = {
+        title: 'Trang sửa danh mục bài viết',
+
+        page: 'Edit',
+        collection,
+        messages,
+        mainCategory,
+    };
     res.render(`backend/pages/category/category_edit`, options);
 });
 

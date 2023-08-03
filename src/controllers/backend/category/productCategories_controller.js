@@ -77,6 +77,8 @@ const renderList = catchAsync(async (req, res, next) => {
 
     // Options
     const options = {
+        title: 'Trang danh mục sản phẩm',
+
         page: collection,
         collection,
         items,
@@ -111,6 +113,8 @@ const renderAddPage = catchAsync(async (req, res, next) => {
 
     // Options
     const options = {
+        title: 'Trang thêm danh mục sản phẩm',
+
         page: 'Add',
         collection,
         messages,
@@ -173,6 +177,8 @@ const renderEditPage = catchAsync(async (req, res, next) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sửa danh mục sản phẩm',
+
         page: 'Edit',
         collection,
         id,

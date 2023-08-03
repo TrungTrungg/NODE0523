@@ -58,6 +58,8 @@ const renderList = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang thương hiệu',
+
         page: collection,
         collection,
         items,
@@ -78,6 +80,8 @@ const renderAddPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang thêm thương hiệu',
+
         page: 'Add',
         collection,
         messages,
@@ -128,6 +132,8 @@ const renderEditPage = catchAsync(async (req, res) => {
         error: req.flash('error'),
     };
     const options = {
+        title: 'Trang sửa thương hiệu',
+
         page: 'Item',
         collection,
         brand,

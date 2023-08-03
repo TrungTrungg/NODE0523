@@ -3,9 +3,9 @@
     <i class="icon-user21"></i>
   </a>
   <div class="dropdown-menu top-cart-content top-user-content">
-    <%- typeof user === 'undefined' ? '<a class="dropdown-item" href="/register-login">Đăng ký - Đăng nhập</a>' : ''  %>
+    <%- typeof user === 'undefined' ? '<a class="dropdown-item" href="/dang-ky-dang-nhap">Đăng ký - Đăng nhập</a>' : ''  %>
     <%- typeof user !== 'undefined' && user.is_admin ? '<a class="dropdown-item" href="/admin/">Vào trang quản trị</a>' : ''  %>
 
-    <%- typeof user === 'undefined' ? '' : '<a class="dropdown-item" href="/user">Thông tin cá nhân</a><div class="dropdown-divider"></div><a class="dropdown-item" href="/logout">Đăng xuất</a>'  %>
+    <%- typeof user === 'undefined' ? '' : '<a class="dropdown-item" href="/nguoi-dung">Thông tin cá nhân</a><div class="dropdown-divider"></div><a class="dropdown-item" href="/logout">Đăng xuất</a>'  %>
   </div>
 </div>

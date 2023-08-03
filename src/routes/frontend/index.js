@@ -14,17 +14,18 @@ const cartRouter = require('./cart_router');
 const checkoutRouter = require('./checkout_router');
 
 router.use('/', authenticateToken, fetchDataMiddleware, (req, res, next) => {
+    res.locals.currentUrl = `${req.path}`;
     res.locals.layout = 'frontend';
     next();
 }),
     router.use('/', homeRouter);
 router.use('/subscribe', subscribeRouter);
-router.use('/blog', blogRouter);
-router.use('/shop', shopRouter);
+router.use('/bai-viet', blogRouter);
+router.use('/', shopRouter);
 router.use('/contact', contactRouter);
 router.use('/', authRouter);
-router.use('/user', userRouter);
-router.use('/cart', cartRouter);
-router.use('/checkout', checkoutRouter);
+router.use('/nguoi-dung', userRouter);
+router.use('/gio-hang', cartRouter);
+router.use('/thanh-toan', checkoutRouter);
 
 module.exports = router;

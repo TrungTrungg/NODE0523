@@ -19,6 +19,7 @@ const advertiseRouter = require('./advertise_router');
 const settingRouter = require('./setting_router');
 
 router.use('/', (req, res, next) => {
+    res.locals.currentUrl = `/admin${req.path}`;
     if (req.app.locals.user) {
         if (req.app.locals.user.is_admin) {
             res.locals.layout = 'backend';

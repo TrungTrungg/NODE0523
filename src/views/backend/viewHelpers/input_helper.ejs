@@ -1,11 +1,16 @@
 <%
-    showInput = (type, label, name, value, disabled) => {
+    showInput = (type, label, name, value, disabled, format) => {
+        let handleEvent = ''
         let isDisabled = ''
         if(disabled) isDisabled = disabled
+        if(format) {
+            handleEvent = 'oninput="handleFormatInput(this)"'
+        }
         return(`
             <div class="form-group col">
                 <label for="item-${name}">${label}</label>
-                <input 
+                <input
+                    ${handleEvent}
                     onchange="javascript:handleChangeInput('${name}')"
                     name="${name}" value="${value ? value : ''}" type="${type}" class="form-control" id="item-${name}" placeholder="Enter ${label}" ${isDisabled} />
             </div>

@@ -44,7 +44,7 @@ const getOneById = async (id) => {
 };
 
 const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
-    let condition = {};
+    let condition = { status: 'active' };
     if (status) condition.status = status.toLowerCase();
     if (keyword) condition.name = new RegExp(keyword, 'gi');
     return await model.find(condition).sort({ updatedAt: -1, createdAt: -1 });

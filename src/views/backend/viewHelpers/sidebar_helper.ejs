@@ -86,25 +86,44 @@
             ]
         },
         {
-        isParent: false,
-        url: '/admin/subscribe' ,
-        icon: 'fas fa-tachometer-alt',
-        iconDropdown: '',
-        name: 'Subscribe'
+            isParent: true,
+            url: '#',
+            icon: 'fas fa-th-list',
+            name: 'Account',
+            iconDropdown: 'fas fa-angle-left',
+            child: [
+                {
+                    url: '/admin/role',
+                    icon: 'far fa-circle',
+                    name: `Roles`
+                },
+                {
+                    url: '/admin/user',
+                    icon: 'far fa-circle',
+                    name: `Users`
+                },
+        ]
         },
         {
-        isParent: false,
-        url: '/admin/contact' ,
-        icon: 'fas fa-cog',
-        iconDropdown: '',
-        name: 'Contact'
+            isParent: false,
+            url: '/admin/subscribe' ,
+            icon: 'fas fa-tachometer-alt',
+            iconDropdown: '',
+            name: 'Subscribe'
         },
         {
-        isParent: false,
-        url: '/admin/advertise' ,
-        icon: 'fas fa-cog',
-        iconDropdown: '',
-        name: 'Advertise'
+            isParent: false,
+            url: '/admin/contact' ,
+            icon: 'fas fa-cog',
+            iconDropdown: '',
+            name: 'Contact'
+        },
+        {
+            isParent: false,
+            url: '/admin/advertise' ,
+            icon: 'fas fa-cog',
+            iconDropdown: '',
+            name: 'Advertise'
         },
         {
             isParent: false,

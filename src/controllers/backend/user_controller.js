@@ -2,8 +2,8 @@ const { matchedData } = require('express-validator');
 const fs = require('fs');
 const unidecode = require('unidecode');
 
-const { advertiseService: service } = require('@services');
-const { filterOptions, notify, advertiseCollection: collection } = require('@utils');
+const { userService: service } = require('@services');
+const { filterOptions, notify, userCollection: collection } = require('@utils');
 const { handlePagination, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
@@ -36,6 +36,12 @@ const renderList = catchAsync(async (req, res) => {
         },
     ];
 
+    const selectStatusOption = [
+        { name: 'Quản trị viên', value: 'Quản trị viên' },
+        { name: 'Nhân viên', value: 'Nhân viên' },
+        { name: 'Người dùng', value: 'Người dùng' },
+    ];
+
     const statusFilterOptions = {
         all: filterOptions.all,
         active: filterOptions.active,
@@ -62,71 +68,13 @@ const renderList = catchAsync(async (req, res) => {
         items,
         filter,
         statusFilterOptions,
+        selectStatusOption,
         currentStatus,
         pagination,
         keyword,
         messages,
     };
     res.render(`backend/pages/${collection}`, options);
-});
-
-// delete one item
-const deleteOne = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const { image } = await service.getOneById(id);
-    const imagePath = `public/uploads/advertise/${image}`;
-    if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-    }
-    await service.deleteOneById(id);
-    req.flash('success', notify.SUCCESS_DELETE);
-    res.redirect(`/admin/${collection}`);
-});
-
-// render Edit item page
-const renderEditPage = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const advertise = await service.getOneById(id);
-    const messages = {
-        success: req.flash('success'),
-        error: req.flash('error'),
-    };
-    const options = {
-        title: 'Trang sửa người dùng',
-
-        page: 'Item',
-        collection,
-        advertise,
-        messages,
-    };
-    res.render(`backend/pages/${collection}/${collection}_edit`, options);
-});
-
-// Edit item
-const editOne = catchAsync(async (req, res) => {
-    const { id, name, image, url, position, status, started_at, expired_at } = req.body;
-    // const errors = resultsValidator(req);
-    // if (errors.length > 0) {
-    //     req.flash('error', errors);
-    //     res.redirect(`/admin/${collection}/edit/${id}`);
-    // } else {
-    let imageName = '';
-    if (req.file) {
-        imageName = req.file.filename;
-        const { image } = await service.getOneById(id);
-        if (image) {
-            const imagePath = `public/uploads/advertise/${image}`;
-            if (fs.existsSync(imagePath)) {
-                fs.unlinkSync(imagePath);
-            }
-        }
-    }
-    // update
-    await service.updateOneById(id, name, imageName, url, position, status.toLowerCase(), started_at, expired_at);
-    // message và chuyển hướng
-    req.flash('success', notify.SUCCESS_EDIT);
-    res.redirect(`/admin/${collection}`);
-    // }
 });
 
 const changeStatusAjax = catchAsync(async (req, res) => {
@@ -164,9 +112,5 @@ const changeStatusAjax = catchAsync(async (req, res) => {
 
 module.exports = {
     renderList,
-    deleteOne,
-    renderEditPage,
-    editOne,
-    // changeStatus,
     changeStatusAjax,
 };

@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
         phone: String,
         password: String,
         avatar: String,
+        status: { type: String, default: 'active' },
         is_admin: { type: Boolean, default: false },
     },
     { timestamps: true },

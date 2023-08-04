@@ -83,18 +83,18 @@ const getAll = async (status, keyword, category_id, { currentPage, itemPerPage }
 };
 
 const getArticleSpecial = async (category_id) => {
-    const conditions = { is_special: true };
+    const conditions = { is_special: true, status: 'active' };
     if (category_id) conditions.category_id = category_id;
     return await model.find(conditions).sort({ ordering: 1 }).limit(2);
 };
 
 const getArticleCurrent = async () => {
-    const conditions = {};
+    const conditions = { status: 'active' };
     return await model.find(conditions).sort({ createdAt: -1 }).limit(3);
 };
 
 const getArticleRelated = async (category_id) => {
-    const conditions = {};
+    const conditions = { status: 'active' };
     if (category_id) conditions.category_id = category_id;
     return await model.find(conditions).limit(3);
 };

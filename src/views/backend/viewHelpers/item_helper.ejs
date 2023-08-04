@@ -21,6 +21,7 @@
             let imageXHtml = ''
             let emailXHtml  = ''
             let phoneXHtml = ''
+            let addressXHtml = ''
             let urlXHtml = ''
 
             let codeXHtml = ''
@@ -45,8 +46,8 @@
             let checkboxXHtml = handleCheckbox(item.id, item.email)
             let specialXHtml = '<td>' + handleSpecial(collection, item.id, 'Special', item.is_special, 'special')+'</td>'
             let menuXHtml = '<td>' + handleSpecial(collection, item.id, '', item.isMenu, 'menu') +'</td>'
-            let editXHml = `<a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>`
-            let deleteXHml = `<a type="button" class="btn btn-danger" onclick="javascript:handleDelete('${collection}','${item._id}')">Delete</a>`
+            let editXHtml = `<a type="button" class="btn btn-primary" href="/admin/${collection}/edit/${item._id}">Edit</a>`
+            let deleteXHtml = `<a type="button" class="btn btn-danger" onclick="javascript:handleDelete('${collection}','${item._id}')">Delete</a>`
 
             let readXHml = ''
             switch (collection) {
@@ -117,7 +118,7 @@
                     specialXHtml = '' 
                     menuXHtml = ''
                     
-                    editXHml = ''
+                    editXHtml = ''
                     emailXHtml = handleName(item.email, keyword)
                     statusXHtml = handleStatus(collection, item.status, item.id, query)
                     break;
@@ -132,7 +133,7 @@
                 case 'contact':
                     specialXHtml = ''
                     menuXHtml = ''
-                    editXHml = ''
+                    editXHtml = ''
 
                     phoneXHtml = handleName(item.phone)
                     checkboxXHtml = handleCheckbox(item.id, item.email)
@@ -161,8 +162,8 @@
                 case 'order':
                     specialXHtml = ''
                     menuXHtml = ''
-                    editXHml = ''
-                    deleteXHml = ''
+                    editXHtml = ''
+                    deleteXHtml = ''
 
                     userCodeXHtml = handleName(item.user_code, keyword)
                     readXHml = `<a type="button" class="btn btn-warning" href="/admin/${collection}/detail/${item._id}">Detail</a>`
@@ -180,6 +181,20 @@
                     expiredXHtml = handleName(item.expired_at?.toISOString().slice(0, 10))
                     positionXHtml = handleName(item.position)
                 break;
+                case 'user':
+                    specialXHtml = ''
+                    menuXHtml = ''
+                    editXHtml = ''
+                    deleteXHtml = ''
+
+                    imageXHtml = handleImage(item.avatar, collection)
+                    nameXHtml = handleName(`${item.last_name} ${item.first_name}`, keyword)
+                    statusXHtml = handleStatus(collection, item.status, item.id, query)
+                    emailXHtml = handleName(item.email)
+                    addressXHtml = handleName(item.address)
+                    phoneXHtml = handleName(item.phone)
+                    orderStatusXHtml = showISelectBox(selectStatusOption, item.id, item.is_admin)
+                break;
                 default:
                     break;
             }
@@ -193,8 +208,9 @@
                                 ${shippingFeeXHtml}
                                 ${imageXHtml}
                                 ${nameXHtml}
-                                ${phoneXHtml}
                                 ${emailXHtml}
+                                ${addressXHtml}
+                                ${phoneXHtml}
                                 ${authorXHtml}
                                 ${statusXHtml}
                                 ${orderStatusXHtml}
@@ -215,8 +231,8 @@
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 ${readXHml}
-                                ${editXHml}
-                                ${deleteXHml}
+                                ${editXHtml}
+                                ${deleteXHtml}
                                 </div>
                             </td>
                         </tr>

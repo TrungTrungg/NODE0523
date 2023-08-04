@@ -133,7 +133,7 @@
             expireDateXHtml = showInput('date', 'Expire at', 'expired_at', coupon?.expired_at?.toISOString().slice(0, 10))
             couponQuantityXHtml = showInput('number', 'Quantity', 'quantity', coupon?.quantity)
 
-            conditionXHtml = showInput('number', 'Condition', 'condition', coupon?.condition)
+            conditionXHtml = showInput('text', 'Condition', 'condition', coupon?.condition,'', 'number')
             usedXHtml = showInput('number', 'Used', 'used', coupon?.used,'disabled')
             buttonRepeatXHtml = '<button type="button" onclick="javascript:handleRandomCode()" class="btn btn-secondary" style="width: 40px; height: 40px; margin-bottom: 16px"><i class="fas fa-repeat-alt"></i></button>'
             break;

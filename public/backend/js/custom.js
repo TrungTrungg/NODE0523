@@ -388,6 +388,16 @@ const handleClickUpdate = () => {
     });
 };
 
+function handleFormatInput(input) {
+    if (input.value.trim() !== '') {
+        let value = input.value.replace(/\D/g, '');
+        value = parseInt(value, 10).toLocaleString('en-US');
+        input.value = value;
+    } else {
+        input.value = 0;
+    }
+}
+
 $(document).ready(() => {
     const checkAll = $('#checkAll');
     const checked = $('.checkbox');

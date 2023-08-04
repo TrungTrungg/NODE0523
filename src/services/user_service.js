@@ -14,6 +14,17 @@ const updatePassword = async (id, password) => {
     return await model.updateOne({ _id: id }, { password: password });
 };
 
+const getAll = async (status, keyword, { currentPage, itemPerPage }) => {
+    let condition = {};
+    if (status) condition.status = status.toLowerCase();
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
+    return await model
+        .find(condition)
+        .sort({ updatedAt: -1, createdAt: -1 })
+        .skip(itemPerPage * (currentPage - 1))
+        .limit(itemPerPage);
+};
+
 const getOne = async (email) => {
     return await model.findOne({ email });
 };
@@ -23,4 +34,13 @@ const getOneById = async (id) => {
 const countAll = async () => {
     return await model.count();
 };
-module.exports = { create, updatePassword, getOne, getOneById, updateUserInfo, countAll };
+
+// Count
+const countByStatus = async (status, keyword) => {
+    let condition = {};
+    if (status) condition.status = status.toLowerCase();
+    if (keyword) condition.name = new RegExp(keyword, 'gi');
+    return await model.count(condition);
+};
+
+module.exports = { create, updatePassword, getAll, getOne, getOneById, updateUserInfo, countAll, countByStatus };

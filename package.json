@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon ./index.js"
   },"engines": {
-    "node": "14.x"
+    "node": "18.x"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

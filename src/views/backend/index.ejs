@@ -5,21 +5,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= typeof title !== 'undefined'? `TTS's Admin | ${title}` : 'Admin' %></title>
-  <% include ./components/Stylesheet %>
+  <% include ./components/stylesheet %>
   <link rel="icon" href="/uploads/logo/logo.PNG" type="image/x-icon">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
     <!-- Preloader -->
-    <% include ./components/Preloader %>
+    <% include ./components/preloader %>
 
     <!-- Navbar -->
-    <% include ./components/Header %>
+    <% include ./components/header %>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <% include ./components/Sidebar %>
+    <% include ./components/sidebar %>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper"> <%- body %>
@@ -28,11 +28,11 @@
 
   </div>
   <!-- Footer -->
-  <% include ./components/Footer %>
+  <% include ./components/footer %>
   <!-- /.footer -->
   <!-- ./wrapper -->
-  <% include ./components/Scripts %>
-  <% include ./components/ToastrMessage %>
+  <% include ./components/scripts %>
+  <% include ./components/toastrMessage %>
 
 </body>
 

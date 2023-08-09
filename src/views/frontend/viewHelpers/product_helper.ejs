@@ -23,7 +23,7 @@
                       <div class="bg-overlay">
                         ${sale}
                         <div class="bg-overlay-content dark animated fadeOut" data-hover-animate="fadeIn" data-bs-theme="dark" style="animation-duration: 600ms;">
-                          <a href="/san-pham/${product.slug}-${(product._id).toString()}" class="overlay-trigger-icon bg-light text-dark animated fadeInDownSmall" data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall" data-hover-speed="350" title="Detail" data-hover-delay="350" style="animation-duration: 350ms;"><i class="icon-line-ellipsis"></i></a>
+                          <a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}" class="overlay-trigger-icon bg-light text-dark animated fadeInDownSmall" data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall" data-hover-speed="350" title="Detail" data-hover-delay="350" style="animation-duration: 350ms;"><i class="icon-line-ellipsis"></i></a>
                           <a href="javascript:handleAddToCart('${(product._id).toString()}','${product.name}','${product.image}', '${salePrice}')" class="overlay-trigger-icon bg-light text-dark animated fadeInDownSmall" data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeOutUpSmall" data-hover-speed="350" title="Add to cart" data-hover-delay="550" style="animation-duration: 350ms;"><i class="icon-shopping-cart"></i></a>
                         </div>
                         <div class="bg-overlay-bg dark animated fadeOut" data-hover-animate="fadeIn" data-bs-theme="dark" style="animation-duration: 600ms;"></div>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="product-desc fbox-content align-middle" style="background-color: #F2F2F2; height: 180px!important">
                       <div class="product-title ">
-                        <h3><a href="/san-pham/${product.slug}-${(product._id).toString()}">${product.name}</a></h3>
+                        <h3><a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}">${product.name}</a></h3>
                       </div>
                       <div class="product-price">${product.sale > 0 ? `<del style="display: block !important">${price}</del> <ins>${salePrice} VNĐ</ins>` : `<ins>${price}</ins>`}</div>
                     </div>
@@ -103,12 +103,12 @@
             <div class="grid-inner row g-0">
               <div class="col-auto">
                 <div class="entry-image">
-                  <a href="/san-pham/${product.slug}-${(product._id).toString()}"><img src="/uploads/product/${product.image}" alt="Image"></a>
+                  <a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}"><img src="/uploads/product/${product.image}" alt="Image"></a>
                 </div>
               </div>
               <div class="col ps-3">
                 <div class="entry-title">
-                  <h4><a href="/san-pham/${product.slug}-${(product._id).toString()}">${product.name}</a></h4>
+                  <h4><a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}">${product.name}</a></h4>
                 </div>
                 <div class="entry-meta no-separator">
                   <ul>
@@ -147,20 +147,20 @@
           <div class="oc-item">
             <div class="product">
               <div class="product-image">
-                <a href="/san-pham/${product.slug}-${(product._id).toString()}"><img src="/uploads/product/${product.image}" alt="Checked"></a>
-                <a href="/san-pham/${product.slug}-${(product._id).toString()}"><img src="/uploads/product/${product.image}" alt="Checked"></a>
+                <a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}"><img src="/uploads/product/${product.image}" alt="Checked"></a>
+                <a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}"><img src="/uploads/product/${product.image}" alt="Checked"></a>
                 ${sale}
                 <div class="bg-overlay">
                   <div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
                     <a href="javascript:handleAddToCart('${(product._id).toString()}','${product.name}','${product.image}', '${salePrice}')" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
-                    <a href="/san-pham/${product.slug}-${(product._id).toString()}" class="btn btn-dark"><i class="icon-line-ellipsis"></i></a>
+                    <a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}" class="btn btn-dark"><i class="icon-line-ellipsis"></i></a>
                   </div>
                   <div class="bg-overlay-bg bg-transparent"></div>
                 </div>
               </div>
               <div class="product-desc center">
                 <div class="product-title">
-                  <h3><a href="/san-pham/${product.slug}-${(product._id).toString()}">${product.name}</a></h3>
+                  <h3><a href="/mua-sam/san-pham/${product.slug}-${(product._id).toString()}">${product.name}</a></h3>
                 </div>
                 <div class="product-price">${product.sale > 0 ? `<del style="display: block !important">${price}</del> <ins>${salePrice} </ins>` : `<ins>${price}</ins>`}</div>
                 <div class="product-rating">

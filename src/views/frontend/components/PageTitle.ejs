@@ -5,7 +5,7 @@
       <h3 style="margin-bottom: 5px !important;"><%= page %></h3>
       <span><%= pageDesc %></span>
     </div>
-    <% if(typeof keyword !== 'undefined') {  %>
+    <% if(typeof keyword !== 'undefined' && keyword.trim() !== '') {  %>
     <h2>Có <b style="color: red !important;"><%= totalItems %></b> kết quả được tìm thấy với từ khóa <b style="color: red !important;"><%= keyword %></b></h2>
     <% }%>
   </div>

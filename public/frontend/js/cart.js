@@ -35,13 +35,13 @@ if (cartData && cartData !== '[]') {
             return `
                     <div class="top-cart-item">
                     <div class="top-cart-item-image">
-                    <a href="/san-pham/${item.id}"><img src="/uploads/product/${
+                    <a href="/mua-sam/san-pham/${item.id}"><img src="/uploads/product/${
                 item.image
             }" alt="Blue Round-Neck Tshirt" /></a>
                     </div>
                     <div class="top-cart-item-desc">
                     <div class="top-cart-item-desc-title">
-                        <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+                        <a href="/mua-sam/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
                         <span class="top-cart-item-price d-block" id="top-cart-price-${item.id}">${formatPriceNumber(
                 item.total,
             )} VNĐ</span>
@@ -68,13 +68,13 @@ if (cartData && cartData !== '[]') {
                 </td>
 
                 <td class="cart-product-thumbnail">
-                    <a href="/san-pham/${item.id}"><img width="64" height="64" src="/uploads/product/${
+                    <a href="/mua-sam/san-pham/${item.id}"><img width="64" height="64" src="/uploads/product/${
                 item.image
             }" alt="Pink Printed Dress"></a>
                 </td>
 
                 <td class="cart-product-name">
-                    <a href="/san-pham/${item.id}">${item.name}</a>
+                    <a href="/mua-sam/san-pham/${item.id}">${item.name}</a>
                 </td>
 
                 <td class="cart-product-price">
@@ -111,13 +111,13 @@ if (cartData && cartData !== '[]') {
         return `
             <tr class="cart_item">
           <td class="cart-product-thumbnail">
-            <a href="/san-pham/${data.id}"><img width="64" height="64" src="/uploads/product/${
+            <a href="/mua-sam/san-pham/${data.id}"><img width="64" height="64" src="/uploads/product/${
             data.image
         }" alt="Pink Printed Dress"></a>
           </td>
 
           <td class="cart-product-name">
-            <a href="/san-pham/${data.id}">${data.name.slice(0, 32)}...</a>
+            <a href="/mua-sam/san-pham/${data.id}">${data.name.slice(0, 32)}...</a>
           </td>
 
           <td class="cart-product-quantity">
@@ -162,13 +162,13 @@ const handleDeleteItemCart = (id) => {
                 </td>
 
                 <td class="cart-product-thumbnail">
-                    <a href="/san-pham/${item.id}"><img width="64" height="64" src="/uploads/product/${
+                    <a href="/mua-sam/san-pham/${item.id}"><img width="64" height="64" src="/uploads/product/${
                     item.image
                 }" alt="Pink Printed Dress"></a>
                 </td>
 
                 <td class="cart-product-name">
-                    <a href="/san-pham/${item.id}">${item.name}</a>
+                    <a href="/mua-sam/san-pham/${item.id}">${item.name}</a>
                 </td>
 
                 <td class="cart-product-price">
@@ -202,13 +202,13 @@ const handleDeleteItemCart = (id) => {
                 return `
                         <div class="top-cart-item">
                         <div class="top-cart-item-image">
-                        <a href="/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${
+                        <a href="/mua-sam/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${
                     item.name
                 }" /></a>
                         </div>
                         <div class="top-cart-item-desc">
                         <div class="top-cart-item-desc-title">
-                            <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+                            <a href="/mua-sam/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
                             <span class="top-cart-item-price d-block">${formatPriceNumber(item.price)} VNĐ</span>
                         </div>
                         <div class="top-cart-item-quantity">x ${item.quantity}</div>
@@ -328,11 +328,11 @@ const handleAddToCart = (id, name, image, price) => {
             return `
         <div class="top-cart-item">
         <div class="top-cart-item-image">
-          <a href="/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
+          <a href="/mua-sam/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
         </div>
         <div class="top-cart-item-desc">
           <div class="top-cart-item-desc-title">
-            <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+            <a href="/mua-sam/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
             <span class="top-cart-item-price d-block">${formatPriceNumber(item.price)} VNĐ</span>
           </div>
           <div class="top-cart-item-quantity">x ${item.quantity}</div>
@@ -399,11 +399,11 @@ const handleClickAddToCart = (id, name, image, price) => {
                 return `
         <div class="top-cart-item">
         <div class="top-cart-item-image">
-          <a href="/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
+          <a href="/mua-sam/san-pham/${item.id}"><img src="/uploads/product/${item.image}" alt="${item.name}" /></a>
         </div>
         <div class="top-cart-item-desc">
           <div class="top-cart-item-desc-title">
-            <a href="/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
+            <a href="/mua-sam/san-pham/${item.id}">${item.name.slice(0, maxLength) + '...'}</a>
             <span class="top-cart-item-price d-block">${formatPriceNumber(item.price)} VNĐ</span>
           </div>
           <div class="top-cart-item-quantity">x ${item.quantity}</div>

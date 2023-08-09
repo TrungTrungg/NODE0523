@@ -8,7 +8,7 @@
             let subMenuLi = subCategories.map((sub) => {
                 if(sub.category_id === main.id) {
                     if(main.category_id === shop_id) {
-                        url = `/${main.slug}/${sub.slug}-${sub.id}`
+                        url = `/mua-sam/${main.slug}/${sub.slug}-${sub.id}`
                     }else url = `/bai-viet/${sub.slug}/${sub.slug}-${sub.id}`
                     return(`
                     <li class="menu-item">
@@ -25,7 +25,7 @@
              if(currentUrl === '/') {
                 status = ''
                 if(`href="${currentUrl}"` === url) status = 'active'
-             }else if (currentUrl.includes(url.split("/")[1]) || `href="${currentUrl}"` === url) {
+             }else if (currentUrl.includes(url.split("/")[2]) || `href="${currentUrl}"` === url) {
                 status = 'active'
              } else {
                 status = ''

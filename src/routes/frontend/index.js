@@ -21,7 +21,7 @@ router.use('/', authenticateToken, fetchDataMiddleware, (req, res, next) => {
     router.use('/', homeRouter);
 router.use('/subscribe', subscribeRouter);
 router.use('/bai-viet', blogRouter);
-router.use('/', shopRouter);
+router.use('/mua-sam', shopRouter);
 router.use('/contact', contactRouter);
 router.use('/', authRouter);
 router.use('/nguoi-dung', userRouter);

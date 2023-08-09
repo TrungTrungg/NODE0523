@@ -3,7 +3,7 @@ const unidecode = require('unidecode');
 
 const { categoryService: service } = require('@services');
 const { filterOptions, notify, productCategoriesCollection: collection } = require('@utils');
-const { handlePagination, getListCategories, catchAsync } = require('@helpers');
+const { handlepagination, getListCategories, catchAsync } = require('@helpers');
 const { resultsValidator } = require('@validators');
 
 // render list items, filter status, pagination
@@ -41,9 +41,9 @@ const renderList = catchAsync(async (req, res, next) => {
 
     const shopChildCategories = await service.getShopCategory(shop_id);
     let listCategoryId = shopChildCategories.map((child) => child.id);
-    // Pagination, Params: currentPage, itemsPerPage, pageRange
+    // pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword, 'product', category_id, listCategoryId);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
+    const pagination = await handlepagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, pagination, listCategoryId);
 

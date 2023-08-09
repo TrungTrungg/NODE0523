@@ -1,6 +1,6 @@
 const { couponService: service } = require('@services');
 const { notify, couponCollection: collection } = require('@utils');
-const { handlePagination, catchAsync } = require('@helpers');
+const { handlepagination, catchAsync } = require('@helpers');
 
 // render list items, filter status, pagination
 const renderList = catchAsync(async (req, res) => {
@@ -23,9 +23,9 @@ const renderList = catchAsync(async (req, res) => {
     let currentPage = 1;
     if (page) currentPage = parseInt(page);
 
-    // Pagination, Params: currentPage, itemsPerPage, pageRange
+    // pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(keyword);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
+    const pagination = await handlepagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(keyword, pagination);

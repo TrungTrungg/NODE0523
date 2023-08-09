@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const { orderService: service, productService, userService, couponService, deliveryService } = require('@services');
 const { orderStatusOptions, notify, orderCollection: collection } = require('@utils');
-const { handlePagination, catchAsync } = require('@helpers');
+const { handlepagination, catchAsync } = require('@helpers');
 
 // render list items, filter status, pagination
 const renderList = catchAsync(async (req, res) => {
@@ -53,9 +53,9 @@ const renderList = catchAsync(async (req, res) => {
         { name: orderStatusOptions.cancel, value: orderStatusOptions.cancel },
     ];
 
-    // Pagination, Params: currentPage, itemsPerPage, pageRange
+    // pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
+    const pagination = await handlepagination(totalItems, currentPage, (itemsPerPage = 10), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, pagination);

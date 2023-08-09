@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 const { productService: service } = require('@services');
-const { handlePagination, getListBrands, catchAsync, shopHelper } = require('@helpers');
+const { handlepagination, getListBrands, catchAsync, shopHelper } = require('@helpers');
 const { shopCollection: collection, productPrice } = require('@utils');
 
 const renderShop = catchAsync(async (req, res) => {
@@ -20,7 +20,7 @@ const renderShop = catchAsync(async (req, res) => {
     if (page) currentPage = parseInt(page);
 
     const totalItems = await service.countByCategory(category_id, keyword, brand_id, price, sale);
-    const pagination = handlePagination(totalItems, currentPage, (itemsPerPage = 12), (pageRange = 5));
+    const pagination = handlepagination(totalItems, currentPage, (itemsPerPage = 12), (pageRange = 5));
 
     const [products, brands] = await Promise.all([
         // get list product

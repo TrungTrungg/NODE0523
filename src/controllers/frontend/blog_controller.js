@@ -1,5 +1,5 @@
 const { articleService, categoryService } = require('@services');
-const { handlePagination, catchAsync, blogHelper } = require('@helpers');
+const { handlepagination, catchAsync, blogHelper } = require('@helpers');
 const { blogCollection: collection } = require('@utils');
 
 const renderBlog = catchAsync(async (req, res) => {
@@ -17,7 +17,7 @@ const renderBlog = catchAsync(async (req, res) => {
     if (page) currentPage = parseInt(page);
 
     const totalItems = await articleService.countArticleByCategory(category_id);
-    const pagination = handlePagination(totalItems, currentPage, (itemPerPage = 4));
+    const pagination = handlepagination(totalItems, currentPage, (itemPerPage = 4));
 
     const articles = await articleService.getArticleWithCategory(category_id, pagination);
     const { blogCategory, popularArticles, currentArticles } = await blogHelper.fetchDataFile(category_id);

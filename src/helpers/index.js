@@ -1,4 +1,4 @@
-const { handlePagination } = require('@helpers/pagination_helper');
+const { handlepagination } = require('@helpers/pagination_helper');
 const { getListCategories, getListBrands } = require('@helpers/category_helper');
 const fsHelper = require('@helpers/fs_helper');
 const shopHelper = require('@helpers/shop_helper');
@@ -16,7 +16,7 @@ module.exports = {
     homeHelper,
     dataHelper,
     mailHelper,
-    handlePagination,
+    handlepagination,
     getListCategories,
     getListBrands,
     catchAsync,

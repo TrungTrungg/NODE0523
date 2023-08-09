@@ -4,7 +4,7 @@ const unidecode = require('unidecode');
 
 const { productService: service, categoryService, brandService } = require('@services');
 const { filterOptions, notify, productCollection: collection } = require('@utils');
-const { handlePagination, getListCategories, getListBrands, catchAsync } = require('@helpers');
+const { handlepagination, getListCategories, getListBrands, catchAsync } = require('@helpers');
 
 const { resultsValidator } = require('@validators');
 
@@ -52,9 +52,9 @@ const renderList = catchAsync(async (req, res) => {
         inactive: filterOptions.inactive,
     };
 
-    // Pagination, Params: currentPage, itemsPerPage, pageRange
+    // pagination, Params: currentPage, itemsPerPage, pageRange
     const totalItems = await service.countByStatus(currentStatus, keyword, category_id, brand_id);
-    const pagination = await handlePagination(totalItems, currentPage, (itemsPerPage = 15), (pageRange = 3));
+    const pagination = await handlepagination(totalItems, currentPage, (itemsPerPage = 15), (pageRange = 3));
 
     // Lấy danh sách item
     const items = await service.getAll(currentStatus, keyword, category_id, brand_id, pagination);

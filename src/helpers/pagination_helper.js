@@ -1,4 +1,4 @@
-const handlePagination = (totalItems, currentPage, itemPerPage, pageRange) => {
+const handlepagination = (totalItems, currentPage, itemPerPage, pageRange) => {
     const totalPages = Math.ceil(totalItems / itemPerPage);
     const middle = Math.ceil(pageRange / 2);
 
@@ -12,5 +12,5 @@ const handlePagination = (totalItems, currentPage, itemPerPage, pageRange) => {
 };
 
 module.exports = {
-    handlePagination,
+    handlepagination,
 };
